@@ -44,12 +44,6 @@ function NavBar() {
         <NavLink to="/profil" className={active}>
           Profil Sekolah
         </NavLink>
-        <NavLink to="/akademik" className={active}>
-          Informasi Akademik
-        </NavLink>
-        <NavLink to="/sarana-prasarana" className={active}>
-          Sarana dan Prasarana
-        </NavLink>
         <NavLink to="/news" className={active}>
           Berita dan Pengumuman
         </NavLink>
@@ -70,12 +64,6 @@ function NavBar() {
           </NavLink>
           <NavLink to="/profil" className={active}>
             Profil Sekolah
-          </NavLink>
-          <NavLink to="/akademik" className={active}>
-            Informasi Akademik
-          </NavLink>
-          <NavLink to="/sarana-prasarana" className={active}>
-            Sarana dan Prasarana
           </NavLink>
           <NavLink to="/news" className={active}>
             Berita dan Pengumuman
