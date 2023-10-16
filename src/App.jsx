@@ -6,10 +6,11 @@ import Home from "./pages/Home";
 import News from "./pages/News";
 import Profil from "./pages/Profil";
 import Footer from "./components/Footer";
+import { ChakraProvider } from "@chakra-ui/react";
 
 function App() {
   return (
-    <div>
+    <ChakraProvider>
       <Router>
         <Header />
         <NavBar />
@@ -21,7 +22,7 @@ function App() {
         </Routes>
         <Footer />
       </Router>
-    </div>
+    </ChakraProvider>
   );
 }
 

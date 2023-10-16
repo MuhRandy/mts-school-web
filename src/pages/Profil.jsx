@@ -3,6 +3,7 @@ import Facility from "../components/Facility";
 import History from "../components/History";
 import VisiMisi from "../components/VisiMisi";
 import chairs from "../assets/jejeran_kursi.jpg";
+import Teachers from "../components/Teachers";
 
 function Profil() {
   return (
@@ -17,6 +18,7 @@ function Profil() {
           <History />
           <VisiMisi />
           <Facility />
+          <Teachers />
         </Content.Main>
         <Content.Aside />
       </Content>
