@@ -1,7 +1,7 @@
 import { IconMenu2, IconX } from "@tabler/icons-react";
-import { useEffect } from "react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
+import clsx from "clsx";
 
 function NavBar() {
   const active = ({ isActive }) => (isActive ? "font-bold" : "");
@@ -20,9 +20,19 @@ function NavBar() {
 
   return (
     <div
-      className={`sticky top-0 p-[13px] bg-lime-500 font-thin text-white text-lg sm:text-2xl mt-[27px] flex justify-center md:justify-start md:pl-[114px] z-10 max-[1200px]:h-[55px] ${
-        navbar ? "" : "mx-[27px] rounded-md"
-      }`}
+      className={clsx(
+        "bg-lime-500",
+        "sticky z-10 top-0",
+        "mt-[27px]",
+        "flex justify-center",
+        "font-thin text-white text-lg",
+        [
+          "sm:text-2xl",
+          "md:justify-start md:pl-[114px]",
+          "max-[1200px]:h-[55px]",
+        ],
+        { "mx-[27px] rounded-md": !navbar }
+      )}
     >
       <div
         className={
@@ -48,11 +58,17 @@ function NavBar() {
           Berita dan Pengumuman
         </NavLink>
       </div>
-      <nav className="">
-        <div className="ml-5 absolute top-[50%] translate-x-0 translate-y-[-50%] left-0 min-[1201px]:hidden flex items-center gap-2">
-          Menu
+      <nav>
+        <div
+          className={clsx(
+            "ml-5",
+            "flex items-center gap-2",
+            "absolute top-[50%] translate-x-0 translate-y-[-50%] left-0",
+            "min-[1201px]:hidden"
+          )}
+        >
           <IconMenu2
-            size={40}
+            size={20}
             onClick={() => {
               setIsClicked(!isClicked);
             }}
