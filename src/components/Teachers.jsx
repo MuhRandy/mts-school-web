@@ -6,7 +6,13 @@ register();
 function Teachers() {
   return (
     <div>
-      <swiper-container>
+      <swiper-container slides-per-view="2" loop="true" speed="10">
+        <swiper-slide>
+          <Teacher />
+        </swiper-slide>
+        <swiper-slide>
+          <Teacher />
+        </swiper-slide>
         <swiper-slide>
           <Teacher />
         </swiper-slide>

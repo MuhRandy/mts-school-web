@@ -2,7 +2,9 @@ import clsx from "clsx";
 
 function SmallContent({ children }) {
   return (
-    <article className={clsx("border-y-2 border-lime-500 p-1", "sm:p-2")}>
+    <article
+      className={clsx("border-y-2 border-lime-500 p-1 relative", "sm:p-2")}
+    >
       {children}
     </article>
   );

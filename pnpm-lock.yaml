@@ -38,10 +38,10 @@ dependencies:
 
 devDependencies:
   '@types/react':
-    specifier: ^18.0.28
+    specifier: ^18.2.0
     version: 18.2.0
   '@types/react-dom':
-    specifier: ^18.0.11
+    specifier: ^18.2.1
     version: 18.2.1
   '@vitejs/plugin-react':
     specifier: ^4.0.0
@@ -50,7 +50,7 @@ devDependencies:
     specifier: ^10.4.14
     version: 10.4.14(postcss@8.4.31)
   eslint:
-    specifier: ^8.38.0
+    specifier: ^8.39.0
     version: 8.39.0
   eslint-plugin-react:
     specifier: ^7.32.2
@@ -59,16 +59,16 @@ devDependencies:
     specifier: ^4.6.0
     version: 4.6.0(eslint@8.39.0)
   eslint-plugin-react-refresh:
-    specifier: ^0.3.4
+    specifier: ^0.3.5
     version: 0.3.5(eslint@8.39.0)
   postcss:
-    specifier: ^8.4.23
+    specifier: ^8.4.31
     version: 8.4.31
   tailwindcss:
     specifier: ^3.3.2
     version: 3.3.2
   vite:
-    specifier: ^4.3.2
+    specifier: ^4.4.11
     version: 4.4.11
 
 packages:
@@ -2033,7 +2033,7 @@ packages:
       postcss: ^8.1.0
     dependencies:
       browserslist: 4.21.5
-      caniuse-lite: 1.0.30001481
+      caniuse-lite: 1.0.30001559
       fraction.js: 4.2.0
       normalize-range: 0.1.2
       picocolors: 1.0.0
@@ -2083,7 +2083,7 @@ packages:
     engines: {node: ^6 || ^7 || ^8 || ^9 || ^10 || ^11 || ^12 || >=13.7}
     hasBin: true
     dependencies:
-      caniuse-lite: 1.0.30001481
+      caniuse-lite: 1.0.30001559
       electron-to-chromium: 1.4.377
       node-releases: 2.0.10
       update-browserslist-db: 1.0.11(browserslist@4.21.5)
@@ -2105,8 +2105,8 @@ packages:
     engines: {node: '>= 6'}
     dev: true
 
-  /caniuse-lite@1.0.30001481:
-    resolution: {integrity: sha512-KCqHwRnaa1InZBtqXzP98LPg0ajCVujMKjqKDhZEthIpAsJl/YEIa3YvXjGXPVqzZVguccuu7ga9KOE1J9rKPQ==}
+  /caniuse-lite@1.0.30001559:
+    resolution: {integrity: sha512-cPiMKZgqgkg5LY3/ntGeLFUpi6tzddBNS58A4tnTgQw1zON7u2sZMU7SzOeVH4tj20++9ggL+V6FDOFMTaFFYA==}
     dev: true
 
   /chalk@2.4.2:
@@ -2137,7 +2137,7 @@ packages:
       normalize-path: 3.0.0
       readdirp: 3.6.0
     optionalDependencies:
-      fsevents: 2.3.2
+      fsevents: 2.3.3
     dev: true
 
   /clsx@2.0.0:
@@ -2640,8 +2640,8 @@ packages:
     resolution: {integrity: sha512-OO0pH2lK6a0hZnAdau5ItzHPI6pUlvI7jMVnxUQRtw4owF2wk8lOSabtGDCTP4Ggrg2MbGnWO9X8K1t4+fGMDw==}
     dev: true
 
-  /fsevents@2.3.2:
-    resolution: {integrity: sha512-xiqMQR4xAeHTuB9uWm+fFRcIOgKBMiOBP+eXiyT7jsgVCq1bkVygt00oASowB7EdtpOHaaPgKt812P9ab+DDKA==}
+  /fsevents@2.3.3:
+    resolution: {integrity: sha512-5xoDfX+fL7faATnagmWPpbFtwh/R77WmMMqqHGS65C3vvB0YHrgF+B1YmZ3441tMj5n63k0212XNoJwzlhffQw==}
     engines: {node: ^8.16.0 || ^10.6.0 || >=11.0.0}
     os: [darwin]
     requiresBuild: true
@@ -3568,7 +3568,7 @@ packages:
     engines: {node: '>=14.18.0', npm: '>=8.0.0'}
     hasBin: true
     optionalDependencies:
-      fsevents: 2.3.2
+      fsevents: 2.3.3
     dev: true
 
   /run-parallel@1.2.0:
@@ -3909,7 +3909,7 @@ packages:
       postcss: 8.4.31
       rollup: 3.29.4
     optionalDependencies:
-      fsevents: 2.3.2
+      fsevents: 2.3.3
     dev: true
 
   /which-boxed-primitive@1.0.2:
