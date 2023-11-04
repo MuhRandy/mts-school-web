@@ -1,5 +1,4 @@
 import { IconUserCircle } from "@tabler/icons-react";
-import mrandyProfil from "../assets/teachers/Muhammad_Randy.jpg";
 import {
   Card,
   CardHeader,
@@ -10,7 +9,7 @@ import {
   Image,
 } from "@chakra-ui/react";
 
-function Teacher() {
+function Teacher({ name, imgURL, jabatan }) {
   return (
     // <Card maxW="sm">
     //   <CardBody>
@@ -28,12 +27,12 @@ function Teacher() {
 
     <div className="flex flex-col items-center text-center text-sm">
       <img
-        src={mrandyProfil}
-        alt="Muhammad Randy"
+        src={imgURL}
+        alt={name}
         className="object-cover object-center w-[40vw]"
       />
-      <h1 className="font-semibold">Muhammad Randy</h1>
-      <p>Guru Matematika (Kelas VII)</p>
+      <h1 className="font-semibold">{name}</h1>
+      <p>{jabatan}</p>
     </div>
   );
 }
