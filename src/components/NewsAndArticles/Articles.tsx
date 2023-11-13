@@ -1,10 +1,10 @@
-import Article from "../components/Article";
 import { Wrap, WrapItem } from "@chakra-ui/react";
-import Main from "../components/Main";
+import Content from "../Content";
+import Article from "../Article";
 
-export default function Home() {
+const Articles = () => {
   return (
-    <Main>
+    <Content title="Artikel">
       <Wrap justify={"center"}>
         <WrapItem>
           <Article />
@@ -25,6 +25,8 @@ export default function Home() {
           <Article />
         </WrapItem>
       </Wrap>
-    </Main>
+    </Content>
   );
-}
+};
+
+export default Articles;
