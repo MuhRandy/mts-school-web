@@ -2,10 +2,19 @@ import {
   IconArrowNarrowRight,
   IconCalendarStats,
   IconUserCircle,
-} from "@tabler/icons-react";
-import clsx from "clsx";
+} from '@tabler/icons-react';
+import clsx from 'clsx';
 
-function Card({ children, imgUrl }) {
+type CardProps = {
+  children: any;
+  imgUrl: any;
+};
+
+type TitleProps = Omit<CardProps, 'imgUrl'>;
+
+type BodyProps = TitleProps;
+
+function Card({ children, imgUrl }: CardProps) {
   return (
     <div className="shadow-lg rounded-2xl overflow-hidden">
       <img
@@ -18,13 +27,13 @@ function Card({ children, imgUrl }) {
   );
 }
 
-function Title({ children }) {
+function Title({ children }: TitleProps) {
   return (
     <div className="relative">
       <h2
         className={clsx(
-          "after:absolute after:bottom-0 after:left-0 after:h-1 after:border-b-4 after:border-black after:w-[10%] hover:after:w-1/5 after:transition-all after:duration-500 after:rounded-md",
-          "text-3xl md:text-4xl font-semibold md:font-bold"
+          'after:absolute after:bottom-0 after:left-0 after:h-1 after:border-b-4 after:border-black after:w-[10%] hover:after:w-1/5 after:transition-all after:duration-500 after:rounded-md',
+          'text-3xl md:text-4xl font-semibold md:font-bold'
         )}
       >
         {children}
@@ -33,23 +42,23 @@ function Title({ children }) {
   );
 }
 
-function Body({ children }) {
+function Body({ children }: BodyProps) {
   const date = new Date();
 
-  const days = ["Ming", "Sen", "Sel", "Rab", "Kam", "Jum", "Sab"];
+  const days = ['Ming', 'Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab'];
   const months = [
-    "Jan",
-    "Feb",
-    "Mar",
-    "Apr",
-    "Mei",
-    "Jun",
-    "Jul",
-    "Ags",
-    "Sep",
-    "Okt",
-    "Nov",
-    "Des",
+    'Jan',
+    'Feb',
+    'Mar',
+    'Apr',
+    'Mei',
+    'Jun',
+    'Jul',
+    'Ags',
+    'Sep',
+    'Okt',
+    'Nov',
+    'Des',
   ];
 
   const day = days[date.getDay()];
@@ -58,20 +67,20 @@ function Body({ children }) {
     <div>
       <div
         className={clsx(
-          "py-5",
-          "flex flex-col",
-          "sm:flex-row sm:items-center sm:justify-between"
+          'py-5',
+          'flex flex-col',
+          'sm:flex-row sm:items-center sm:justify-between'
         )}
       >
         {/* Author */}
         <div className="flex gap-2 items-center">
           <IconUserCircle className="hover:scale-125 transition duration-500" />
-          <span className={clsx("text-xs", "md:font-semibold")}>@Admin</span>
+          <span className={clsx('text-xs', 'md:font-semibold')}>@Admin</span>
         </div>
         {/*  */}
 
         {/* Date */}
-        <div className={clsx("flex items-center gap-1", "text-xs")}>
+        <div className={clsx('flex items-center gap-1', 'text-xs')}>
           <IconCalendarStats stroke={1} />
           <span className="md:font-semibold">
             {day}, {date.getDate()} {month} {date.getFullYear()}
@@ -81,9 +90,9 @@ function Body({ children }) {
       </div>
 
       <p
-        className={clsx("text-sm", "border-b-2 border-lime-500", "pb-5", [
-          "sm:text-base",
-          "md:text-lg",
+        className={clsx('text-sm', 'border-b-2 border-lime-500', 'pb-5', [
+          'sm:text-base',
+          'md:text-lg',
         ])}
       >
         {children}
@@ -91,10 +100,10 @@ function Body({ children }) {
 
       <button
         className={clsx(
-          "bg-lime-500 rounded-full",
-          "text-white",
-          "py-1 px-3 mt-3",
-          "flex gap-1"
+          'bg-lime-500 rounded-full',
+          'text-white',
+          'py-1 px-3 mt-3',
+          'flex gap-1'
         )}
       >
         Lanjut <IconArrowNarrowRight />

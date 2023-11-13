@@ -1,6 +1,23 @@
-import Contact from "./Contact";
+import Contact from './Contact';
 
-function Content({ children, className }) {
+type ContentProps = {
+  children: any;
+  className?: string;
+};
+
+type HeadingProps = {
+  title: string;
+  imgUrl: any;
+  imgAlt: string;
+};
+
+type MainProps = ContentProps;
+
+type AsideProps = {
+  noTitle?: boolean;
+};
+
+function Content({ children, className }: ContentProps) {
   return (
     <div
       className={`${className} flex md:flex-row gap-6 px-5 md:px-28 sm:px-14 pt-4 flex-col`}
@@ -10,7 +27,7 @@ function Content({ children, className }) {
   );
 }
 
-function Heading({ title, imgUrl, imgAlt }) {
+function Heading({ title, imgUrl, imgAlt }: HeadingProps) {
   return (
     <div className="relative mt-4">
       <img
@@ -25,7 +42,7 @@ function Heading({ title, imgUrl, imgAlt }) {
   );
 }
 
-function Main({ children, className }) {
+function Main({ children, className }: MainProps) {
   return (
     <main className="min-w-[70%]">
       <section className={`${className}`}>{children}</section>
@@ -33,7 +50,7 @@ function Main({ children, className }) {
   );
 }
 
-function Aside({ noTitle }) {
+function Aside({ noTitle }: AsideProps) {
   return (
     <aside className={`min-w-[30%] flex flex-col gap-10`}>
       <Contact />
