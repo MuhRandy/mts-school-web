@@ -1,4 +1,5 @@
 import {
+  Button,
   Drawer,
   DrawerBody,
   DrawerCloseButton,
@@ -12,9 +13,25 @@ import {
 } from "@chakra-ui/react";
 import { HamburgerIcon } from "@chakra-ui/icons";
 import clsx from "clsx";
+import { useNavigate } from "react-router-dom";
+import { useAppContext } from "../../App";
+import { signOut } from "firebase/auth";
+import { auth } from "../../utils/firebase";
 
 function Navbar() {
   const { isOpen, onOpen, onClose } = useDisclosure();
+
+  const { setIsAuth, isAuth } = useAppContext();
+
+  let navigate = useNavigate();
+
+  const signUserOut = () => {
+    signOut(auth).then(() => {
+      localStorage.clear();
+      setIsAuth(false);
+      navigate("/login");
+    });
+  };
 
   return (
     <>
@@ -40,6 +57,13 @@ function Navbar() {
             <li>
               <a href="/news">Berita dan Pengumuman</a>
             </li>
+            {isAuth && (
+              <li>
+                <Button colorScheme="blackAlpha" onClick={signUserOut}>
+                  Logout
+                </Button>
+              </li>
+            )}
           </ul>
         </Show>
       </nav>
@@ -59,6 +83,13 @@ function Navbar() {
               <li>
                 <a href="/news">Berita dan Pengumuman</a>
               </li>
+              {isAuth && (
+                <li>
+                  <Button colorScheme="blackAlpha" onClick={signUserOut}>
+                    Logout
+                  </Button>
+                </li>
+              )}
             </ul>
           </DrawerBody>
         </DrawerContent>
