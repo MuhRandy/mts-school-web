@@ -1,16 +1,20 @@
-import { useNavigate } from "react-router-dom";
 import { auth, provider } from "../utils/firebase";
 import { signInWithPopup } from "firebase/auth";
 import { Button, Center } from "@chakra-ui/react";
 import { useAppContext } from "../App";
+import { useEffect } from "react";
 
 const Login = () => {
-  const navigate = useNavigate();
+  const { isAuth, setIsAuth, navigate } = useAppContext();
 
-  const { setIsAuth } = useAppContext();
+  useEffect(() => {
+    if (isAuth) {
+      navigate("/");
+    }
+  }, []);
 
   const signInWithGoogle = () => {
-    signInWithPopup(auth, provider).then((result) => {
+    signInWithPopup(auth, provider).then(() => {
       localStorage.setItem("isAuth", "true");
       setIsAuth(true);
       navigate("/");

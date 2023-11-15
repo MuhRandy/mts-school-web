@@ -1,33 +1,54 @@
-import { Button, Card, Divider, Input, Text, Textarea } from "@chakra-ui/react";
-import { useState } from "react";
+import {
+  Button,
+  Card,
+  Divider,
+  Editable,
+  EditablePreview,
+  EditableInput,
+  EditableTextarea,
+} from "@chakra-ui/react";
+import { addDoc, collection } from "firebase/firestore";
+import { useEffect, useState } from "react";
+import { auth, db } from "../utils/firebase";
+import { useAppContext } from "../App";
 
 const CreatePost = () => {
+  const { isAuth, navigate } = useAppContext();
+
+  useEffect(() => {
+    if (!isAuth) {
+      navigate("/login");
+    }
+  }, []);
+
   const [title, setTitle] = useState("");
   const [post, setPost] = useState("");
 
+  const postCollectionRef = collection(db, "posts");
+
+  const createPost = async () => {
+    await addDoc(postCollectionRef, {
+      title,
+      post,
+      author: {
+        name: auth.currentUser?.displayName,
+        id: auth.currentUser?.uid,
+      },
+    });
+  };
+
   return (
     <Card>
-      <Text mb="8px" mt={"10px"}>
-        Judul: {title}
-      </Text>
-      <Input
-        value={title}
-        onChange={(e) => setTitle(e.target.value)}
-        placeholder="Judul..."
-        size="sm"
-        mb={"8px"}
-      />
+      <Editable defaultValue="Judul..." fontSize={"xl"} fontWeight={"bold"}>
+        <EditablePreview />
+        <EditableInput onChange={(e) => setTitle(e.target.value)} />
+      </Editable>
       <Divider />
-      <Text mb="8px" mt={"10px"}>
-        Postingan: {post}
-      </Text>
-      <Textarea
-        value={post}
-        onChange={(e) => setPost(e.target.value)}
-        placeholder="Postingan..."
-        size="sm"
-      />
-      <Button size={"sm"} mt={"10px"}>
+      <Editable defaultValue="Postingan..." minH={"100px"}>
+        <EditablePreview />
+        <EditableTextarea onChange={(e) => setPost(e.target.value)} />
+      </Editable>
+      <Button size={"sm"} mt={"10px"} onClick={createPost}>
         Publish
       </Button>
     </Card>
