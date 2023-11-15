@@ -27,7 +27,7 @@ export const AppContext = createContext<GlobalContent>({
 export const useAppContext = () => useContext(AppContext);
 
 function App() {
-  const [isAuth, setIsAuth] = useState(false);
+  const [isAuth, setIsAuth] = useState(Boolean(localStorage.getItem("isAuth")));
   const navigate = useNavigate();
 
   console.log(isAuth);
