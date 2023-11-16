@@ -12,7 +12,12 @@ import {
 import blogPhoto from "../assets/tumpukan_buku.jpg";
 import { ArrowForwardIcon } from "@chakra-ui/icons";
 
-function Article() {
+type ArticleProps = {
+  title: string;
+  postText: string;
+};
+
+function Article({ title, postText }: ArticleProps) {
   return (
     <Card maxW="sm" mx={2} size={"sm"} px={2}>
       <CardBody>
@@ -22,12 +27,9 @@ function Article() {
           className="rounded-lg w-auto"
         />
         <Stack mt="6" spacing="3">
-          <Heading size="md">Sejarah MTs Mifathul Ulum</Heading>
+          <Heading size="md">{title}</Heading>
           <Text fontSize={"small"} noOfLines={3}>
-            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Earum
-            eveniet quis facere exercitationem ullam eos expedita similique
-            autem beatae explicabo optio reiciendis tempore dolorum facilis
-            dolore est unde voluptas itaque aperiam aspernatur, illo aliquam a.
+            {postText}
           </Text>
         </Stack>
       </CardBody>

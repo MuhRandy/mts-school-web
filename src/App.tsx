@@ -30,7 +30,6 @@ function App() {
   const [isAuth, setIsAuth] = useState(Boolean(localStorage.getItem("isAuth")));
   const navigate = useNavigate();
 
-  console.log(isAuth);
   return (
     <ChakraProvider>
       <AppContext.Provider value={{ isAuth, setIsAuth, navigate }}>
