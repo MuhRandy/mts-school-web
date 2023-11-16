@@ -5,21 +5,24 @@ function VisiMisi() {
   return (
     <TextContent title="Visi & Misi Sekolah">
       <TextContent.Section title="Visi">
-        <Text fontSize={{ base: "xs", sm: "medium" }} fontWeight={"bold"}>
+        <Text
+          fontSize={{ base: "xs", sm: "medium", md: "large" }}
+          fontWeight={"bold"}
+        >
           ”Terbentuknya Siswa yang Beriman dan Bertaqwa Kepada Allah Swt.,
           Berilmu Pengetahuan dan Keterampilan Serta Mempunyai Wawasan dan
           Kesadaran Terhadap Diri dan Lingkungan”
         </Text>
       </TextContent.Section>
       <TextContent.Section title="Misi">
-        <Text fontSize={{ base: "xs", sm: "medium" }}>
+        <Text fontSize={{ base: "xs", sm: "medium", md: "large" }}>
           Untuk mencapai Visi dimaksud perlu dilakukan suatu Misi berupa
           kegiatan jangka panjang dengan arah yang jelas dan sistematis.
         </Text>
-        <Text fontSize={{ base: "xs", sm: "medium" }}>
+        <Text fontSize={{ base: "xs", sm: "medium", md: "large" }}>
           Berikut Misi MTs. Miftahul Ulum Sungai Tabuk :
         </Text>
-        <OrderedList fontSize={{ base: "xs", sm: "medium" }}>
+        <OrderedList fontSize={{ base: "xs", sm: "medium", md: "large" }}>
           <ListItem>
             Menanamkan keyakinan / Aqidah agama melalui :
             <UnorderedList>

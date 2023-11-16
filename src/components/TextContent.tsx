@@ -9,7 +9,7 @@ type SectionProps = ContentProps;
 
 const TextContent = ({ children, title }: ContentProps) => {
   return (
-    <Container>
+    <Container maxW={{ sm: "90vw" }}>
       <Heading size={{ base: "lg", sm: "xl" }} mb={2}>
         {title}
       </Heading>
@@ -20,7 +20,7 @@ const TextContent = ({ children, title }: ContentProps) => {
 
 const Section = ({ children, title }: SectionProps) => {
   return (
-    <Container>
+    <Container maxW={{ sm: "90vw" }}>
       <Heading size={{ base: "md", sm: "lg" }}>{title}</Heading>
       <Divider />
       {children}

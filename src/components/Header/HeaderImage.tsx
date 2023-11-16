@@ -9,6 +9,8 @@ const HeaderImage = () => {
         alt="Foto Tampak Depan MTs Miftahul Ulum"
         className={clsx("w-full h-[100px]", "object-cover object-center", [
           "min-[480px]:h-[180px]",
+          "min-[768px]:h-[230px]",
+          "min-[992px]:h-[320px]",
         ])}
       />
       <div
@@ -17,7 +19,11 @@ const HeaderImage = () => {
           "absolute top-0",
           "flex items-center justify-center",
           "text-center text-xl font-bold text-white",
-          ["min-[480px]:h-[180px] min-[480px]:text-4xl"]
+          [
+            "min-[480px]:h-[180px] min-[480px]:text-4xl",
+            "min-[768px]:h-[230px] min-[768px]:text-6xl",
+            "min-[992px]:h-[320px] min-[992px]:text-7xl",
+          ]
         )}
       >
         Selamat Datang di Website Miftahul Ulum

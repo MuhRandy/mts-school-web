@@ -47,16 +47,24 @@ function Navbar() {
           />
         </Hide>
         <Show above="sm">
-          <ul className="flex gap-2 text-white">
+          <ul
+            className={clsx("flex gap-2 text-white", [
+              "min-[768px]:text-lg",
+              "min-[992px]:text-2xl",
+            ])}
+          >
             <li>
               <a href="/">Beranda</a>
             </li>
+            <li>|</li>
             <li>
               <a href="/profil">Profil</a>
             </li>
+            <li>|</li>
             <li>
               <a href="/news">Berita dan Pengumuman</a>
             </li>
+            <li>|</li>
             {isAuth && (
               <li>
                 <Button colorScheme="blackAlpha" onClick={signUserOut}>
