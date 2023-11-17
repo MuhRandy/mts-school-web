@@ -1,67 +1,71 @@
-import Muhammad_Randy from '../assets/teachers/Muhammad_Randy.jpg';
-import Gajjali_Rahman from '../assets/teachers/Gajjali_Rahman.jpg';
-import Abdusani from '../assets/teachers/Abdusani.jpg';
-import Masran from '../assets/teachers/Masran.jpg';
-import Suliman_Bukhari from '../assets/teachers/Suliman_Bukhari.jpg';
-import Mawardi from '../assets/teachers/Mawardi.jpg';
+import Muhammad_Randy from "../assets/teachers/Muhammad_Randy.jpg";
+import Gajjali_Rahman from "../assets/teachers/Gajjali_Rahman.jpg";
+import Abdusani from "../assets/teachers/Abdusani.jpg";
+import Masran from "../assets/teachers/Masran.jpg";
+import Suliman_Bukhari from "../assets/teachers/Suliman_Bukhari.jpg";
+import Mawardi from "../assets/teachers/Mawardi.jpg";
+import { twMerge } from "tailwind-merge";
+import clsx, { ClassValue } from "clsx";
 
 export const news = [
   {
-    title: 'Judul',
-    post: 'Lorem ipsum, dolor sit amet consectetur adipisicing elit. Cumque perferendis ducimus nam unde vero natus quis a consequatur fugiat nulla quia quod iste exercitationem, amet perspiciatis, molestiae in eos velit!',
+    title: "Judul",
+    post: "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Cumque perferendis ducimus nam unde vero natus quis a consequatur fugiat nulla quia quod iste exercitationem, amet perspiciatis, molestiae in eos velit!",
     key: 1,
   },
   {
-    title: 'Judul',
-    post: 'Lorem ipsum, dolor sit amet consectetur adipisicing elit. Cumque perferendis ducimus nam unde vero natus quis a consequatur fugiat nulla quia quod iste exercitationem, amet perspiciatis, molestiae in eos velit!',
+    title: "Judul",
+    post: "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Cumque perferendis ducimus nam unde vero natus quis a consequatur fugiat nulla quia quod iste exercitationem, amet perspiciatis, molestiae in eos velit!",
     key: 2,
   },
   {
-    title: 'Judul',
-    post: 'Lorem ipsum, dolor sit amet consectetur adipisicing elit. Cumque perferendis ducimus nam unde vero natus quis a consequatur fugiat nulla quia quod iste exercitationem, amet perspiciatis, molestiae in eos velit!',
+    title: "Judul",
+    post: "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Cumque perferendis ducimus nam unde vero natus quis a consequatur fugiat nulla quia quod iste exercitationem, amet perspiciatis, molestiae in eos velit!",
     key: 3,
   },
   {
-    title: 'Judul',
-    post: 'Lorem ipsum, dolor sit amet consectetur adipisicing elit. Cumque perferendis ducimus nam unde vero natus quis a consequatur fugiat nulla quia quod iste exercitationem, amet perspiciatis, molestiae in eos velit!',
+    title: "Judul",
+    post: "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Cumque perferendis ducimus nam unde vero natus quis a consequatur fugiat nulla quia quod iste exercitationem, amet perspiciatis, molestiae in eos velit!",
     key: 4,
   },
   {
-    title: 'Judul',
-    post: 'Lorem ipsum, dolor sit amet consectetur adipisicing elit. Cumque perferendis ducimus nam unde vero natus quis a consequatur fugiat nulla quia quod iste exercitationem, amet perspiciatis, molestiae in eos velit!',
+    title: "Judul",
+    post: "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Cumque perferendis ducimus nam unde vero natus quis a consequatur fugiat nulla quia quod iste exercitationem, amet perspiciatis, molestiae in eos velit!",
     key: 5,
   },
 ];
 
 export const teachers = [
   {
-    nama: 'Muhammad Randy',
+    nama: "Muhammad Randy",
     url: Muhammad_Randy,
-    jabatan: 'Guru Mata Pelajaran',
+    jabatan: "Guru Mata Pelajaran",
   },
   {
-    nama: 'Mawardi',
+    nama: "Mawardi",
     url: Mawardi,
-    jabatan: 'Guru Mata Pelajaran',
+    jabatan: "Guru Mata Pelajaran",
   },
   {
-    nama: 'Gajjali Rahman',
+    nama: "Gajjali Rahman",
     url: Gajjali_Rahman,
-    jabatan: 'Guru Mata Pelajaran',
+    jabatan: "Guru Mata Pelajaran",
   },
   {
-    nama: 'Abdusani',
+    nama: "Abdusani",
     url: Abdusani,
-    jabatan: 'Kepala Madrasah',
+    jabatan: "Kepala Madrasah",
   },
   {
-    nama: 'Masran',
+    nama: "Masran",
     url: Masran,
-    jabatan: 'Wakil Kepala Madrasah',
+    jabatan: "Wakil Kepala Madrasah",
   },
   {
-    nama: 'Suliman Bukhari',
+    nama: "Suliman Bukhari",
     url: Suliman_Bukhari,
-    jabatan: 'Guru Mata Pelajaran',
+    jabatan: "Guru Mata Pelajaran",
   },
 ];
+
+export const cn = (...inputs: ClassValue[]) => twMerge(clsx(inputs));
