@@ -11,7 +11,6 @@ import NewsAndArticles from "./pages/NewsAndArticles";
 import Login from "./components/Login";
 import { createContext, useContext, useState } from "react";
 import CreatePost from "./components/CreatePost";
-import ReactMarkdown from "./components/ReactMarkdown/ReactMarkdown";
 
 type GlobalContent = {
   isAuth: boolean;
@@ -42,7 +41,6 @@ function App() {
           <Route path="/article" element={<Article />} />
           <Route path="/login" element={<Login />} />
           <Route path="/create-post" element={<CreatePost />} />
-          <Route path="/markdown" element={<ReactMarkdown />} />
         </Routes>
         <Footer />
       </AppContext.Provider>

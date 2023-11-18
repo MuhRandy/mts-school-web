@@ -15,10 +15,11 @@ const HeaderImage = () => {
       />
       <div
         className={clsx(
-          "bg-black opacity-50 w-full h-[100px]",
+          "bg-black opacity-70 w-full h-[100px]",
           "absolute top-0",
           "flex items-center justify-center",
           "text-center text-xl font-bold text-white",
+          // "mix-blend-multiply",
           [
             "min-[480px]:h-[180px] min-[480px]:text-4xl",
             "min-[768px]:h-[230px] min-[768px]:text-6xl",

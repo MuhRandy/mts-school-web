@@ -7,15 +7,15 @@ import clsx from "clsx";
 import MarkdownHeader from "./MarkdownHeader";
 import { useMarkdownContext } from "./ReactMarkdown";
 import { cn } from "../../utils/utils";
+import { useCreatePostContext } from "../CreatePost";
 
 const Preview = () => {
-  const {
-    maximizeEditor,
-    maximizePreview,
-    setMaximizePreview,
-    markdown,
-    sideBySide,
-  } = useMarkdownContext();
+  const { title } = useCreatePostContext();
+
+  const { maximizeEditor, maximizePreview, setMaximizePreview, sideBySide } =
+    useMarkdownContext();
+
+  const { post } = useCreatePostContext();
 
   const handleClick = () => {
     setMaximizePreview(!maximizePreview);
@@ -59,7 +59,7 @@ const Preview = () => {
           ]
         )}
         remarkPlugins={[remarkGfm]}
-        children={`${markdown}`}
+        children={`# ${title} \n\n ${post}`}
         components={{
           code(props) {
             const { children, className, node, ...rest } = props;

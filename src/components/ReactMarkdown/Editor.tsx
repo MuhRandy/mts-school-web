@@ -3,16 +3,13 @@ import { useMarkdownContext } from "./ReactMarkdown";
 import { cn } from "../../utils/utils";
 import clsx from "clsx";
 import MarkdownHeader from "./MarkdownHeader";
+import { useCreatePostContext } from "../CreatePost";
 
 const Editor = () => {
-  const {
-    maximizeEditor,
-    maximizePreview,
-    setMaximizeEditor,
-    markdown,
-    setMarkdown,
-    sideBySide,
-  } = useMarkdownContext();
+  const { maximizeEditor, maximizePreview, setMaximizeEditor, sideBySide } =
+    useMarkdownContext();
+
+  const { post, setPost } = useCreatePostContext();
 
   const handleClick = () => {
     setMaximizeEditor(!maximizeEditor);
@@ -48,8 +45,8 @@ const Editor = () => {
         ])}
         name="editor"
         id="editor"
-        onChange={(e) => setMarkdown(e.target.value)}
-        value={markdown}
+        onChange={(e) => setPost(e.target.value)}
+        defaultValue={post}
       />
     </div>
   );
