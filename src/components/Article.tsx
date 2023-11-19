@@ -19,22 +19,24 @@ type ArticleProps = {
 
 function Article({ title, postText }: ArticleProps) {
   return (
-    <Card maxW="sm" mx={2} size={"sm"} px={2}>
-      <CardBody>
-        <img
-          src={blogPhoto}
-          alt="Green double couch with wooden legs"
-          className="rounded-lg w-auto"
-        />
+    <Card maxW="sm" mx={2} size={"sm"} overflow={"hidden"}>
+      <img
+        src={blogPhoto}
+        alt="Green double couch with wooden legs"
+        className="w-auto"
+      />
+      <CardBody px={2} mt={"-20px"}>
         <Stack mt="6" spacing="3">
           <Heading size="md">{title}</Heading>
-          <Text fontSize={"small"} noOfLines={3}>
-            {postText}
-          </Text>
+          <Text
+            fontSize={"small"}
+            noOfLines={3}
+            dangerouslySetInnerHTML={{ __html: postText }}
+          ></Text>
         </Stack>
       </CardBody>
       <Divider />
-      <CardFooter>
+      <CardFooter px={2}>
         <ButtonGroup spacing="2">
           <Button
             rightIcon={<ArrowForwardIcon />}

@@ -3,12 +3,21 @@ import {
   Editable,
   EditablePreview,
   EditableInput,
+  Box,
+  Heading,
+  HStack,
+  StackDivider,
+  Center,
+  Show,
+  Hide,
 } from "@chakra-ui/react";
 import { addDoc, collection } from "firebase/firestore";
 import { createContext, useContext, useEffect, useState } from "react";
 import { auth, db } from "../utils/firebase";
 import { useAppContext } from "../App";
-import ReactMarkdown from "./ReactMarkdown/ReactMarkdown";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.bubble.css";
+import "react-quill/dist/quill.snow.css";
 
 type CreatePostContextProps = {
   title: string;
@@ -17,7 +26,7 @@ type CreatePostContextProps = {
 };
 
 const CreatePostContext = createContext<CreatePostContextProps>({
-  title: "Judul...",
+  title: "",
   post: "",
   setPost: () => {},
 });
@@ -33,40 +42,8 @@ const CreatePost = () => {
     }
   }, []);
 
-  const defaultMarkdown =
-    "## This is a sub-heading...\n\n" +
-    "### And here's some other cool stuff:\n\n" +
-    "Heres some code, `<div></div>`, between 2 backticks.\n\n" +
-    "~~~js\n" +
-    "// this is multi-line code:\n\n" +
-    "function anotherExample(firstLine, lastLine) {\n" +
-    "  if (firstLine == '```' && lastLine == '```') {\n" +
-    "    return multiLineCode;\n" +
-    "  }\n" +
-    "}\n" +
-    "~~~\n\n" +
-    "You can also make text **bold**... whoa!\n" +
-    "Or _italic_.\n" +
-    "Or... wait for it... **_both!_** \n" +
-    "And feel free to go crazy ~~crossing stuff out~~.\n\n" +
-    "There's also [links](https://www.freecodecamp.org), and\n\n" +
-    "> Block Quotes!\n\n" +
-    "And if you want to get really crazy, even tables:\n\n" +
-    "| Wild Header      | Crazy Header    | Another Header?    |\n" +
-    "| ---------------- | --------------- | ------------------ |\n" +
-    "| Your content can | be here, and it | can be here....    |\n" +
-    "| And here.        | Okay.           | I think we get it. |\n\n" +
-    "- And of course there are lists.\n" +
-    "  - Some are bulleted.\n" +
-    "    - With different indentation levels.\n" +
-    "      - That look like this.\n\n" +
-    "1. And there are numbered lists too.\n" +
-    "1. Use just 1s if you want!\n" +
-    "1. And last but not least, let's not forget embedded images:\n\n" +
-    "![freeCodeCamp Logo](https://cdn.freecodecamp.org/testable-projects-fcc/images/fcc_secondary.svg)";
-
   const [title, setTitle] = useState<string>("Judul...");
-  const [post, setPost] = useState<string>(defaultMarkdown);
+  const [post, setPost] = useState<string>("");
 
   const postCollectionRef = collection(db, "posts");
 
@@ -82,24 +59,147 @@ const CreatePost = () => {
     navigate("/");
   };
 
+  const modules = {
+    toolbar: [
+      [{ size: ["small", false, "large", "huge"] }],
+      ["bold", "italic", "underline", "strike", "blockquote"],
+      [{ list: "ordered" }, { list: "bullet" }],
+      ["link", "image"],
+      [
+        { list: "ordered" },
+        { list: "bullet" },
+        { indent: "-1" },
+        { indent: "+1" },
+        { align: [] },
+      ],
+      [
+        {
+          color: [
+            "#000000",
+            "#e60000",
+            "#ff9900",
+            "#ffff00",
+            "#008a00",
+            "#0066cc",
+            "#9933ff",
+            "#ffffff",
+            "#facccc",
+            "#ffebcc",
+            "#ffffcc",
+            "#cce8cc",
+            "#cce0f5",
+            "#ebd6ff",
+            "#bbbbbb",
+            "#f06666",
+            "#ffc266",
+            "#ffff66",
+            "#66b966",
+            "#66a3e0",
+            "#c285ff",
+            "#888888",
+            "#a10000",
+            "#b26b00",
+            "#b2b200",
+            "#006100",
+            "#0047b2",
+            "#6b24b2",
+            "#444444",
+            "#5c0000",
+            "#663d00",
+            "#666600",
+            "#003700",
+            "#002966",
+            "#3d1466",
+            "custom-color",
+          ],
+        },
+      ],
+    ],
+  };
+
+  const formats = [
+    "header",
+    "height",
+    "bold",
+    "italic",
+    "underline",
+    "strike",
+    "blockquote",
+    "list",
+    "color",
+    "bullet",
+    "indent",
+    "link",
+    "image",
+    "align",
+    "size",
+  ];
+
   return (
     <>
       <CreatePostContext.Provider value={{ title, post, setPost }}>
-        <Editable defaultValue="Judul..." fontSize={"xl"} fontWeight={"bold"}>
-          <EditablePreview />
-          <EditableInput onChange={(e) => setTitle(e.target.value)} />
-        </Editable>
-        {/* <Card>
-      <Divider />
-      <Editable defaultValue="Postingan..." minH={"100px"}>
-        <EditablePreview />
-        <EditableTextarea onChange={(e) => setPost(e.target.value)} />
-      </Editable>
-    </Card> */}
-        <ReactMarkdown />
-        <Button size={"sm"} mt={"10px"} onClick={createPost}>
-          Publish
-        </Button>
+        <Show above="md">
+          <HStack divider={<StackDivider />}>
+            <Editable
+              defaultValue="Judul..."
+              fontSize={"4xl"}
+              fontWeight={"bold"}
+              minH={"100vh"}
+              mx={{ base: 2 }}
+              w={"45vw"}
+            >
+              <EditablePreview />
+              <EditableInput onChange={(e) => setTitle(e.target.value)} />
+              <ReactQuill
+                theme="snow"
+                value={post}
+                onChange={setPost}
+                modules={modules}
+                formats={formats}
+                placeholder="Post..."
+              />
+            </Editable>
+            <Box minH={"100vh"} w={"50vw"}>
+              <Heading>{title}</Heading>
+              <Box
+                dangerouslySetInnerHTML={{ __html: post }}
+                className="ql-editor"
+              ></Box>
+            </Box>
+          </HStack>
+        </Show>
+        <Hide above="md">
+          <Editable
+            defaultValue="Judul..."
+            fontSize={"4xl"}
+            fontWeight={"bold"}
+            minH={"100vh"}
+            mx={{ base: "20px", sm: "auto" }}
+            w={{ base: "auto", sm: "80vw" }}
+          >
+            <EditablePreview />
+            <EditableInput onChange={(e) => setTitle(e.target.value)} />
+            <ReactQuill
+              theme="snow"
+              value={post}
+              onChange={setPost}
+              modules={modules}
+              formats={formats}
+              placeholder="Post..."
+            />
+          </Editable>
+        </Hide>
+        <Center>
+          <Button
+            size={{ base: "sm", sm: "md" }}
+            mt={"10px"}
+            color={"white"}
+            bgColor={"lime"}
+            onClick={createPost}
+          >
+            Publish
+          </Button>
+        </Center>
       </CreatePostContext.Provider>
     </>
   );
