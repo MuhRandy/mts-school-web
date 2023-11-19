@@ -1,5 +1,3 @@
-"use client";
-
 import { Routes, Route, useNavigate, NavigateFunction } from "react-router-dom";
 import { ChakraProvider } from "@chakra-ui/react";
 import Article from "./pages/Article";

@@ -3,33 +3,58 @@ import clsx from "clsx";
 
 const HeaderImage = () => {
   return (
-    <div className="relative bottom-7 z-[-1]">
-      <img
-        src={depanMts}
-        alt="Foto Tampak Depan MTs Miftahul Ulum"
-        className={clsx("w-full h-[100px]", "object-cover object-center", [
-          "min-[480px]:h-[180px]",
-          "min-[768px]:h-[230px]",
-          "min-[992px]:h-[320px]",
-        ])}
-      />
+    <div
+      className="relative bottom-7 z-[-1] overflow-hidden bg-cover bg-center bg-no-repeat p-12 text-center"
+      style={{ backgroundImage: `url(${depanMts})`, height: "400px" }}
+    >
       <div
-        className={clsx(
-          "bg-black opacity-70 w-full h-[100px]",
-          "absolute top-0",
-          "flex items-center justify-center",
-          "text-center text-xl font-bold text-white",
-          // "mix-blend-multiply",
-          [
-            "min-[480px]:h-[180px] min-[480px]:text-4xl",
-            "min-[768px]:h-[230px] min-[768px]:text-6xl",
-            "min-[992px]:h-[320px] min-[992px]:text-7xl",
-          ]
-        )}
+        className="absolute bottom-0 left-0 right-0 top-0 h-full w-full overflow-hidden bg-fixed"
+        style={{ backgroundColor: "rgba(0, 0, 0, 0.6)" }}
       >
-        Selamat Datang di Website Miftahul Ulum
+        <div className="flex h-full items-center justify-center">
+          <div className="text-white">
+            <div
+              className={clsx("mb-6 text-xl font-semibold leading-[0]", [
+                "min-[480px]:text-3xl min-[480px]:leading-3",
+                "min-[768px]:text-5xl",
+              ])}
+            >
+              Selamat Datang di Website
+            </div>
+            <div
+              className={clsx("mb-4 text-3xl font-bold leading-[0]", [
+                "min-[480px]:text-5xl min-[480px]:leading-3",
+                ,
+                "min-[768px]:text-7xl min-[768px]:leading-3",
+              ])}
+            >
+              MTs Miftahul Ulum
+            </div>
+          </div>
+        </div>
       </div>
     </div>
+    // <div className="relative bottom-7 z-[-1]">
+    //   {/* <img
+    //     src={depanMts}
+    //     alt="Foto Tampak Depan MTs Miftahul Ulum"
+    //     className={clsx("w-full h-[80dvh]", "object-cover object-center")}
+    //   /> */}
+    //   {/* <div
+    //     className={clsx(
+    //       "bg-black opacity-60 w-full h-[80dvh] p-1",
+    //       "absolute top-0",
+    //       "flex flex-col items-center justify-center",
+    //       "text-center font-bold text-white"
+    //       // "mix-blend-multiply",
+    //     )}
+    //   >
+    //     <span className="text-xl">Selamat Datang di Website</span>
+    //     <span className="text-4xl">Miftahul Ulum</span>
+    //   </div> */}
+    //   {/* <!-- Jumbotron --> */}
+    //   {/* <!-- Jumbotron --> */}
+    // </div>
   );
 };
 
