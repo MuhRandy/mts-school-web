@@ -11,16 +11,19 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import { HamburgerIcon } from "@chakra-ui/icons";
-import clsx from "clsx";
 import { useNavigate } from "react-router-dom";
 import { useAppContext } from "../../App";
 import { signOut } from "firebase/auth";
 import { auth } from "../../utils/firebase";
+import { useEffect, useState } from "react";
+import clsx from "clsx";
+import { cn } from "../../utils/utils";
 
 function Navbar() {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const { setIsAuth, isAuth } = useAppContext();
+  const [isSticky, setIsSticky] = useState(false);
 
   let navigate = useNavigate();
 
@@ -32,10 +35,33 @@ function Navbar() {
     });
   };
 
+  useEffect(() => {
+    window.onscroll = () => {
+      console.log(
+        `top: ${
+          window.pageYOffset || document.documentElement.scrollTop
+        } left: ${window.pageXOffset || document.documentElement.scrollLeft}`
+      );
+
+      if (scrollY >= 120) {
+        setIsSticky(true);
+      } else {
+        setIsSticky(false);
+      }
+    };
+  }, []);
+
   return (
     <>
       <nav
-        className={clsx("bg-[#99fc08] mx-5 rounded-md", ["min-[768px]:p-3"])}
+        className={cn(
+          "bg-[#99fc08] mx-5 rounded-md",
+          "sticky top-0 transition-all duration-300",
+          ["min-[768px]:p-3"],
+          {
+            "fixed top-0 left-0 right-0 z-50 mx-0 rounded-none": isSticky,
+          }
+        )}
       >
         <Hide above="md">
           <IconButton
