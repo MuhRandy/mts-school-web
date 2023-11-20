@@ -12,40 +12,26 @@ import {
   Hide,
 } from "@chakra-ui/react";
 import { addDoc, collection } from "firebase/firestore";
-import { createContext, useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { auth, db } from "../utils/firebase";
 import { useAppContext } from "../App";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.bubble.css";
 import "react-quill/dist/quill.snow.css";
 
-type CreatePostContextProps = {
-  title: string;
-  post: string;
-  setPost: (post: string) => void;
-};
-
-const CreatePostContext = createContext<CreatePostContextProps>({
-  title: "",
-  post: "",
-  setPost: () => {},
-});
-
-export const useCreatePostContext = () => useContext(CreatePostContext);
-
 const CreatePost = () => {
   const { isAuth, navigate } = useAppContext();
+
+  const [title, setTitle] = useState<string>("Judul...");
+  const [post, setPost] = useState<string>("");
+
+  const postCollectionRef = collection(db, "posts");
 
   useEffect(() => {
     if (!isAuth) {
       navigate("/login");
     }
   }, []);
-
-  const [title, setTitle] = useState<string>("Judul...");
-  const [post, setPost] = useState<string>("");
-
-  const postCollectionRef = collection(db, "posts");
 
   const createPost = async () => {
     await addDoc(postCollectionRef, {
@@ -137,45 +123,15 @@ const CreatePost = () => {
 
   return (
     <>
-      <CreatePostContext.Provider value={{ title, post, setPost }}>
-        <Show above="md">
-          <HStack divider={<StackDivider />}>
-            <Editable
-              defaultValue="Judul..."
-              fontSize={"4xl"}
-              fontWeight={"bold"}
-              minH={"100vh"}
-              mx={{ base: 2 }}
-              w={"45vw"}
-            >
-              <EditablePreview />
-              <EditableInput onChange={(e) => setTitle(e.target.value)} />
-              <ReactQuill
-                theme="snow"
-                value={post}
-                onChange={setPost}
-                modules={modules}
-                formats={formats}
-                placeholder="Post..."
-              />
-            </Editable>
-            <Box minH={"100vh"} w={"50vw"}>
-              <Heading>{title}</Heading>
-              <Box
-                dangerouslySetInnerHTML={{ __html: post }}
-                className="ql-editor"
-              ></Box>
-            </Box>
-          </HStack>
-        </Show>
-        <Hide above="md">
+      <Show above="md">
+        <HStack divider={<StackDivider />}>
           <Editable
             defaultValue="Judul..."
             fontSize={"4xl"}
             fontWeight={"bold"}
             minH={"100vh"}
-            mx={{ base: "20px", sm: "auto" }}
-            w={{ base: "auto", sm: "80vw" }}
+            mx={{ base: 2 }}
+            w={"45vw"}
           >
             <EditablePreview />
             <EditableInput onChange={(e) => setTitle(e.target.value)} />
@@ -188,19 +144,47 @@ const CreatePost = () => {
               placeholder="Post..."
             />
           </Editable>
-        </Hide>
-        <Center>
-          <Button
-            size={{ base: "sm", sm: "md" }}
-            mt={"10px"}
-            color={"white"}
-            bgColor={"lime"}
-            onClick={createPost}
-          >
-            Publish
-          </Button>
-        </Center>
-      </CreatePostContext.Provider>
+          <Box minH={"100vh"} w={"50vw"}>
+            <Heading>{title}</Heading>
+            <Box
+              dangerouslySetInnerHTML={{ __html: post }}
+              className="ql-editor"
+            ></Box>
+          </Box>
+        </HStack>
+      </Show>
+      <Hide above="md">
+        <Editable
+          defaultValue="Judul..."
+          fontSize={"4xl"}
+          fontWeight={"bold"}
+          minH={"100vh"}
+          mx={{ base: "20px", sm: "auto" }}
+          w={{ base: "auto", sm: "80vw" }}
+        >
+          <EditablePreview />
+          <EditableInput onChange={(e) => setTitle(e.target.value)} />
+          <ReactQuill
+            theme="snow"
+            value={post}
+            onChange={setPost}
+            modules={modules}
+            formats={formats}
+            placeholder="Post..."
+          />
+        </Editable>
+      </Hide>
+      <Center>
+        <Button
+          size={{ base: "sm", sm: "md" }}
+          mt={"10px"}
+          color={"white"}
+          bgColor={"lime"}
+          onClick={createPost}
+        >
+          Publish
+        </Button>
+      </Center>
     </>
   );
 };

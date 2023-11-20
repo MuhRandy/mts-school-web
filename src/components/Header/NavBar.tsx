@@ -23,7 +23,7 @@ function Navbar() {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const { setIsAuth, isAuth } = useAppContext();
-  const [isSticky, setIsSticky] = useState(false);
+  const [isSticky, setIsSticky] = useState<boolean>(false);
 
   let navigate = useNavigate();
 
@@ -37,12 +37,6 @@ function Navbar() {
 
   useEffect(() => {
     window.onscroll = () => {
-      console.log(
-        `top: ${
-          window.pageYOffset || document.documentElement.scrollTop
-        } left: ${window.pageXOffset || document.documentElement.scrollLeft}`
-      );
-
       if (scrollY >= 120) {
         setIsSticky(true);
       } else {
