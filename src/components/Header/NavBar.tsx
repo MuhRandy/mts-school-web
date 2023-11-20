@@ -1,5 +1,4 @@
 import {
-  Button,
   Drawer,
   DrawerBody,
   DrawerCloseButton,
@@ -36,17 +35,17 @@ function Navbar() {
   return (
     <>
       <nav
-        className={clsx("bg-[#99fc08] mx-5 rounded-md", ["min-[480px]:p-3"])}
+        className={clsx("bg-[#99fc08] mx-5 rounded-md", ["min-[768px]:p-3"])}
       >
-        <Hide above="sm">
+        <Hide above="md">
           <IconButton
             aria-label="Menu"
-            icon={<HamburgerIcon color={"white"} />}
+            icon={<HamburgerIcon color={"white"} fontSize={{ sm: "xl" }} />}
             onClick={onOpen}
             bg={"#99fc08"}
           />
         </Hide>
-        <Show above="sm">
+        <Show above="md">
           <ul
             className={clsx("flex gap-2 text-white", [
               "min-[768px]:text-lg",
@@ -66,11 +65,15 @@ function Navbar() {
             </li>
             <li>|</li>
             {isAuth && (
-              <li>
-                <Button colorScheme="blackAlpha" onClick={signUserOut}>
+              <>
+                <li>
+                  <a href="create-post">Create Post</a>
+                </li>
+                <li>|</li>
+                <li onClick={signUserOut} className="cursor-pointer">
                   Logout
-                </Button>
-              </li>
+                </li>
+              </>
             )}
           </ul>
         </Show>
@@ -92,11 +95,14 @@ function Navbar() {
                 <a href="/news">Berita dan Pengumuman</a>
               </li>
               {isAuth && (
-                <li>
-                  <Button colorScheme="blackAlpha" onClick={signUserOut}>
+                <>
+                  <li>
+                    <a href="create-post">Create Post</a>
+                  </li>
+                  <li onClick={signUserOut} className="cursor-pointer">
                     Logout
-                  </Button>
-                </li>
+                  </li>
+                </>
               )}
             </ul>
           </DrawerBody>
