@@ -1,12 +1,12 @@
-import { Wrap, WrapItem } from "@chakra-ui/react";
-import Content from "../Content";
-import Article from "../Article";
-import { collection, getDocs } from "firebase/firestore";
-import { db } from "../../utils/firebase";
-import { useEffect, useState } from "react";
+import { Wrap, WrapItem } from '@chakra-ui/react';
+import Content from '../Content';
+import Article from '../Article';
+import { collection, getDocs } from 'firebase/firestore';
+import { db } from '../../utils/firebase';
+import { useEffect, useState } from 'react';
 
 const Articles = () => {
-  const postCollectionRef = collection(db, "posts");
+  const postCollectionRef = collection(db, 'posts');
 
   // type articleProps = {
   //   author: {
@@ -33,7 +33,7 @@ const Articles = () => {
 
   return (
     <Content title="Artikel">
-      <Wrap justify={"center"}>
+      <Wrap justify={'center'}>
         {articles?.map((article) => (
           <WrapItem key={article.id}>
             <Article title={article.title} postText={article.post} />
