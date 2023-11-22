@@ -8,29 +8,30 @@ import {
   Heading,
   Stack,
   Text,
-} from '@chakra-ui/react';
-import blogPhoto from '../assets/tumpukan_buku.jpg';
-import { ArrowForwardIcon } from '@chakra-ui/icons';
-import { Link } from 'react-router-dom';
+} from "@chakra-ui/react";
+import blogPhoto from "../assets/tumpukan_buku.jpg";
+import { ArrowForwardIcon } from "@chakra-ui/icons";
+import { Link } from "react-router-dom";
 
 type ArticleProps = {
   title: string;
   postText: string;
+  articleID: string;
 };
 
-function Article({ title, postText }: ArticleProps) {
+function ArticleCard({ title, postText, articleID }: ArticleProps) {
   return (
-    <Card maxW="sm" mx={2} size={'sm'} overflow={'hidden'}>
+    <Card maxW="sm" mx={2} size={"sm"} overflow={"hidden"}>
       <img
         src={blogPhoto}
         alt="Green double couch with wooden legs"
         className="w-auto"
       />
-      <CardBody px={2} mt={'-20px'}>
+      <CardBody px={2} mt={"-20px"}>
         <Stack mt="6" spacing="3">
           <Heading size="md">{title}</Heading>
           <Text
-            fontSize={'small'}
+            fontSize={"small"}
             noOfLines={3}
             dangerouslySetInnerHTML={{ __html: postText }}
           ></Text>
@@ -39,12 +40,13 @@ function Article({ title, postText }: ArticleProps) {
       <Divider />
       <CardFooter px={2}>
         <ButtonGroup spacing="2">
-          <Link to={`/article?title=${title}&post=${postText}`}>
+          {/* navigate to /article send param on search text for used later */}
+          <Link to={`/article?id=${articleID}`}>
             <Button
               rightIcon={<ArrowForwardIcon />}
               colorScheme="teal"
               variant="outline"
-              size={'sm'}
+              size={"sm"}
             >
               Read more
             </Button>
@@ -55,4 +57,4 @@ function Article({ title, postText }: ArticleProps) {
   );
 }
 
-export default Article;
+export default ArticleCard;

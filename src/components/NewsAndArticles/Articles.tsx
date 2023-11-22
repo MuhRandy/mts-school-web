@@ -1,6 +1,6 @@
 import { Wrap, WrapItem } from "@chakra-ui/react";
 import Content from "../Content";
-import Article from "../Article";
+import ArticleCard from "../ArticleCard";
 import { useAppContext } from "../../App";
 
 const Articles = () => {
@@ -11,7 +11,11 @@ const Articles = () => {
       <Wrap justify={"center"}>
         {articles?.map((article: any) => (
           <WrapItem key={article.id}>
-            <Article title={article.title} postText={article.post} />
+            <ArticleCard
+              title={article.title}
+              postText={article.post}
+              articleID={article.id}
+            />
           </WrapItem>
         ))}
       </Wrap>

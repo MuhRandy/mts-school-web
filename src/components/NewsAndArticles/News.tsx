@@ -1,28 +1,13 @@
 import { Wrap, WrapItem } from "@chakra-ui/react";
 import Content from "../Content";
-import Article from "../Article";
+import ArticleCard from "../ArticleCard";
 
 const News = () => {
   return (
     <Content title="Pengumuman">
       <Wrap justify={"center"}>
         <WrapItem>
-          <Article />
-        </WrapItem>
-        <WrapItem>
-          <Article />
-        </WrapItem>
-        <WrapItem>
-          <Article />
-        </WrapItem>
-        <WrapItem>
-          <Article />
-        </WrapItem>
-        <WrapItem>
-          <Article />
-        </WrapItem>
-        <WrapItem>
-          <Article />
+          <ArticleCard title="" postText="" articleID="" />
         </WrapItem>
       </Wrap>
     </Content>
