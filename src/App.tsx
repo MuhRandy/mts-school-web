@@ -1,16 +1,16 @@
+import { createContext, useContext, useEffect, useState } from "react";
 import { Routes, Route, useNavigate, NavigateFunction } from "react-router-dom";
 import { ChakraProvider } from "@chakra-ui/react";
-import Article from "./pages/Article";
+import { collection, getDocs } from "firebase/firestore";
+import { db } from "./utils/firebase";
 import Header from "./components/Header/Header";
 import Home from "./pages/Home";
 import Profil from "./pages/Profil";
-import Footer from "./components/Footer";
 import NewsAndArticles from "./pages/NewsAndArticles";
+import Article from "./pages/Article";
 import Login from "./components/Login";
-import { createContext, useContext, useEffect, useState } from "react";
 import CreatePost from "./components/CreatePost";
-import { collection, getDocs } from "firebase/firestore";
-import { db } from "./utils/firebase";
+import Footer from "./components/Footer";
 
 type GlobalContent = {
   isAuth: boolean;
@@ -30,7 +30,10 @@ export const useAppContext = () => useContext(AppContext);
 
 function App() {
   const [articles, setArticles] = useState<any[]>([]);
-  const [isAuth, setIsAuth] = useState(Boolean(localStorage.getItem("isAuth")));
+  const [isAuth, setIsAuth] = useState<boolean>(
+    Boolean(localStorage.getItem("isAuth"))
+  );
+
   const navigate = useNavigate();
 
   const postCollectionRef = collection(db, "posts");
@@ -42,7 +45,7 @@ function App() {
     };
 
     getPosts();
-  }, []);
+  }, [articles]);
 
   return (
     <ChakraProvider>

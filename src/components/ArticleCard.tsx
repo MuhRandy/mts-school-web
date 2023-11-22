@@ -9,9 +9,12 @@ import {
   Stack,
   Text,
 } from "@chakra-ui/react";
-import blogPhoto from "../assets/tumpukan_buku.jpg";
-import { ArrowForwardIcon } from "@chakra-ui/icons";
+import { ArrowForwardIcon, DeleteIcon } from "@chakra-ui/icons";
 import { Link } from "react-router-dom";
+import { deleteDoc, doc } from "firebase/firestore";
+import { db } from "../utils/firebase";
+import { useAppContext } from "../App";
+import blogPhoto from "../assets/tumpukan_buku.jpg";
 
 type ArticleProps = {
   title: string;
@@ -20,6 +23,15 @@ type ArticleProps = {
 };
 
 function ArticleCard({ title, postText, articleID }: ArticleProps) {
+  // delete doc or article on firebase database based on doc id
+  const deletePost = async (id: string) => {
+    const postDoc = doc(db, "posts", id);
+    await deleteDoc(postDoc);
+  };
+
+  // get state from App component
+  const { isAuth } = useAppContext();
+
   return (
     <Card maxW="sm" mx={2} size={"sm"} overflow={"hidden"}>
       <img
@@ -34,13 +46,13 @@ function ArticleCard({ title, postText, articleID }: ArticleProps) {
             fontSize={"small"}
             noOfLines={3}
             dangerouslySetInnerHTML={{ __html: postText }}
-          ></Text>
+          />
         </Stack>
       </CardBody>
       <Divider />
       <CardFooter px={2}>
         <ButtonGroup spacing="2">
-          {/* navigate to /article send param on search text for used later */}
+          {/* navigate to /article and send article id on search text for later use */}
           <Link to={`/article?id=${articleID}`}>
             <Button
               rightIcon={<ArrowForwardIcon />}
@@ -48,9 +60,25 @@ function ArticleCard({ title, postText, articleID }: ArticleProps) {
               variant="outline"
               size={"sm"}
             >
-              Read more
+              Lanjut Baca...
             </Button>
           </Link>
+
+          {/* delete selected article based on article id */}
+          {isAuth && (
+            <Button
+              rightIcon={<DeleteIcon />}
+              colorScheme="teal"
+              variant="outline"
+              size={"sm"}
+              onClick={() => {
+                deletePost(articleID);
+                console.log("clicked", articleID);
+              }}
+            >
+              Hapus Artikel
+            </Button>
+          )}
         </ButtonGroup>
       </CardFooter>
     </Card>
