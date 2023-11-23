@@ -10,9 +10,16 @@ import {
   Center,
   Show,
   Hide,
+  AlertDialog,
+  AlertDialogOverlay,
+  AlertDialogContent,
+  AlertDialogHeader,
+  AlertDialogBody,
+  AlertDialogFooter,
+  useDisclosure,
 } from "@chakra-ui/react";
 import { addDoc, collection } from "firebase/firestore";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { auth, db } from "../utils/firebase";
 import { useAppContext } from "../App";
 import ReactQuill from "react-quill";
@@ -20,31 +27,17 @@ import "react-quill/dist/quill.bubble.css";
 import "react-quill/dist/quill.snow.css";
 
 const CreatePost = () => {
+  // get state from App component
   const { isAuth, navigate } = useAppContext();
+
+  //
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const postPathRef = useRef<any>();
 
   const [title, setTitle] = useState<string>("Judul...");
   const [post, setPost] = useState<string>("");
 
-  const postCollectionRef = collection(db, "posts");
-
-  useEffect(() => {
-    if (!isAuth) {
-      navigate("/login");
-    }
-  }, []);
-
-  const createPost = async () => {
-    await addDoc(postCollectionRef, {
-      title,
-      post,
-      author: {
-        name: auth.currentUser?.displayName,
-        id: auth.currentUser?.uid,
-      },
-    });
-    navigate("/");
-  };
-
+  // initialize module and format extension for quill editor
   const modules = {
     toolbar: [
       [{ size: ["small", false, "large", "huge"] }],
@@ -121,6 +114,29 @@ const CreatePost = () => {
     "size",
   ];
 
+  // add doc on firebase database on posts collection then navigate to home
+  const createPost = async (path: string) => {
+    const postCollectionRef = collection(db, path);
+
+    await addDoc(postCollectionRef, {
+      title,
+      post,
+      author: {
+        name: auth.currentUser?.displayName,
+        id: auth.currentUser?.uid,
+      },
+    });
+
+    navigate("/");
+  };
+
+  useEffect(() => {
+    // avoid navigate to here when user not login
+    if (!isAuth) {
+      navigate("/login");
+    }
+  }, []);
+
   return (
     <>
       <Show above="md">
@@ -180,11 +196,55 @@ const CreatePost = () => {
           mt={"10px"}
           color={"white"}
           bgColor={"lime"}
-          onClick={createPost}
+          onClick={onOpen}
         >
           Publish
         </Button>
       </Center>
+
+      <AlertDialog
+        isOpen={isOpen}
+        leastDestructiveRef={postPathRef}
+        onClose={onClose}
+      >
+        <AlertDialogOverlay>
+          <AlertDialogContent>
+            <AlertDialogHeader fontSize="lg" fontWeight="bold">
+              Publish Postingan
+            </AlertDialogHeader>
+
+            <AlertDialogBody>Pilih kategori postingan Anda.</AlertDialogBody>
+
+            <AlertDialogFooter>
+              <Button ref={postPathRef} onClick={onClose}>
+                Batal
+              </Button>
+              <Button
+                size={{ base: "sm", sm: "md" }}
+                color={"white"}
+                bgColor={"lime"}
+                onClick={() => {
+                  createPost("posts");
+                }}
+                ml={3}
+              >
+                Artikel
+              </Button>
+              <Button
+                size={{ base: "sm", sm: "md" }}
+                color={"white"}
+                bgColor={"lime"}
+                onClick={() => {
+                  createPost("news");
+                }}
+                ml={3}
+              >
+                Berita
+              </Button>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialogOverlay>
+      </AlertDialog>
     </>
   );
 };
