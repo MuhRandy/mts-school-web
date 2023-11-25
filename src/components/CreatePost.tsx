@@ -17,14 +17,14 @@ import {
   AlertDialogBody,
   AlertDialogFooter,
   useDisclosure,
-} from "@chakra-ui/react";
-import { addDoc, collection } from "firebase/firestore";
-import { useEffect, useRef, useState } from "react";
-import { auth, db } from "../utils/firebase";
-import { useAppContext } from "../App";
-import ReactQuill from "react-quill";
-import "react-quill/dist/quill.bubble.css";
-import "react-quill/dist/quill.snow.css";
+} from '@chakra-ui/react';
+import { addDoc, collection } from 'firebase/firestore';
+import { useEffect, useRef, useState } from 'react';
+import { auth, db } from '../utils/firebase';
+import { useAppContext } from '../App';
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.bubble.css';
+import 'react-quill/dist/quill.snow.css';
 
 const CreatePost = () => {
   // get state from App component
@@ -33,62 +33,62 @@ const CreatePost = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const postPathRef = useRef<any>();
 
-  const [title, setTitle] = useState<string>("Judul...");
-  const [post, setPost] = useState<string>("");
+  const [title, setTitle] = useState<string>('Judul...');
+  const [post, setPost] = useState<string>('');
 
   // initialize module and format extension for quill editor
   const modules = {
     toolbar: [
-      [{ size: ["small", false, "large", "huge"] }],
-      ["bold", "italic", "underline", "strike", "blockquote"],
-      [{ list: "ordered" }, { list: "bullet" }],
-      ["link", "image"],
+      [{ size: ['small', false, 'large', 'huge'] }],
+      ['bold', 'italic', 'underline', 'strike', 'blockquote'],
+      [{ list: 'ordered' }, { list: 'bullet' }],
+      ['link', 'image'],
       [
-        { list: "ordered" },
-        { list: "bullet" },
-        { indent: "-1" },
-        { indent: "+1" },
+        { list: 'ordered' },
+        { list: 'bullet' },
+        { indent: '-1' },
+        { indent: '+1' },
         { align: [] },
       ],
       [
         {
           color: [
-            "#000000",
-            "#e60000",
-            "#ff9900",
-            "#ffff00",
-            "#008a00",
-            "#0066cc",
-            "#9933ff",
-            "#ffffff",
-            "#facccc",
-            "#ffebcc",
-            "#ffffcc",
-            "#cce8cc",
-            "#cce0f5",
-            "#ebd6ff",
-            "#bbbbbb",
-            "#f06666",
-            "#ffc266",
-            "#ffff66",
-            "#66b966",
-            "#66a3e0",
-            "#c285ff",
-            "#888888",
-            "#a10000",
-            "#b26b00",
-            "#b2b200",
-            "#006100",
-            "#0047b2",
-            "#6b24b2",
-            "#444444",
-            "#5c0000",
-            "#663d00",
-            "#666600",
-            "#003700",
-            "#002966",
-            "#3d1466",
-            "custom-color",
+            '#000000',
+            '#e60000',
+            '#ff9900',
+            '#ffff00',
+            '#008a00',
+            '#0066cc',
+            '#9933ff',
+            '#ffffff',
+            '#facccc',
+            '#ffebcc',
+            '#ffffcc',
+            '#cce8cc',
+            '#cce0f5',
+            '#ebd6ff',
+            '#bbbbbb',
+            '#f06666',
+            '#ffc266',
+            '#ffff66',
+            '#66b966',
+            '#66a3e0',
+            '#c285ff',
+            '#888888',
+            '#a10000',
+            '#b26b00',
+            '#b2b200',
+            '#006100',
+            '#0047b2',
+            '#6b24b2',
+            '#444444',
+            '#5c0000',
+            '#663d00',
+            '#666600',
+            '#003700',
+            '#002966',
+            '#3d1466',
+            'custom-color',
           ],
         },
       ],
@@ -96,21 +96,21 @@ const CreatePost = () => {
   };
 
   const formats = [
-    "header",
-    "height",
-    "bold",
-    "italic",
-    "underline",
-    "strike",
-    "blockquote",
-    "list",
-    "color",
-    "bullet",
-    "indent",
-    "link",
-    "image",
-    "align",
-    "size",
+    'header',
+    'height',
+    'bold',
+    'italic',
+    'underline',
+    'strike',
+    'blockquote',
+    'list',
+    'color',
+    'bullet',
+    'indent',
+    'link',
+    'image',
+    'align',
+    'size',
   ];
 
   // add doc on firebase database on posts collection then navigate to home
@@ -124,17 +124,15 @@ const CreatePost = () => {
         name: auth.currentUser?.displayName,
         id: auth.currentUser?.uid,
       },
-    })
-      .then((docRef) => {
-        navigate("/");
-      })
-      .catch((err) => console.log(err));
+    }).catch((err) => console.log(err));
+    navigate('/');
+    window.location.reload();
   };
 
   useEffect(() => {
     // avoid navigate to here when user not login
     if (!isAuth) {
-      navigate("/login");
+      navigate('/login');
     }
   }, []);
 
@@ -144,11 +142,11 @@ const CreatePost = () => {
         <HStack divider={<StackDivider />}>
           <Editable
             defaultValue="Judul..."
-            fontSize={"4xl"}
-            fontWeight={"bold"}
-            minH={"100vh"}
+            fontSize={'4xl'}
+            fontWeight={'bold'}
+            minH={'100vh'}
             mx={{ base: 2 }}
-            w={"45vw"}
+            w={'45vw'}
           >
             <EditablePreview />
             <EditableInput onChange={(e) => setTitle(e.target.value)} />
@@ -161,7 +159,7 @@ const CreatePost = () => {
               placeholder="Post..."
             />
           </Editable>
-          <Box minH={"100vh"} w={"50vw"}>
+          <Box minH={'100vh'} w={'50vw'}>
             <Heading>{title}</Heading>
             <Box
               dangerouslySetInnerHTML={{ __html: post }}
@@ -173,11 +171,11 @@ const CreatePost = () => {
       <Hide above="md">
         <Editable
           defaultValue="Judul..."
-          fontSize={"4xl"}
-          fontWeight={"bold"}
-          minH={"100vh"}
-          mx={{ base: "20px", sm: "auto" }}
-          w={{ base: "auto", sm: "80vw" }}
+          fontSize={'4xl'}
+          fontWeight={'bold'}
+          minH={'100vh'}
+          mx={{ base: '20px', sm: 'auto' }}
+          w={{ base: 'auto', sm: '80vw' }}
         >
           <EditablePreview />
           <EditableInput onChange={(e) => setTitle(e.target.value)} />
@@ -193,10 +191,10 @@ const CreatePost = () => {
       </Hide>
       <Center>
         <Button
-          size={{ base: "sm", sm: "md" }}
-          mt={"10px"}
-          color={"white"}
-          bgColor={"lime"}
+          size={{ base: 'sm', sm: 'md' }}
+          mt={'10px'}
+          color={'white'}
+          bgColor={'lime'}
           onClick={onOpen}
         >
           Publish
@@ -221,11 +219,11 @@ const CreatePost = () => {
                 Batal
               </Button>
               <Button
-                size={{ base: "sm", sm: "md" }}
-                color={"white"}
-                bgColor={"lime"}
+                size={{ base: 'sm', sm: 'md' }}
+                color={'white'}
+                bgColor={'lime'}
                 onClick={() => {
-                  createPost("posts");
+                  createPost('posts');
                   onClose;
                 }}
                 ml={3}
@@ -233,11 +231,11 @@ const CreatePost = () => {
                 Artikel
               </Button>
               <Button
-                size={{ base: "sm", sm: "md" }}
-                color={"white"}
-                bgColor={"lime"}
+                size={{ base: 'sm', sm: 'md' }}
+                color={'white'}
+                bgColor={'lime'}
                 onClick={() => {
-                  createPost("news");
+                  createPost('news');
                   onClose;
                 }}
                 ml={3}
