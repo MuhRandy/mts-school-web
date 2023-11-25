@@ -45,7 +45,8 @@ function App() {
     };
 
     getPosts();
-  }, [articles]);
+    console.log("is it running");
+  }, []);
 
   return (
     <ChakraProvider>

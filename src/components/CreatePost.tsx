@@ -30,7 +30,6 @@ const CreatePost = () => {
   // get state from App component
   const { isAuth, navigate } = useAppContext();
 
-  //
   const { isOpen, onOpen, onClose } = useDisclosure();
   const postPathRef = useRef<any>();
 
@@ -125,9 +124,11 @@ const CreatePost = () => {
         name: auth.currentUser?.displayName,
         id: auth.currentUser?.uid,
       },
-    });
-
-    navigate("/");
+    })
+      .then((docRef) => {
+        navigate("/");
+      })
+      .catch((err) => console.log(err));
   };
 
   useEffect(() => {
@@ -225,6 +226,7 @@ const CreatePost = () => {
                 bgColor={"lime"}
                 onClick={() => {
                   createPost("posts");
+                  onClose;
                 }}
                 ml={3}
               >
@@ -236,6 +238,7 @@ const CreatePost = () => {
                 bgColor={"lime"}
                 onClick={() => {
                   createPost("news");
+                  onClose;
                 }}
                 ml={3}
               >

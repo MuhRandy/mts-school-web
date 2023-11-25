@@ -11,10 +11,10 @@ import {
 } from "@chakra-ui/react";
 import { ArrowForwardIcon, DeleteIcon } from "@chakra-ui/icons";
 import { Link } from "react-router-dom";
-import { deleteDoc, doc } from "firebase/firestore";
-import { db } from "../utils/firebase";
 import { useAppContext } from "../App";
 import blogPhoto from "../assets/tumpukan_buku.jpg";
+import { deleteDoc, doc } from "firebase/firestore";
+import { db } from "../utils/firebase";
 
 type ArticleProps = {
   title: string;
@@ -23,14 +23,14 @@ type ArticleProps = {
 };
 
 function ArticleCard({ title, postText, articleID }: ArticleProps) {
+  // get state from App component
+  const { isAuth } = useAppContext();
+
   // delete doc or article on firebase database based on doc id
   const deletePost = async (id: string) => {
     const postDoc = doc(db, "posts", id);
     await deleteDoc(postDoc);
   };
-
-  // get state from App component
-  const { isAuth } = useAppContext();
 
   return (
     <Card maxW="sm" mx={2} size={"sm"} overflow={"hidden"}>
@@ -73,7 +73,6 @@ function ArticleCard({ title, postText, articleID }: ArticleProps) {
               size={"sm"}
               onClick={() => {
                 deletePost(articleID);
-                console.log("clicked", articleID);
               }}
             >
               Hapus Artikel
