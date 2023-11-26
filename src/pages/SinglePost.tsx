@@ -1,10 +1,11 @@
 import { IconCalendarStats, IconUserCircle } from "@tabler/icons-react";
 import { Container } from "@chakra-ui/react";
-import { useAppContext } from "../App";
 
-function Article() {
-  const { articles } = useAppContext();
+type SinglePostProps = {
+  postType: any[];
+};
 
+function SinglePost({ postType }: SinglePostProps) {
   const date = new Date();
 
   const days = ["Ming", "Sen", "Sel", "Rab", "Kam", "Jum", "Sab"];
@@ -26,16 +27,16 @@ function Article() {
   const day = days[date.getDay()];
   const month = months[date.getMonth()];
 
-  // get article id from search text and store it at articleID
+  // get post id from search text and store it at postID
   const searchParams = new URLSearchParams(location.search);
-  const articleID = searchParams.get("id");
+  const postID = searchParams.get("id");
 
-  // filter article based on article id which is unique so just one article will be returned and store it at SingleArticle
-  const filteredArticle = articles.filter((article: any) => {
-    return article.id == articleID;
+  // filter post based on id which is unique so just one post will be returned and store it at singlePost
+  const filteredPost = postType.filter((post: any) => {
+    return post.id == postID;
   });
 
-  const singleArticle = filteredArticle[0];
+  const singlePost = filteredPost[0];
 
   return (
     <Container maxW={"70vw"}>
@@ -45,14 +46,14 @@ function Article() {
           alt=""
           className="w-full"
         />
-        <h1 className="text-4xl font-bold my-3">{singleArticle?.title}</h1>
+        <h1 className="text-4xl font-bold my-3">{singlePost?.title}</h1>
         <div className="py-5 mb-7 flex items-center justify-between border-b-2 border-black">
           <div className="flex gap-2 items-center">
             <IconUserCircle
               size={35}
               className="hover:scale-125 transition duration-500"
             />
-            <span className="font-semibold">@{singleArticle?.author.name}</span>
+            <span className="font-semibold">@{singlePost?.author.name}</span>
           </div>
           <div className="flex items-center gap-1">
             <IconCalendarStats size={20} stroke={1} />
@@ -63,7 +64,7 @@ function Article() {
         </div>
         <div
           dangerouslySetInnerHTML={{
-            __html: singleArticle?.post ? singleArticle?.post : "",
+            __html: singlePost?.post ? singlePost?.post : "",
           }}
         ></div>
       </div>
@@ -71,4 +72,4 @@ function Article() {
   );
 }
 
-export default Article;
+export default SinglePost;

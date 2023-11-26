@@ -1,17 +1,16 @@
-import { createContext, useContext, useEffect, useState } from 'react';
-import { Routes, Route, useNavigate, NavigateFunction } from 'react-router-dom';
-import { ChakraProvider } from '@chakra-ui/react';
-import { collection, getDocs } from 'firebase/firestore';
-import { db } from './utils/firebase';
-import Header from './components/Header/Header';
-import Home from './pages/Home';
-import Profil from './pages/Profil';
-import NewsAndArticles from './pages/NewsAndArticles';
-import Article from './pages/Article';
-import Login from './components/Login';
-import CreatePost from './components/CreatePost';
-import Footer from './components/Footer';
-import SingleNews from './pages/SingleNews';
+import { createContext, useContext, useEffect, useState } from "react";
+import { Routes, Route, useNavigate, NavigateFunction } from "react-router-dom";
+import { ChakraProvider } from "@chakra-ui/react";
+import { collection, getDocs } from "firebase/firestore";
+import { db } from "./utils/firebase";
+import Header from "./components/Header/Header";
+import Home from "./pages/Home";
+import Profil from "./pages/Profil";
+import NewsAndArticles from "./pages/NewsAndArticles";
+import Login from "./components/Login";
+import CreatePost from "./components/CreatePost/CreatePost";
+import Footer from "./components/Footer";
+import SinglePost from "./pages/SinglePost";
 
 type GlobalContent = {
   isAuth: boolean;
@@ -35,13 +34,13 @@ function App() {
   const [articles, setArticles] = useState<any[]>([]);
   const [news, setNews] = useState<any[]>([]);
   const [isAuth, setIsAuth] = useState<boolean>(
-    Boolean(localStorage.getItem('isAuth'))
+    Boolean(localStorage.getItem("isAuth"))
   );
 
   const navigate = useNavigate();
 
-  const articleCollectionRef = collection(db, 'posts');
-  const newsCollectionRef = collection(db, 'news');
+  const articleCollectionRef = collection(db, "posts");
+  const newsCollectionRef = collection(db, "news");
 
   useEffect(() => {
     const getArticles = async () => {
@@ -56,7 +55,7 @@ function App() {
 
     getArticles();
     getNews();
-    console.log('is it running');
+    console.log("is it running");
   }, []);
 
   return (
@@ -69,8 +68,8 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/profil" element={<Profil />} />
           <Route path="/news-and-articles" element={<NewsAndArticles />} />
-          <Route path="/article" element={<Article />} />
-          <Route path="/news" element={<SingleNews />} />
+          <Route path="/article" element={<SinglePost postType={articles} />} />
+          <Route path="/news" element={<SinglePost postType={news} />} />
           <Route path="/login" element={<Login />} />
           <Route path="/create-post" element={<CreatePost />} />
         </Routes>
