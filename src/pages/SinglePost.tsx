@@ -2,14 +2,22 @@ import { IconCalendarStats, IconUserCircle } from "@tabler/icons-react";
 import { Container } from "@chakra-ui/react";
 import { useAppContext } from "../App";
 
-// type SinglePostProps = {
-//   // postCategory: string;
-//   // posts: any[];
-// };
-
 function SinglePost() {
-  const date = new Date();
+  // get state from App
+  const { news } = useAppContext();
 
+  // get post id from search params and store it at postID
+  const searchParams = new URLSearchParams(location.search);
+  const postID = searchParams.get("id");
+
+  // filter post based on id which is unique so just one post will be returned and store it at singlePost
+  const filteredPost = news.filter((post: any) => {
+    return post.id == postID;
+  });
+  const singlePost = filteredPost[0];
+
+  // get post date from database
+  const date = singlePost.timestamp.toDate();
   const days = ["Ming", "Sen", "Sel", "Rab", "Kam", "Jum", "Sab"];
   const months = [
     "Jan",
@@ -25,23 +33,8 @@ function SinglePost() {
     "Nov",
     "Des",
   ];
-
   const day = days[date.getDay()];
   const month = months[date.getMonth()];
-
-  // get state from App
-  const { news } = useAppContext();
-
-  // get post id from search text and store it at postID
-  const searchParams = new URLSearchParams(location.search);
-  const postID = searchParams.get("id");
-
-  // filter post based on id which is unique so just one post will be returned and store it at singlePost
-  const filteredPost = news.filter((post: any) => {
-    return post.id == postID;
-  });
-
-  const singlePost = filteredPost[0];
 
   return (
     <Container maxW={"70vw"}>
