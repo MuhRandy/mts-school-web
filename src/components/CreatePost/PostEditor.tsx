@@ -128,18 +128,22 @@ const PostEditor = ({
               placeholder="Post..."
             />
           </Editable>
+          {/* Editor Preview */}
           <Box minH={"100vh"} w={"50vw"}>
-            <img
-              src={file}
-              alt="blah blah"
-              className="w-full h-[200px] object-cover object-center"
-            />
+            {file && (
+              <img
+                src={URL.createObjectURL(file)}
+                alt="header image for post"
+                className="w-full h-[200px] object-cover object-center"
+              />
+            )}
             <Heading>{title}</Heading>
             <Box
               dangerouslySetInnerHTML={{ __html: post }}
               className="ql-editor"
-            ></Box>
+            />
           </Box>
+          {/*  */}
         </HStack>
       </Show>
       <Hide above="md">

@@ -1,16 +1,16 @@
-import { Button, Center, useDisclosure } from "@chakra-ui/react";
+import { Button, Center, Select, useDisclosure } from "@chakra-ui/react";
 import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 import { useEffect, useState } from "react";
-import { auth, db, storage } from "../../utils/firebase";
-import { useAppContext } from "../../App";
-import PostEditor from "./PostEditor";
-import PostAlertDialog from "./PostAlertDialog";
+import { auth, db, storage } from "../utils/firebase";
+import { useAppContext } from "../App";
 import { v4 as uuidv4 } from "uuid";
 import {
   getDownloadURL,
   uploadBytes,
   ref as storageRef,
 } from "firebase/storage";
+import PostEditor from "../components/CreatePost/PostEditor";
+import PostAlertDialog from "../components/CreatePost/PostAlertDialog";
 
 const CreatePost = () => {
   // get state from App component
@@ -21,13 +21,15 @@ const CreatePost = () => {
   const [title, setTitle] = useState<string>("Judul...");
   const [post, setPost] = useState<string>("");
   const [file, setFile] = useState<any>(null);
+  const [postCategory, setPostCategory] = useState<string>("berita-sekolah");
 
   // add doc on firebase database on posts collection then navigate to home
-  const createPost = async (path: string, imgUrl: string, imgPath: string) => {
-    const postCollectionRef = collection(db, path);
+  const createPost = async (imgUrl: string, imgPath: string) => {
+    const postCollectionRef = collection(db, "news");
     await addDoc(postCollectionRef, {
       title,
       post,
+      postCategory,
       imgUrl,
       imgPath,
       timestamp: serverTimestamp(),
@@ -41,20 +43,20 @@ const CreatePost = () => {
   };
 
   // upload image in storage and then save downloadUrl to referred doc on firestore
-  const uploadFile = (path: string) => {
+  const uploadFile = () => {
     if (file === null) {
       alert("Please select an image");
       return;
     }
 
-    const imgPath = `post-image/${uuidv4()}`;
+    const imgPath = `post-image/${postCategory}/${uuidv4()}`;
     const imageRef = storageRef(storage, imgPath);
 
     uploadBytes(imageRef, file)
       .then((snapshot) => {
         getDownloadURL(snapshot.ref)
           .then((url) => {
-            createPost(path, url, imgPath);
+            createPost(url, imgPath);
           })
           .catch((error) => {
             console.log(error.message);
@@ -82,6 +84,16 @@ const CreatePost = () => {
           setFile(e.target.files?.[0]);
         }}
       />
+      <Select
+        placeholder="Pilih Kategori Berita"
+        defaultValue={postCategory}
+        onChange={(e) => setPostCategory(e.target.value)}
+        w={200}
+      >
+        <option value="berita-sekolah">Berita Sekolah</option>
+        <option value="informasi">Informasi</option>
+        <option value="pengumuman">Pengumuman</option>
+      </Select>
       <PostEditor
         title={title}
         setTitle={setTitle}

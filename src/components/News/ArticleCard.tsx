@@ -11,10 +11,10 @@ import {
 } from "@chakra-ui/react";
 import { ArrowForwardIcon, DeleteIcon } from "@chakra-ui/icons";
 import { Link } from "react-router-dom";
-import { useAppContext } from "../App";
+import { useAppContext } from "../../App";
 // import blogPhoto from "../assets/tumpukan_buku.jpg";
 import { deleteDoc, doc } from "firebase/firestore";
-import { db, storage } from "../utils/firebase";
+import { db, storage } from "../../utils/firebase";
 import { deleteObject, ref } from "firebase/storage";
 
 type ArticleProps = {
@@ -23,7 +23,7 @@ type ArticleProps = {
   postID: string;
   imgURL: string;
   imgPath: string;
-  type: string;
+  postCategory: string;
 };
 
 function ArticleCard({
@@ -32,7 +32,7 @@ function ArticleCard({
   postID,
   imgURL,
   imgPath,
-  type,
+  postCategory,
 }: ArticleProps) {
   // get state from App component
   const { isAuth } = useAppContext();
@@ -52,7 +52,7 @@ function ArticleCard({
       <img
         src={imgURL}
         alt="Green double couch with wooden legs"
-        className="w-auto"
+        className="w-full h-40 object-cover object-center"
       />
       <CardBody px={2} mt={"-20px"}>
         <Stack mt="6" spacing="3">
@@ -68,7 +68,7 @@ function ArticleCard({
       <CardFooter px={2}>
         <ButtonGroup spacing="2">
           {/* navigate to /article and send article id on search text for later use */}
-          <Link to={`/${type}?id=${postID}`}>
+          <Link to={`/news/${postCategory}/detail?id=${postID}`}>
             <Button
               rightIcon={<ArrowForwardIcon />}
               colorScheme="teal"

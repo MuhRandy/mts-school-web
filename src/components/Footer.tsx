@@ -71,7 +71,7 @@ function Footer() {
               <a href="/profil">Profil</a>
             </p>
             <p className="mb-4">
-              <a href="/news">Berita dan Pengumuman</a>
+              <a href="/news">Berita</a>
             </p>
             {!isAuth && (
               <p>

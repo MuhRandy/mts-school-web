@@ -9,15 +9,15 @@ import {
   IconButton,
   Show,
   useDisclosure,
-} from '@chakra-ui/react';
-import { HamburgerIcon } from '@chakra-ui/icons';
-import { useNavigate } from 'react-router-dom';
-import { useAppContext } from '../../App';
-import { signOut } from 'firebase/auth';
-import { auth } from '../../utils/firebase';
-import { useEffect, useState } from 'react';
-import clsx from 'clsx';
-import { cn } from '../../utils/utils';
+} from "@chakra-ui/react";
+import { HamburgerIcon } from "@chakra-ui/icons";
+import { useNavigate } from "react-router-dom";
+import { useAppContext } from "../../App";
+import { signOut } from "firebase/auth";
+import { auth } from "../../utils/firebase";
+import { useEffect, useState } from "react";
+import clsx from "clsx";
+import { cn } from "../../utils/utils";
 
 function Navbar() {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -31,7 +31,7 @@ function Navbar() {
     signOut(auth).then(() => {
       localStorage.clear();
       setIsAuth(false);
-      navigate('/login');
+      navigate("/login");
     });
   };
 
@@ -49,27 +49,27 @@ function Navbar() {
     <>
       <nav
         className={cn(
-          'bg-[#99fc08] mx-5 rounded-md',
-          'sticky top-0 transition-all duration-300',
-          ['min-[768px]:p-3'],
+          "bg-[#99fc08] mx-5 rounded-md",
+          "sticky top-0 transition-all duration-300",
+          ["min-[768px]:p-3"],
           {
-            'fixed top-0 left-0 right-0 z-50 mx-0 rounded-none': isSticky,
+            "fixed top-0 left-0 right-0 z-50 mx-0 rounded-none": isSticky,
           }
         )}
       >
         <Hide above="md">
           <IconButton
             aria-label="Menu"
-            icon={<HamburgerIcon color={'white'} fontSize={{ sm: 'xl' }} />}
+            icon={<HamburgerIcon color={"white"} fontSize={{ sm: "xl" }} />}
             onClick={onOpen}
-            bg={'#99fc08'}
+            bg={"#99fc08"}
           />
         </Hide>
         <Show above="md">
           <ul
-            className={clsx('flex gap-2 text-white', [
-              'min-[768px]:text-lg',
-              'min-[992px]:text-2xl',
+            className={clsx("flex gap-2 text-white", [
+              "min-[768px]:text-lg",
+              "min-[992px]:text-2xl",
             ])}
           >
             <li>
@@ -81,13 +81,13 @@ function Navbar() {
             </li>
             <li>|</li>
             <li>
-              <a href="/news-and-articles">Berita dan Pengumuman</a>
+              <a href="/news-and-articles">Berita</a>
             </li>
             {isAuth && (
               <>
                 <li>|</li>
                 <li>
-                  <a href="create-post">Create Post</a>
+                  <a href="create-post">Buat Berita</a>
                 </li>
                 <li>|</li>
                 <li onClick={signUserOut} className="cursor-pointer">
@@ -98,7 +98,7 @@ function Navbar() {
           </ul>
         </Show>
       </nav>
-      <Drawer placement={'left'} onClose={onClose} isOpen={isOpen} size={'xs'}>
+      <Drawer placement={"left"} onClose={onClose} isOpen={isOpen} size={"xs"}>
         <DrawerOverlay />
         <DrawerContent>
           <DrawerCloseButton />
@@ -112,12 +112,12 @@ function Navbar() {
                 <a href="/profil">Profil</a>
               </li>
               <li>
-                <a href="/news-and-articles">Berita dan Pengumuman</a>
+                <a href="/news-and-articles">Berita</a>
               </li>
               {isAuth && (
                 <>
                   <li>
-                    <a href="create-post">Create Post</a>
+                    <a href="create-post">Buat Berita</a>
                   </li>
                   <li onClick={signUserOut} className="cursor-pointer">
                     Logout

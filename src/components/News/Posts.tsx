@@ -1,13 +1,13 @@
 import { Wrap, WrapItem } from "@chakra-ui/react";
 import Content from "../Content";
-import ArticleCard from "../ArticleCard";
+import ArticleCard from "./ArticleCard";
 import { useAppContext } from "../../App";
 
-const News = () => {
+const Posts = () => {
   const { news } = useAppContext();
 
   return (
-    <Content title="Pengumuman">
+    <Content title="Berita">
       <Wrap justify={"center"}>
         {news?.map((post: any) => (
           <WrapItem key={post.id}>
@@ -17,7 +17,7 @@ const News = () => {
               postID={post.id}
               imgURL={post.imgUrl}
               imgPath={post.imgPath}
-              type="news"
+              postCategory={post.postCategory}
             />
           </WrapItem>
         ))}
@@ -26,4 +26,4 @@ const News = () => {
   );
 };
 
-export default News;
+export default Posts;

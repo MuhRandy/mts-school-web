@@ -10,7 +10,7 @@ import {
 import { useRef } from "react";
 
 type PostAlertDialogProps = {
-  uploadFile: (postType: string) => void;
+  uploadFile: () => void;
   isOpen: boolean;
   onClose: () => void;
 };
@@ -31,10 +31,10 @@ const PostAlertDialog = ({
       <AlertDialogOverlay>
         <AlertDialogContent>
           <AlertDialogHeader fontSize="lg" fontWeight="bold">
-            Publish Postingan
+            Publish Berita
           </AlertDialogHeader>
 
-          <AlertDialogBody>Pilih kategori postingan Anda.</AlertDialogBody>
+          <AlertDialogBody>Apa Anda Yakin?</AlertDialogBody>
 
           <AlertDialogFooter>
             <Button ref={postPathRef} onClick={onClose}>
@@ -45,24 +45,12 @@ const PostAlertDialog = ({
               color={"white"}
               bgColor={"lime"}
               onClick={() => {
-                uploadFile("posts");
+                uploadFile();
                 onClose;
               }}
               ml={3}
             >
-              Artikel
-            </Button>
-            <Button
-              size={{ base: "sm", sm: "md" }}
-              color={"white"}
-              bgColor={"lime"}
-              onClick={() => {
-                uploadFile("news");
-                onClose;
-              }}
-              ml={3}
-            >
-              Berita
+              Publish
             </Button>
           </AlertDialogFooter>
         </AlertDialogContent>

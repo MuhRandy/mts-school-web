@@ -1,10 +1,12 @@
 import Main from "../components/Main";
 import Posts from "../components/News/Posts";
 
-export default function Home() {
+const News = () => {
   return (
     <Main>
       <Posts />
     </Main>
   );
-}
+};
+
+export default News;

@@ -24,14 +24,6 @@ const Login = () => {
     }
   }, []);
 
-  // const signInWithGoogle = () => {
-  //   signInWithPopup(auth, provider).then(() => {
-  //     localStorage.setItem("isAuth", "true");
-  //     setIsAuth(true);
-  //     navigate("/");
-  //   });
-  // };
-
   const signIn = () => {
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
