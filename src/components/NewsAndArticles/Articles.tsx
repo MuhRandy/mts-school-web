@@ -16,6 +16,7 @@ const Articles = () => {
               postText={article.post}
               postID={article.id}
               imgURL={article.imgUrl}
+              imgPath={article.imgPath}
               type="article"
             />
           </WrapItem>

@@ -16,6 +16,7 @@ const News = () => {
               postText={post.post}
               postID={post.id}
               imgURL={post.imgUrl}
+              imgPath={post.imgPath}
               type="news"
             />
           </WrapItem>

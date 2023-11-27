@@ -23,12 +23,13 @@ const CreatePost = () => {
   const [file, setFile] = useState<any>(null);
 
   // add doc on firebase database on posts collection then navigate to home
-  const createPost = async (path: string, imgUrl: string) => {
+  const createPost = async (path: string, imgUrl: string, imgPath: string) => {
     const postCollectionRef = collection(db, path);
     await addDoc(postCollectionRef, {
       title,
       post,
       imgUrl,
+      imgPath,
       timestamp: serverTimestamp(),
       author: {
         name: auth.currentUser?.displayName,
@@ -46,13 +47,14 @@ const CreatePost = () => {
       return;
     }
 
-    const imageRef = storageRef(storage, `post-image/${uuidv4()}`);
+    const imgPath = `post-image/${uuidv4()}`;
+    const imageRef = storageRef(storage, imgPath);
 
     uploadBytes(imageRef, file)
       .then((snapshot) => {
         getDownloadURL(snapshot.ref)
           .then((url) => {
-            createPost(path, url);
+            createPost(path, url, imgPath);
           })
           .catch((error) => {
             console.log(error.message);

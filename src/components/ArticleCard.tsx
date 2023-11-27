@@ -14,23 +14,35 @@ import { Link } from "react-router-dom";
 import { useAppContext } from "../App";
 // import blogPhoto from "../assets/tumpukan_buku.jpg";
 import { deleteDoc, doc } from "firebase/firestore";
-import { db } from "../utils/firebase";
+import { db, storage } from "../utils/firebase";
+import { deleteObject, ref } from "firebase/storage";
 
 type ArticleProps = {
   title: string;
   postText: string;
   postID: string;
   imgURL: string;
+  imgPath: string;
   type: string;
 };
 
-function ArticleCard({ title, postText, postID, imgURL, type }: ArticleProps) {
+function ArticleCard({
+  title,
+  postText,
+  postID,
+  imgURL,
+  imgPath,
+  type,
+}: ArticleProps) {
   // get state from App component
   const { isAuth } = useAppContext();
 
   // delete doc or article on firebase database based on doc id
   const deletePost = async (id: string) => {
+    const imgRef = ref(storage, imgPath);
     const postDoc = doc(db, "posts", id);
+
+    deleteObject(imgRef).catch((err) => console.log(err));
     await deleteDoc(postDoc);
     window.location.reload();
   };
