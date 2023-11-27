@@ -8,44 +8,45 @@ import {
   Heading,
   Stack,
   Text,
-} from '@chakra-ui/react';
-import { ArrowForwardIcon, DeleteIcon } from '@chakra-ui/icons';
-import { Link } from 'react-router-dom';
-import { useAppContext } from '../App';
-import blogPhoto from '../assets/tumpukan_buku.jpg';
-import { deleteDoc, doc } from 'firebase/firestore';
-import { db } from '../utils/firebase';
+} from "@chakra-ui/react";
+import { ArrowForwardIcon, DeleteIcon } from "@chakra-ui/icons";
+import { Link } from "react-router-dom";
+import { useAppContext } from "../App";
+// import blogPhoto from "../assets/tumpukan_buku.jpg";
+import { deleteDoc, doc } from "firebase/firestore";
+import { db } from "../utils/firebase";
 
 type ArticleProps = {
   title: string;
   postText: string;
-  articleID: string;
+  postID: string;
+  imgURL: string;
   type: string;
 };
 
-function ArticleCard({ title, postText, articleID, type }: ArticleProps) {
+function ArticleCard({ title, postText, postID, imgURL, type }: ArticleProps) {
   // get state from App component
   const { isAuth } = useAppContext();
 
   // delete doc or article on firebase database based on doc id
   const deletePost = async (id: string) => {
-    const postDoc = doc(db, 'posts', id);
+    const postDoc = doc(db, "posts", id);
     await deleteDoc(postDoc);
     window.location.reload();
   };
 
   return (
-    <Card maxW="sm" mx={2} size={'sm'} overflow={'hidden'}>
+    <Card maxW="sm" mx={2} size={"sm"} overflow={"hidden"}>
       <img
-        src={blogPhoto}
+        src={imgURL}
         alt="Green double couch with wooden legs"
         className="w-auto"
       />
-      <CardBody px={2} mt={'-20px'}>
+      <CardBody px={2} mt={"-20px"}>
         <Stack mt="6" spacing="3">
           <Heading size="md">{title}</Heading>
           <Text
-            fontSize={'small'}
+            fontSize={"small"}
             noOfLines={3}
             dangerouslySetInnerHTML={{ __html: postText }}
           />
@@ -55,12 +56,12 @@ function ArticleCard({ title, postText, articleID, type }: ArticleProps) {
       <CardFooter px={2}>
         <ButtonGroup spacing="2">
           {/* navigate to /article and send article id on search text for later use */}
-          <Link to={`/${type}?id=${articleID}`}>
+          <Link to={`/${type}?id=${postID}`}>
             <Button
               rightIcon={<ArrowForwardIcon />}
               colorScheme="teal"
               variant="outline"
-              size={'sm'}
+              size={"sm"}
             >
               Lanjut Baca...
             </Button>
@@ -72,9 +73,9 @@ function ArticleCard({ title, postText, articleID, type }: ArticleProps) {
               rightIcon={<DeleteIcon />}
               colorScheme="teal"
               variant="outline"
-              size={'sm'}
+              size={"sm"}
               onClick={() => {
-                deletePost(articleID);
+                deletePost(postID);
               }}
             >
               Hapus Artikel
