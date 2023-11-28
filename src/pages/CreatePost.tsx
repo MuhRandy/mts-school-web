@@ -9,6 +9,7 @@ import {
   uploadBytes,
   ref as storageRef,
 } from "firebase/storage";
+import Dropzone from "react-dropzone";
 import PostEditor from "../components/CreatePost/PostEditor";
 import PostAlertDialog from "../components/CreatePost/PostAlertDialog";
 
@@ -34,7 +35,6 @@ const CreatePost = () => {
       imgPath,
       timestamp: serverTimestamp(),
       author: {
-        name: auth.currentUser?.displayName,
         id: auth.currentUser?.uid,
       },
     }).catch((err) => console.log(err));
@@ -76,14 +76,24 @@ const CreatePost = () => {
 
   return (
     <>
-      <input
-        type="file"
-        name="image"
-        id="image"
-        onChange={(e) => {
-          setFile(e.target.files?.[0]);
-        }}
-      />
+      {/* drag 'n drop */}
+      <Dropzone onDrop={(acceptedFiles) => setFile(acceptedFiles?.[0])}>
+        {({ getRootProps, getInputProps, isDragActive }) => (
+          <section>
+            <div
+              {...getRootProps()}
+              className="h-[200px] flex justify-center items-center border-dashed border"
+            >
+              <input {...getInputProps()} type="image/*" />
+              {isDragActive ? (
+                <p>Drop some files here</p>
+              ) : (
+                <p>Drag 'n' drop some files here, or click to select files</p>
+              )}
+            </div>
+          </section>
+        )}
+      </Dropzone>
       <Select
         placeholder="Pilih Kategori Berita"
         defaultValue={postCategory}
