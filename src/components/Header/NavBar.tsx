@@ -81,13 +81,13 @@ function Navbar() {
             </li>
             <li>|</li>
             <li>
-              <a href="/news-and-articles">Berita</a>
+              <a href="/news">Berita</a>
             </li>
             {isAuth && (
               <>
                 <li>|</li>
                 <li>
-                  <a href="create-post">Buat Berita</a>
+                  <a href="/create-post">Buat Berita</a>
                 </li>
                 <li>|</li>
                 <li onClick={signUserOut} className="cursor-pointer">
@@ -112,12 +112,12 @@ function Navbar() {
                 <a href="/profil">Profil</a>
               </li>
               <li>
-                <a href="/news-and-articles">Berita</a>
+                <a href="/news">Berita</a>
               </li>
               {isAuth && (
                 <>
                   <li>
-                    <a href="create-post">Buat Berita</a>
+                    <a href="/create-post">Buat Berita</a>
                   </li>
                   <li onClick={signUserOut} className="cursor-pointer">
                     Logout

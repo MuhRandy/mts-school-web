@@ -21,7 +21,7 @@ const CreatePost = () => {
 
   const [title, setTitle] = useState<string>("Judul...");
   const [post, setPost] = useState<string>("");
-  const [file, setFile] = useState<any>(null);
+  const [file, setFile] = useState<File | null>(null);
   const [postCategory, setPostCategory] = useState<string>("berita-sekolah");
 
   // add doc on firebase database on posts collection then navigate to home
@@ -81,10 +81,16 @@ const CreatePost = () => {
         {({ getRootProps, getInputProps, isDragActive }) => (
           <section>
             <div
-              {...getRootProps()}
-              className="h-[200px] flex justify-center items-center border-dashed border"
+              {...getRootProps({
+                className:
+                  "h-[200px] flex justify-center items-center border-dashed border cursor-pointer mx-11 my-4",
+              })}
             >
-              <input {...getInputProps()} type="image/*" />
+              <input
+                {...getInputProps({
+                  accept: "image/*",
+                })}
+              />
               {isDragActive ? (
                 <p>Drop some files here</p>
               ) : (

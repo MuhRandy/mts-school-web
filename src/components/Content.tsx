@@ -1,4 +1,4 @@
-import { Box, Heading } from "@chakra-ui/react";
+import { AbsoluteCenter, Box, Divider, Heading } from "@chakra-ui/react";
 
 type ContentProps = {
   children: any;
@@ -8,9 +8,14 @@ type ContentProps = {
 const Content = ({ children, title }: ContentProps) => {
   return (
     <Box>
-      <Heading size={{ base: "lg", sm: "xl" }} mb={2} textAlign={"center"}>
-        {title}
-      </Heading>
+      <Box position="relative" padding="10" mb={10}>
+        <Divider border={"2px black solid"} />
+        <AbsoluteCenter bg="white" px="4">
+          <Heading size={{ base: "lg", sm: "xl" }} mb={2} textAlign={"center"}>
+            {title}
+          </Heading>
+        </AbsoluteCenter>
+      </Box>
       {children}
     </Box>
   );

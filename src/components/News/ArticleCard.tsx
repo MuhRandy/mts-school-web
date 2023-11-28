@@ -24,6 +24,7 @@ type ArticleProps = {
   imgURL: string;
   imgPath: string;
   postCategory: string;
+  cardMaxW: string | number;
 };
 
 function ArticleCard({
@@ -33,6 +34,7 @@ function ArticleCard({
   imgURL,
   imgPath,
   postCategory,
+  cardMaxW,
 }: ArticleProps) {
   // get state from App component
   const { isAuth } = useAppContext();
@@ -40,7 +42,7 @@ function ArticleCard({
   // delete doc or article on firebase database based on doc id
   const deletePost = async (id: string) => {
     const imgRef = ref(storage, imgPath);
-    const postDoc = doc(db, "posts", id);
+    const postDoc = doc(db, "news", id);
 
     deleteObject(imgRef).catch((err) => console.log(err));
     await deleteDoc(postDoc);
@@ -48,10 +50,10 @@ function ArticleCard({
   };
 
   return (
-    <Card maxW="sm" mx={2} size={"sm"} overflow={"hidden"}>
+    <Card maxW={cardMaxW} mx={2} size={"sm"} overflow={"hidden"}>
       <img
         src={imgURL}
-        alt="Green double couch with wooden legs"
+        alt="Card Post Image"
         className="w-full h-40 object-cover object-center"
       />
       <CardBody px={2} mt={"-20px"}>
