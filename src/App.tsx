@@ -1,7 +1,7 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { Routes, Route, useNavigate, NavigateFunction } from "react-router-dom";
 import { ChakraProvider } from "@chakra-ui/react";
-import { collection, getDocs } from "firebase/firestore";
+import { collection, getDocs, orderBy, query } from "firebase/firestore";
 import { db } from "./utils/firebase";
 import Header from "./components/Header/Header";
 import Home from "./pages/Home";
@@ -36,17 +36,25 @@ function App() {
 
   const navigate = useNavigate();
 
+  // get news data from firestore
+  // --------
+
+  // database ref
   const newsCollectionRef = collection(db, "news");
 
+  // database query, order by timestamp and desc it
+  const q = query(newsCollectionRef, orderBy("timestamp", "desc"));
+
+  // get the data
   useEffect(() => {
     const getNews = async () => {
-      const data = await getDocs(newsCollectionRef);
+      const data = await getDocs(q);
       setNews(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
     };
 
     getNews();
-    console.log("is it running");
   }, []);
+  // --------
 
   return (
     <ChakraProvider>
