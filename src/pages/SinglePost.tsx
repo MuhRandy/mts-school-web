@@ -1,6 +1,6 @@
-import { IconCalendarStats, IconUserCircle } from "@tabler/icons-react";
-import { Container } from "@chakra-ui/react";
-import { useAppContext } from "../App";
+import { IconCalendarStats, IconUserCircle } from '@tabler/icons-react';
+import { Container } from '@chakra-ui/react';
+import { useAppContext } from '../App';
 
 function SinglePost() {
   // get state from App
@@ -8,7 +8,7 @@ function SinglePost() {
 
   // get post id from search params and store it at postID
   const searchParams = new URLSearchParams(location.search);
-  const postID = searchParams.get("id");
+  const postID = searchParams.get('id');
 
   // filter post based on id which is unique so just one post will be returned and store it at singlePost
   const filteredPost = news.filter((post: any) => {
@@ -18,26 +18,26 @@ function SinglePost() {
 
   // get post date from database
   const date = singlePost.timestamp.toDate();
-  const days = ["Ming", "Sen", "Sel", "Rab", "Kam", "Jum", "Sab"];
+  const days = ['Ming', 'Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab'];
   const months = [
-    "Jan",
-    "Feb",
-    "Mar",
-    "Apr",
-    "Mei",
-    "Jun",
-    "Jul",
-    "Ags",
-    "Sep",
-    "Okt",
-    "Nov",
-    "Des",
+    'Jan',
+    'Feb',
+    'Mar',
+    'Apr',
+    'Mei',
+    'Jun',
+    'Jul',
+    'Ags',
+    'Sep',
+    'Okt',
+    'Nov',
+    'Des',
   ];
   const day = days[date.getDay()];
   const month = months[date.getMonth()];
 
   return (
-    <Container maxW={"70vw"}>
+    <Container maxW={{ md: '70vw' }}>
       <div className="p-2">
         {singlePost?.imgUrl && (
           <img
@@ -46,8 +46,12 @@ function SinglePost() {
             className="w-full object-cover h-[400px]"
           />
         )}
-        <h1 className="text-4xl font-bold my-3">{singlePost?.title}</h1>
-        <div className="py-5 mb-7 flex items-center justify-between border-b-2 border-black">
+        <h1 className="text-4xl font-bold my-3 text-center">
+          {singlePost?.title}
+        </h1>
+        {/* Author & Timestamp */}
+        <div className="py-5 mb-7 flex flex-col items-center justify-between border-b-2 border-black sm:flex-row">
+          {/* Author */}
           <div className="flex gap-2 items-center">
             <IconUserCircle
               size={35}
@@ -55,6 +59,7 @@ function SinglePost() {
             />
             <span className="font-semibold">@admin</span>
           </div>
+          {/* Timestamp */}
           <div className="flex items-center gap-1">
             <IconCalendarStats size={20} stroke={1} />
             <span className="font-semibold">
