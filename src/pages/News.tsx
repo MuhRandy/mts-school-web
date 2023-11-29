@@ -20,17 +20,19 @@ const News = () => {
       });
 
       setPosts(filteredPost);
-      console.log("posts filtered");
     } else {
       setPosts(news);
-      console.log("post");
     }
   }, [postCategoryFilter, news]);
 
   return (
     <Content title="Berita">
-      <Grid templateColumns={"repeat(3, 1fr)"} p={3}>
-        <GridItem colSpan={2}>
+      <Grid
+        templateColumns={{ base: "repeat(1, 1fr)", md: "repeat(3, 1fr)" }}
+        gap={2}
+        p={3}
+      >
+        <GridItem colSpan={{ base: 1, md: 2 }}>
           <Main>
             <Posts cardMaxW={"2xl"} postsData={posts} />
           </Main>

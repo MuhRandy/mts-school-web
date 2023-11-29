@@ -1,4 +1,4 @@
-import { Container, Divider, Heading } from "@chakra-ui/react";
+import { Box, Container, Divider, Heading } from "@chakra-ui/react";
 
 type ContentProps = {
   children: any;
@@ -9,10 +9,19 @@ type SectionProps = ContentProps;
 
 const TextContent = ({ children, title }: ContentProps) => {
   return (
-    <Container maxW={{ sm: "90vw" }}>
-      <Heading size={{ base: "lg", sm: "xl" }} mb={2}>
-        {title}
-      </Heading>
+    <Container maxW={{ sm: "70vw" }}>
+      <Box
+        position="relative"
+        py="5"
+        mb={2}
+        display={"flex"}
+        alignItems={"center"}
+      >
+        <Divider border={"2px lime solid"} />
+        <Box bg="white" px="4" position={"absolute"}>
+          <Heading size={{ base: "lg", sm: "xl" }}>{title}</Heading>
+        </Box>
+      </Box>
       {children}
     </Container>
   );
@@ -20,9 +29,9 @@ const TextContent = ({ children, title }: ContentProps) => {
 
 const Section = ({ children, title }: SectionProps) => {
   return (
-    <Container maxW={{ sm: "90vw" }}>
+    <Container maxW={{ sm: "70vw" }}>
       <Heading size={{ base: "md", sm: "lg" }}>{title}</Heading>
-      <Divider />
+      <Divider border={"1px lime dashed"} />
       {children}
     </Container>
   );

@@ -23,7 +23,6 @@ const NewsAside = ({
   useEffect(() => {
     if (news.length > 3) {
       setNewestPost(news.slice(0, 3));
-      console.log("slice");
     }
   }, [news]);
 

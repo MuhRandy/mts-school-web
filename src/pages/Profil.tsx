@@ -1,4 +1,4 @@
-import { Divider, Stack } from "@chakra-ui/react";
+import { Stack } from "@chakra-ui/react";
 import Main from "../components/Main";
 import SchoolHistory from "../components/Profil/SchoolHistory";
 import VisiMisi from "../components/Profil/VisiMisi";
@@ -9,7 +9,6 @@ function Profil() {
     <Main>
       <Stack spacing={5}>
         <SchoolHistory />
-        <Divider />
         <VisiMisi />
         <StaffTeachers />
       </Stack>

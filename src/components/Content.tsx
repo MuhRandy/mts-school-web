@@ -9,7 +9,7 @@ const Content = ({ children, title }: ContentProps) => {
   return (
     <Box>
       <Box position="relative" padding="10" mb={10}>
-        <Divider border={"2px black solid"} />
+        <Divider border={"2px lime solid"} />
         <AbsoluteCenter bg="white" px="4">
           <Heading size={{ base: "lg", sm: "xl" }} mb={2} textAlign={"center"}>
             {title}
