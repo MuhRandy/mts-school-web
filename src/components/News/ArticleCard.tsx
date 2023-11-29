@@ -37,7 +37,7 @@ function ArticleCard({
   cardMaxW,
 }: ArticleProps) {
   // get state from App component
-  const { isAuth } = useAppContext();
+  const { isAuth, renderCount, setRenderCount } = useAppContext();
 
   // delete doc or article on firebase database based on doc id
   const deletePost = async (id: string) => {
@@ -46,7 +46,7 @@ function ArticleCard({
 
     deleteObject(imgRef).catch((err) => console.log(err));
     await deleteDoc(postDoc);
-    window.location.reload();
+    setRenderCount(renderCount + 1);
   };
 
   return (

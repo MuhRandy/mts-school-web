@@ -15,6 +15,10 @@ import News from "./pages/News";
 type GlobalContent = {
   isAuth: boolean;
   setIsAuth: (isAuth: boolean) => void;
+  isLoading: boolean;
+  setIsLoading: (isAuth: boolean) => void;
+  renderCount: number;
+  setRenderCount: (renderCount: number) => void;
   news: any;
   navigate: NavigateFunction;
 };
@@ -22,6 +26,10 @@ type GlobalContent = {
 const AppContext = createContext<GlobalContent>({
   isAuth: false,
   setIsAuth: () => {},
+  isLoading: false,
+  setIsLoading: () => {},
+  renderCount: 0,
+  setRenderCount: () => {},
   news: [],
   navigate: () => {},
 });
@@ -33,6 +41,8 @@ function App() {
   const [isAuth, setIsAuth] = useState<boolean>(
     Boolean(localStorage.getItem("isAuth"))
   );
+  const [renderCount, setRenderCount] = useState<number>(0);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const navigate = useNavigate();
 
@@ -48,17 +58,30 @@ function App() {
   // get the data
   useEffect(() => {
     const getNews = async () => {
+      setIsLoading(true);
       const data = await getDocs(q);
       setNews(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+      setIsLoading(false);
     };
 
     getNews();
-  }, []);
+  }, [renderCount]);
   // --------
 
   return (
     <ChakraProvider>
-      <AppContext.Provider value={{ isAuth, setIsAuth, news, navigate }}>
+      <AppContext.Provider
+        value={{
+          isAuth,
+          setIsAuth,
+          isLoading,
+          setIsLoading,
+          renderCount,
+          setRenderCount,
+          news,
+          navigate,
+        }}
+      >
         <Header />
         <Routes>
           <Route path="/" element={<Home />} />

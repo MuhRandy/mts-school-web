@@ -40,7 +40,14 @@ export const useCreatePostContext = () => useContext(createPostContext);
 
 const CreatePost = () => {
   // get state from App component
-  const { isAuth, navigate } = useAppContext();
+  const {
+    isAuth,
+    isLoading,
+    renderCount,
+    setRenderCount,
+    setIsLoading,
+    navigate,
+  } = useAppContext();
 
   const { onOpen, isOpen, onClose } = useDisclosure();
 
@@ -63,8 +70,8 @@ const CreatePost = () => {
         id: auth.currentUser?.uid,
       },
     }).catch((err) => console.log(err));
+    setRenderCount(renderCount + 1);
     navigate("/");
-    window.location.reload();
   };
 
   // upload image in storage and then save downloadUrl to referred doc on firestore
@@ -73,6 +80,8 @@ const CreatePost = () => {
       alert("Please select an image");
       return;
     }
+
+    setIsLoading(true);
 
     const imgPath = `post-image/${postCategory}/${uuidv4()}`;
     const imageRef = storageRef(storage, imgPath);
@@ -129,6 +138,7 @@ const CreatePost = () => {
       <PostAlertDialog
         uploadFile={uploadFile}
         isOpen={isOpen}
+        isLoading={isLoading}
         onClose={onClose}
       />
     </createPostContext.Provider>

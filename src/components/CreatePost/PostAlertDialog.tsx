@@ -12,12 +12,14 @@ import { useRef } from "react";
 type PostAlertDialogProps = {
   uploadFile: () => void;
   isOpen: boolean;
+  isLoading: boolean;
   onClose: () => void;
 };
 
 const PostAlertDialog = ({
   uploadFile,
   isOpen,
+  isLoading,
   onClose,
 }: PostAlertDialogProps) => {
   const postPathRef = useRef<any>();
@@ -41,6 +43,8 @@ const PostAlertDialog = ({
               Batal
             </Button>
             <Button
+              isDisabled={isLoading}
+              isLoading={isLoading}
               size={{ base: "sm", sm: "md" }}
               color={"white"}
               bgColor={"lime"}

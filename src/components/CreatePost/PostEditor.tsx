@@ -106,11 +106,14 @@ const PostEditor = () => {
               fontSize={"4xl"}
               fontWeight={"bold"}
               textAlign={"center"}
-              mx={{ base: 2 }}
+              mx={2}
               w={"45vw"}
             >
               <EditablePreview />
-              <EditableInput onChange={(e) => setTitle(e.target.value)} />
+              <EditableInput
+                w={"auto"}
+                onChange={(e) => setTitle(e.target.value)}
+              />
             </Editable>
             <ReactQuill
               theme="snow"
@@ -119,7 +122,7 @@ const PostEditor = () => {
               modules={modules}
               formats={formats}
               placeholder="Post..."
-              className="min-h-[100vh]"
+              className="min-h-[100vh] w-[45vw] pl-2"
             />
           </Box>
           {/* Editor Preview */}
