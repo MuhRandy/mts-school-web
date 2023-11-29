@@ -17,7 +17,8 @@ import DragNDrop from "./DragNDrop";
 
 const PostEditor = () => {
   // get state from CreatePost
-  const { title, post, setTitle, setPost } = useCreatePostContext();
+  const { title, post, setTitle, setPost, file, setFile } =
+    useCreatePostContext();
 
   // initialize module and format extension for quill editor
   const modules = {
@@ -128,7 +129,7 @@ const PostEditor = () => {
           {/* Editor Preview */}
           <Box minH={"100vh"} w={"50vw"}>
             {/* drag 'n drop */}
-            <DragNDrop />
+            <DragNDrop file={file} setFile={setFile} />
             <Heading textAlign={"center"}>{title}</Heading>
             <Box
               dangerouslySetInnerHTML={{ __html: post }}
@@ -140,7 +141,7 @@ const PostEditor = () => {
       </Show>
       <Hide above="md">
         {/* drag 'N drop */}
-        <DragNDrop />
+        <DragNDrop file={file} setFile={setFile} />
         <Editable
           defaultValue="Judul..."
           fontSize={"4xl"}

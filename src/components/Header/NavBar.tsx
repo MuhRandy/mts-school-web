@@ -90,6 +90,10 @@ function Navbar() {
                   <a href="/create-post">Buat Berita</a>
                 </li>
                 <li>|</li>
+                <li>
+                  <a href="/add-teacher">Tambahkan Data Guru</a>
+                </li>
+                <li>|</li>
                 <li onClick={signUserOut} className="cursor-pointer">
                   Logout
                 </li>
@@ -118,6 +122,9 @@ function Navbar() {
                 <>
                   <li>
                     <a href="/create-post">Buat Berita</a>
+                  </li>
+                  <li>
+                    <a href="/add-teacher">Tambahkan Data Guru</a>
                   </li>
                   <li onClick={signUserOut} className="cursor-pointer">
                     Logout

@@ -11,6 +11,7 @@ import CreatePost from "./pages/CreatePost";
 import Footer from "./components/Footer";
 import SinglePost from "./pages/SinglePost";
 import News from "./pages/News";
+import AddTeacher from "./pages/AddTeacher";
 
 type GlobalContent = {
   isAuth: boolean;
@@ -92,6 +93,7 @@ function App() {
           <Route path="/news/pengumuman/detail" element={<SinglePost />} />
           <Route path="/login" element={<Login />} />
           <Route path="/create-post" element={<CreatePost />} />
+          <Route path="/add-teacher" element={<AddTeacher />} />
         </Routes>
         <Footer />
       </AppContext.Provider>
