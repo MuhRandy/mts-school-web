@@ -13,12 +13,12 @@ const TextContent = ({ children, title }: ContentProps) => {
       <Box
         position="relative"
         py="5"
-        mb={2}
+        mb={{ base: 0, sm: 2 }}
         display={"flex"}
         alignItems={"center"}
       >
         <Divider border={"2px lime solid"} />
-        <Box bg="white" px="4" position={"absolute"}>
+        <Box bg="white" pr="4" position={"absolute"}>
           <Heading size={{ base: "lg", sm: "xl" }}>{title}</Heading>
         </Box>
       </Box>

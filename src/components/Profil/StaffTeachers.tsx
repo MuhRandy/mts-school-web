@@ -3,6 +3,9 @@
 // import { Swiper, SwiperSlide } from 'swiper/react';
 import "swiper/css";
 import Content from "../Content";
+import { SimpleGrid } from "@chakra-ui/react";
+import Teacher from "./Teacher";
+import muhammadRandy from "../../assets/teachers/Muhammad_Randy.jpg";
 
 function StaffTeachers() {
   return (
@@ -40,6 +43,72 @@ function StaffTeachers() {
           </SwiperSlide>
         ))}
       </Swiper> */}
+      <SimpleGrid
+        columns={{ base: 1, sm: 2, md: 4 }}
+        px={{ base: "50px", md: "100px" }}
+        gap={10}
+      >
+        <Teacher
+          name="Muhammad Randy"
+          jabatan="Guru Matematika"
+          imgURL={muhammadRandy}
+        />
+        <Teacher
+          name="Muhammad Randy"
+          jabatan="Guru Matematika"
+          imgURL={muhammadRandy}
+        />
+        <Teacher
+          name="Muhammad Randy"
+          jabatan="Guru Matematika"
+          imgURL={muhammadRandy}
+        />
+        <Teacher
+          name="Muhammad Randy"
+          jabatan="Guru Matematika"
+          imgURL={muhammadRandy}
+        />
+        <Teacher
+          name="Muhammad Randy"
+          jabatan="Guru Matematika"
+          imgURL={muhammadRandy}
+        />
+        <Teacher
+          name="Muhammad Randy"
+          jabatan="Guru Matematika"
+          imgURL={muhammadRandy}
+        />
+        <Teacher
+          name="Muhammad Randy"
+          jabatan="Guru Matematika"
+          imgURL={muhammadRandy}
+        />
+        <Teacher
+          name="Muhammad Randy"
+          jabatan="Guru Matematika"
+          imgURL={muhammadRandy}
+        />
+        <Teacher
+          name="Muhammad Randy"
+          jabatan="Guru Matematika"
+          imgURL={muhammadRandy}
+        />
+        <Teacher
+          name="Muhammad Randy"
+          jabatan="Guru Matematika"
+          imgURL={muhammadRandy}
+        />
+        <Teacher
+          name="Muhammad Randy"
+          jabatan="Guru Matematika"
+          imgURL={muhammadRandy}
+        />
+        <Teacher
+          name="Muhammad Randy"
+          jabatan="Guru Matematika"
+          imgURL={muhammadRandy}
+        />
+      </SimpleGrid>
     </Content>
   );
 }
