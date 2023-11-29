@@ -1,6 +1,6 @@
-import { Button, Center, Select, useDisclosure } from "@chakra-ui/react";
+import { Button, Center, useDisclosure } from "@chakra-ui/react";
 import { addDoc, collection, serverTimestamp } from "firebase/firestore";
-import { useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import { auth, db, storage } from "../utils/firebase";
 import { useAppContext } from "../App";
 import { v4 as uuidv4 } from "uuid";
@@ -9,9 +9,34 @@ import {
   uploadBytes,
   ref as storageRef,
 } from "firebase/storage";
-import Dropzone from "react-dropzone";
 import PostEditor from "../components/CreatePost/PostEditor";
 import PostAlertDialog from "../components/CreatePost/PostAlertDialog";
+import PostCategoryOption from "../components/CreatePost/PostCategoryOption";
+
+// create context to share state across children
+type CreatePostContent = {
+  post: string;
+  title: string;
+  postCategory: string;
+  file: File | null;
+  setPost: (post: string) => void;
+  setTitle: (title: string) => void;
+  setPostCategory: (postCategory: string) => void;
+  setFile: (file: File) => void;
+};
+
+const createPostContext = createContext<CreatePostContent>({
+  post: "",
+  title: "",
+  postCategory: "",
+  file: null,
+  setPost: () => {},
+  setPostCategory: () => {},
+  setTitle: () => {},
+  setFile: () => {},
+});
+
+export const useCreatePostContext = () => useContext(createPostContext);
 
 const CreatePost = () => {
   // get state from App component
@@ -75,48 +100,20 @@ const CreatePost = () => {
   }, []);
 
   return (
-    <>
-      {/* drag 'n drop */}
-      <Dropzone onDrop={(acceptedFiles) => setFile(acceptedFiles?.[0])}>
-        {({ getRootProps, getInputProps, isDragActive }) => (
-          <section>
-            <div
-              {...getRootProps({
-                className:
-                  "h-[200px] flex justify-center items-center border-dashed border cursor-pointer mx-11 my-4",
-              })}
-            >
-              <input
-                {...getInputProps({
-                  accept: "image/*",
-                })}
-              />
-              {isDragActive ? (
-                <p>Drop some files here</p>
-              ) : (
-                <p>Drag 'n' drop some files here, or click to select files</p>
-              )}
-            </div>
-          </section>
-        )}
-      </Dropzone>
-      <Select
-        placeholder="Pilih Kategori Berita"
-        defaultValue={postCategory}
-        onChange={(e) => setPostCategory(e.target.value)}
-        w={200}
-      >
-        <option value="berita-sekolah">Berita Sekolah</option>
-        <option value="informasi">Informasi</option>
-        <option value="pengumuman">Pengumuman</option>
-      </Select>
-      <PostEditor
-        title={title}
-        setTitle={setTitle}
-        post={post}
-        setPost={setPost}
-        file={file}
-      />
+    <createPostContext.Provider
+      value={{
+        post,
+        title,
+        file,
+        postCategory,
+        setPost,
+        setTitle,
+        setFile,
+        setPostCategory,
+      }}
+    >
+      <PostCategoryOption />
+      <PostEditor />
       <Center>
         <Button
           size={{ base: "sm", sm: "md" }}
@@ -134,7 +131,7 @@ const CreatePost = () => {
         isOpen={isOpen}
         onClose={onClose}
       />
-    </>
+    </createPostContext.Provider>
   );
 };
 

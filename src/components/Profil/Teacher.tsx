@@ -1,4 +1,3 @@
-// import { IconUserCircle } from "@tabler/icons-react";
 import { Card, CardBody, Stack, Heading, Image, Text } from "@chakra-ui/react";
 
 type TeacherProps = {

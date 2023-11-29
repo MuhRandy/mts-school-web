@@ -19,7 +19,7 @@ type GlobalContent = {
   navigate: NavigateFunction;
 };
 
-export const AppContext = createContext<GlobalContent>({
+const AppContext = createContext<GlobalContent>({
   isAuth: false,
   setIsAuth: () => {},
   news: [],

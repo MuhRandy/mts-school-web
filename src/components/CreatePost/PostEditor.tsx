@@ -12,22 +12,13 @@ import {
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.bubble.css";
 import "react-quill/dist/quill.snow.css";
+import { useCreatePostContext } from "../../pages/CreatePost";
+import DragNDrop from "./DragNDrop";
 
-type PostEditorProps = {
-  post: string;
-  title: string;
-  file: any;
-  setPost: (title: string) => void;
-  setTitle: (title: string) => void;
-};
+const PostEditor = () => {
+  // get state from CreatePost
+  const { title, post, setTitle, setPost } = useCreatePostContext();
 
-const PostEditor = ({
-  post,
-  setPost,
-  title,
-  setTitle,
-  file,
-}: PostEditorProps) => {
   // initialize module and format extension for quill editor
   const modules = {
     toolbar: [
@@ -109,16 +100,18 @@ const PostEditor = ({
     <>
       <Show above="md">
         <HStack divider={<StackDivider />}>
-          <Editable
-            defaultValue="Judul..."
-            fontSize={"4xl"}
-            fontWeight={"bold"}
-            minH={"100vh"}
-            mx={{ base: 2 }}
-            w={"45vw"}
-          >
-            <EditablePreview />
-            <EditableInput onChange={(e) => setTitle(e.target.value)} />
+          <Box>
+            <Editable
+              defaultValue="Judul..."
+              fontSize={"4xl"}
+              fontWeight={"bold"}
+              textAlign={"center"}
+              mx={{ base: 2 }}
+              w={"45vw"}
+            >
+              <EditablePreview />
+              <EditableInput onChange={(e) => setTitle(e.target.value)} />
+            </Editable>
             <ReactQuill
               theme="snow"
               value={post}
@@ -126,18 +119,14 @@ const PostEditor = ({
               modules={modules}
               formats={formats}
               placeholder="Post..."
+              className="min-h-[100vh]"
             />
-          </Editable>
+          </Box>
           {/* Editor Preview */}
           <Box minH={"100vh"} w={"50vw"}>
-            {file && (
-              <img
-                src={URL.createObjectURL(file)}
-                alt="header image for post"
-                className="w-full h-[200px] object-cover object-center"
-              />
-            )}
-            <Heading>{title}</Heading>
+            {/* drag 'n drop */}
+            <DragNDrop />
+            <Heading textAlign={"center"}>{title}</Heading>
             <Box
               dangerouslySetInnerHTML={{ __html: post }}
               className="ql-editor"
@@ -147,25 +136,28 @@ const PostEditor = ({
         </HStack>
       </Show>
       <Hide above="md">
+        {/* drag 'N drop */}
+        <DragNDrop />
         <Editable
           defaultValue="Judul..."
           fontSize={"4xl"}
           fontWeight={"bold"}
-          minH={"100vh"}
+          textAlign={"center"}
           mx={{ base: "20px", sm: "auto" }}
           w={{ base: "auto", sm: "80vw" }}
         >
           <EditablePreview />
           <EditableInput onChange={(e) => setTitle(e.target.value)} />
-          <ReactQuill
-            theme="snow"
-            value={post}
-            onChange={setPost}
-            modules={modules}
-            formats={formats}
-            placeholder="Post..."
-          />
         </Editable>
+        <ReactQuill
+          theme="bubble"
+          value={post}
+          onChange={setPost}
+          modules={modules}
+          formats={formats}
+          placeholder="Post..."
+          className="min-h-[100vh]"
+        />
       </Hide>
     </>
   );
