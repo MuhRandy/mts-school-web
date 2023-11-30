@@ -6,9 +6,15 @@ type DragNDropProps = {
   file: File | null;
   setFile: (file: File) => void;
   className?: string;
+  imgUrl?: string;
 };
 
-const DragNDrop = ({ file, setFile, className }: DragNDropProps) => {
+const DragNDrop = ({
+  file,
+  imgUrl = "",
+  setFile,
+  className,
+}: DragNDropProps) => {
   return (
     <Dropzone onDrop={(acceptedFiles) => setFile(acceptedFiles?.[0])}>
       {({ getRootProps, getInputProps, isDragActive }) => (
@@ -30,12 +36,14 @@ const DragNDrop = ({ file, setFile, className }: DragNDropProps) => {
               <p>Drop some files here</p>
             ) : (
               <>
-                <p className={clsx("text-center", { hidden: file })}>
+                <p className={clsx("text-center", { hidden: file || imgUrl })}>
                   Drag 'n' drop some images here, or click to select files
                 </p>
-                {file && (
+                {(file || imgUrl) && (
                   <img
-                    src={URL.createObjectURL(file!)}
+                    src={
+                      file ? URL.createObjectURL(file!) : imgUrl ? imgUrl : ""
+                    }
                     alt="header image for post"
                     className="w-full h-full object-cover object-center"
                   />

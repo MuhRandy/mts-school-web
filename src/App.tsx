@@ -1,7 +1,15 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { Routes, Route, useNavigate, NavigateFunction } from "react-router-dom";
 import { ChakraProvider } from "@chakra-ui/react";
-import { collection, getDocs, orderBy, query } from "firebase/firestore";
+import {
+  DocumentData,
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  orderBy,
+  query,
+} from "firebase/firestore";
 import { db } from "./utils/firebase";
 import Header from "./components/Header/Header";
 import Home from "./pages/Home";
@@ -22,6 +30,10 @@ type GlobalContent = {
   setRenderCount: (renderCount: number) => void;
   news: any;
   navigate: NavigateFunction;
+  getPost: (
+    setState: (data: DocumentData) => void,
+    postID: string
+  ) => Promise<void>;
 };
 
 const AppContext = createContext<GlobalContent>({
@@ -33,6 +45,7 @@ const AppContext = createContext<GlobalContent>({
   setRenderCount: () => {},
   news: [],
   navigate: () => {},
+  getPost: async () => {},
 });
 
 export const useAppContext = () => useContext(AppContext);
@@ -69,6 +82,25 @@ function App() {
   }, [renderCount]);
   // --------
 
+  // get post from firestore based on postID set state according to setState
+  const getPost = async (
+    setState: (data: DocumentData) => void,
+    postID: string
+  ) => {
+    setIsLoading(true);
+    const docRef = doc(db, "news", postID);
+    const docSnap = await getDoc(docRef);
+
+    if (docSnap.exists()) {
+      setState(docSnap.data());
+      setIsLoading(false);
+    } else {
+      // docSnap.data() will be undefined in this case
+      console.log("No such document!");
+      setIsLoading(false);
+    }
+  };
+
   return (
     <ChakraProvider>
       <AppContext.Provider
@@ -81,6 +113,7 @@ function App() {
           setRenderCount,
           news,
           navigate,
+          getPost,
         }}
       >
         <Header />
@@ -93,6 +126,7 @@ function App() {
           <Route path="/news/pengumuman/detail" element={<SinglePost />} />
           <Route path="/login" element={<Login />} />
           <Route path="/create-post" element={<CreatePost />} />
+          <Route path="/edit-post" element={<CreatePost forEdit={true} />} />
           <Route path="/add-teacher" element={<AddTeacher />} />
         </Routes>
         <Footer />

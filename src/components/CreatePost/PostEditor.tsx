@@ -17,7 +17,7 @@ import DragNDrop from "./DragNDrop";
 
 const PostEditor = () => {
   // get state from CreatePost
-  const { title, post, setTitle, setPost, file, setFile } =
+  const { title, post, setTitle, setPost, file, setFile, imgUrl } =
     useCreatePostContext();
 
   // initialize module and format extension for quill editor
@@ -109,6 +109,7 @@ const PostEditor = () => {
               textAlign={"center"}
               mx={2}
               w={"45vw"}
+              value={title}
             >
               <EditablePreview />
               <EditableInput
@@ -129,7 +130,7 @@ const PostEditor = () => {
           {/* Editor Preview */}
           <Box minH={"100vh"} w={"50vw"}>
             {/* drag 'n drop */}
-            <DragNDrop file={file} setFile={setFile} />
+            <DragNDrop file={file} setFile={setFile} imgUrl={imgUrl} />
             <Heading textAlign={"center"}>{title}</Heading>
             <Box
               dangerouslySetInnerHTML={{ __html: post }}

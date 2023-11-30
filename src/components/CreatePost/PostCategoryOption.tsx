@@ -7,7 +7,7 @@ const PostCategoryOption = () => {
   return (
     <Select
       placeholder="Pilih Kategori Berita"
-      defaultValue={postCategory}
+      value={postCategory}
       onChange={(e) => setPostCategory(e.target.value)}
       w={200}
       pl={5}

@@ -1,14 +1,41 @@
-import { IconCalendarStats, IconUserCircle } from "@tabler/icons-react";
-import { Container } from "@chakra-ui/react";
+import {
+  IconCalendarStats,
+  IconTrash,
+  IconUserCircle,
+} from "@tabler/icons-react";
+import {
+  Box,
+  Container,
+  Divider,
+  HStack,
+  Heading,
+  IconButton,
+  Tooltip,
+  useDisclosure,
+} from "@chakra-ui/react";
 import { useAppContext } from "../App";
-import { DocumentData, doc, getDoc } from "firebase/firestore";
-import { db } from "../utils/firebase";
+import { DocumentData, deleteDoc, doc } from "firebase/firestore";
+import { db, storage } from "../utils/firebase";
 import { useEffect, useState } from "react";
 import LoadingSection from "../components/LoadingSection";
+import ActionAlertDialog from "../components/ActionAlertDialog";
+import { deleteObject, ref } from "firebase/storage";
+import { EditIcon } from "@chakra-ui/icons";
+import { Link } from "react-router-dom";
 
 function SinglePost() {
   // get state from App
-  const { isLoading, setIsLoading } = useAppContext();
+  const {
+    isLoading,
+    isAuth,
+    renderCount,
+    navigate,
+    setIsLoading,
+    setRenderCount,
+    getPost,
+  } = useAppContext();
+
+  const { onOpen, isOpen, onClose } = useDisclosure();
 
   const [post, setPost] = useState<DocumentData>();
 
@@ -16,25 +43,8 @@ function SinglePost() {
   const searchParams = new URLSearchParams(location.search);
   const postID: string = searchParams.get("id")!;
 
-  // get post from firestore based on postID
-  const getPost = async () => {
-    setIsLoading(true);
-    const docRef = doc(db, "news", postID);
-    const docSnap = await getDoc(docRef);
-
-    if (docSnap.exists()) {
-      console.log("Document data:", docSnap.data().title);
-      setPost(docSnap.data());
-      setIsLoading(false);
-    } else {
-      // docSnap.data() will be undefined in this case
-      console.log("No such document!");
-      setIsLoading(false);
-    }
-  };
-
   useEffect(() => {
-    getPost();
+    getPost(setPost, postID);
   }, []);
 
   // get post date from database
@@ -57,10 +67,46 @@ function SinglePost() {
   const day = days[date?.getDay()];
   const month = months[date?.getMonth()];
 
+  // delete doc or article on firebase database based on doc id
+  const deletePost = async (id: string) => {
+    setIsLoading(true);
+    const imgRef = ref(storage, post?.imgPath);
+    const postDoc = doc(db, "news", id);
+
+    // delete image on storage
+    deleteObject(imgRef).catch((err) => console.log(err));
+    // delete post on firestore
+    await deleteDoc(postDoc);
+    setRenderCount(renderCount + 1);
+    setIsLoading(false);
+    navigate("/");
+  };
+
   return (
     <Container maxW={{ md: "70vw" }}>
       {!isLoading ? (
-        <div className="p-2">
+        <Box p={2} position={"relative"}>
+          {isAuth && (
+            <HStack position={"absolute"} right={0} top={0}>
+              <Tooltip hasArrow label="Edit Berita">
+                <Link to={`/edit-post?id=${postID}`}>
+                  <IconButton
+                    aria-label="Hapus Berita"
+                    colorScheme="teal"
+                    icon={<EditIcon />}
+                  />
+                </Link>
+              </Tooltip>
+              <Tooltip hasArrow label="Hapus Berita">
+                <IconButton
+                  aria-label="Hapus Berita"
+                  colorScheme="red"
+                  onClick={onOpen}
+                  icon={<IconTrash />}
+                />
+              </Tooltip>
+            </HStack>
+          )}
           {post?.imgUrl && (
             <img
               src={post?.imgUrl}
@@ -68,9 +114,17 @@ function SinglePost() {
               className="w-full object-cover h-[400px]"
             />
           )}
-          <h1 className="text-4xl font-bold my-3 text-center">{post?.title}</h1>
+          <Heading fontSize={"4xl"} my={3} textAlign={"center"}>
+            {post?.title}
+          </Heading>
           {/* Author & Timestamp */}
-          <div className="py-5 mb-7 flex flex-col items-center justify-between border-b-2 border-black sm:flex-row">
+          <Box
+            py={5}
+            display={"flex"}
+            flexDirection={{ base: "column", sm: "row" }}
+            alignItems={"center"}
+            justifyContent={"space-between"}
+          >
             {/* Author */}
             <div className="flex gap-2 items-center">
               <IconUserCircle
@@ -86,17 +140,31 @@ function SinglePost() {
                 {day}, {date?.getDate()} {month} {date?.getFullYear()}
               </span>
             </div>
-          </div>
+          </Box>
+          <Divider mb={7} border={"1px solid black"} />
           <div
             dangerouslySetInnerHTML={{
               __html: post?.post!,
             }}
             className="ql-editor"
           />
-        </div>
+        </Box>
       ) : (
         <LoadingSection />
       )}
+
+      <ActionAlertDialog
+        isOpen={isOpen}
+        isLoading={isLoading}
+        headerText="Hapus Berita"
+        bodyText="Apa Anda Yakin?"
+        confirmationText="Hapus"
+        buttonColor="red"
+        onClickHandler={() => {
+          deletePost(postID);
+        }}
+        onClose={onClose}
+      />
     </Container>
   );
 }
