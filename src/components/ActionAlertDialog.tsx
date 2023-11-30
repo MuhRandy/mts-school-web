@@ -9,19 +9,27 @@ import {
 } from "@chakra-ui/react";
 import { useRef } from "react";
 
-type PostAlertDialogProps = {
-  uploadFile: () => void;
+type ActionAlertDialogProps = {
   isOpen: boolean;
   isLoading: boolean;
+  headerText: string;
+  confirmationText: string;
+  bodyText: string;
+  buttonColor?: string;
+  onClickHandler: () => void;
   onClose: () => void;
 };
 
-const PostAlertDialog = ({
-  uploadFile,
+const ActionAlertDialog = ({
   isOpen,
   isLoading,
+  headerText,
+  bodyText,
+  confirmationText,
+  buttonColor = "lime",
+  onClickHandler,
   onClose,
-}: PostAlertDialogProps) => {
+}: ActionAlertDialogProps) => {
   const postPathRef = useRef<any>();
 
   return (
@@ -33,10 +41,10 @@ const PostAlertDialog = ({
       <AlertDialogOverlay>
         <AlertDialogContent>
           <AlertDialogHeader fontSize="lg" fontWeight="bold">
-            Publish Berita
+            {headerText}
           </AlertDialogHeader>
 
-          <AlertDialogBody>Apa Anda Yakin?</AlertDialogBody>
+          <AlertDialogBody>{bodyText}</AlertDialogBody>
 
           <AlertDialogFooter>
             <Button ref={postPathRef} onClick={onClose}>
@@ -47,14 +55,14 @@ const PostAlertDialog = ({
               isLoading={isLoading}
               size={{ base: "sm", sm: "md" }}
               color={"white"}
-              bgColor={"lime"}
+              bgColor={buttonColor}
               onClick={() => {
-                uploadFile();
+                onClickHandler();
                 onClose;
               }}
               ml={3}
             >
-              Publish
+              {confirmationText}
             </Button>
           </AlertDialogFooter>
         </AlertDialogContent>
@@ -63,4 +71,4 @@ const PostAlertDialog = ({
   );
 };
 
-export default PostAlertDialog;
+export default ActionAlertDialog;

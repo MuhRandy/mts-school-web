@@ -1,6 +1,7 @@
-import { CircularProgress, Wrap, WrapItem } from "@chakra-ui/react";
+import { Wrap, WrapItem } from "@chakra-ui/react";
 import ArticleCard from "./ArticleCard";
 import { useAppContext } from "../../App";
+import LoadingSection from "../LoadingSection";
 
 type PostsProps = {
   cardMaxW?: string | number;
@@ -26,7 +27,7 @@ const Posts = ({ cardMaxW = "sm", postsData }: PostsProps) => {
           </WrapItem>
         ))
       ) : (
-        <CircularProgress isIndeterminate color="lime" />
+        <LoadingSection />
       )}
     </Wrap>
   );

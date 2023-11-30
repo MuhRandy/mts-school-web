@@ -5,6 +5,7 @@ import { collection, getDocs } from "firebase/firestore";
 import { db } from "../../utils/firebase";
 import { useEffect, useState } from "react";
 import { useAppContext } from "../../App";
+import LoadingSection from "../LoadingSection";
 
 function StaffTeachers() {
   const { renderCount, isLoading, setIsLoading } = useAppContext();
@@ -30,20 +31,24 @@ function StaffTeachers() {
   // --------
   return (
     <Content title="Staff Guru">
-      <SimpleGrid
-        columns={{ base: 1, sm: 2, md: 4 }}
-        px={{ base: "50px", md: "100px" }}
-        gap={10}
-      >
-        {teacherData?.map((data) => (
-          <Teacher
-            key={data.id}
-            name={data.name}
-            jabatan={data.position}
-            imgURL={data.imgUrl}
-          />
-        ))}
-      </SimpleGrid>
+      {!isLoading ? (
+        <SimpleGrid
+          columns={{ base: 1, sm: 2, md: 4 }}
+          px={{ base: "50px", md: "100px" }}
+          gap={10}
+        >
+          {teacherData?.map((data) => (
+            <Teacher
+              key={data.id}
+              name={data.name}
+              jabatan={data.position}
+              imgURL={data.imgUrl}
+            />
+          ))}
+        </SimpleGrid>
+      ) : (
+        <LoadingSection />
+      )}
     </Content>
   );
 }

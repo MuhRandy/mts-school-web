@@ -10,8 +10,8 @@ import {
   ref as storageRef,
 } from "firebase/storage";
 import PostEditor from "../components/CreatePost/PostEditor";
-import PostAlertDialog from "../components/CreatePost/PostAlertDialog";
 import PostCategoryOption from "../components/CreatePost/PostCategoryOption";
+import ActionAlertDialog from "../components/ActionAlertDialog";
 
 // create context to share state across children
 type CreatePostContent = {
@@ -135,10 +135,13 @@ const CreatePost = () => {
         </Button>
       </Center>
 
-      <PostAlertDialog
-        uploadFile={uploadFile}
+      <ActionAlertDialog
         isOpen={isOpen}
         isLoading={isLoading}
+        headerText="Publish Berita"
+        bodyText="Apa Anda Yakin?"
+        confirmationText="Publish"
+        onClickHandler={uploadFile}
         onClose={onClose}
       />
     </createPostContext.Provider>
