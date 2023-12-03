@@ -32,7 +32,7 @@ function SinglePost() {
     navigate,
     setIsLoading,
     setRenderCount,
-    getPost,
+    getSingleData,
   } = useAppContext();
 
   const { onOpen, isOpen, onClose } = useDisclosure();
@@ -44,7 +44,7 @@ function SinglePost() {
   const postID: string = searchParams.get("id")!;
 
   useEffect(() => {
-    getPost(setPost, postID);
+    getSingleData(setPost, "news", postID);
   }, []);
 
   // get post date from database
@@ -91,7 +91,7 @@ function SinglePost() {
               <Tooltip hasArrow label="Edit Berita">
                 <Link to={`/edit-post?id=${postID}`}>
                   <IconButton
-                    aria-label="Hapus Berita"
+                    aria-label="Edit Berita"
                     colorScheme="teal"
                     icon={<EditIcon />}
                   />

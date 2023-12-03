@@ -61,7 +61,7 @@ const CreatePost = ({ forEdit = false }: CreatePostProps) => {
     setRenderCount,
     setIsLoading,
     navigate,
-    getPost,
+    getSingleData,
   } = useAppContext();
 
   const { onOpen, isOpen, onClose } = useDisclosure();
@@ -72,6 +72,7 @@ const CreatePost = ({ forEdit = false }: CreatePostProps) => {
   const [postCategory, setPostCategory] = useState<string>("berita-sekolah");
   const [postEdited, setPostEdited] = useState<DocumentData>();
   const [imgUrl, setImgUrl] = useState<string>("");
+  const [imgPath, setImgPath] = useState<string>("");
 
   // get post id from search params and store it at postID
   const searchParams = new URLSearchParams(location.search);
@@ -85,7 +86,7 @@ const CreatePost = ({ forEdit = false }: CreatePostProps) => {
 
     // check is it for Edit
     if (forEdit) {
-      getPost(setPostEdited, postID);
+      getSingleData(setPostEdited, "news", postID);
     }
   }, []);
 
@@ -94,16 +95,17 @@ const CreatePost = ({ forEdit = false }: CreatePostProps) => {
     setTitle(postEdited?.title);
     setPostCategory(postEdited?.postCategory);
     setImgUrl(postEdited?.imgUrl);
+    setImgPath(postEdited?.imgPath);
   }, [postEdited]);
 
   // add doc on firebase database on posts collection then navigate to home
-  const createPost = async (imgUrl: string, imgPath: string) => {
+  const createPost = async (imgURL: string, imgPath: string) => {
     const postCollectionRef = collection(db, "news");
     await addDoc(postCollectionRef, {
       title,
       post,
       postCategory,
-      imgUrl,
+      imgUrl: imgURL,
       imgPath,
       timestamp: serverTimestamp(),
       author: {
@@ -123,7 +125,7 @@ const CreatePost = ({ forEdit = false }: CreatePostProps) => {
 
     setIsLoading(true);
 
-    const imgPath = `post-image/${postCategory}/${uuidv4()}`;
+    const imgPath = `post-image/${uuidv4()}`;
     const imageRef = storageRef(storage, imgPath);
 
     uploadBytes(imageRef, file)
@@ -141,18 +143,35 @@ const CreatePost = ({ forEdit = false }: CreatePostProps) => {
       });
   };
 
-  // upload image in storage and then save downloadUrl to referred doc on firestore
+  // replace whatever change to the referred post id
+  const updateCreatePost = async (imgURL: string, imgPath: string) => {
+    const postCollectionRef = doc(db, "news", postID);
+    await setDoc(postCollectionRef, {
+      title,
+      post,
+      postCategory,
+      imgUrl: imgURL,
+      imgPath,
+      timestamp: serverTimestamp(),
+      author: {
+        id: auth.currentUser?.uid,
+      },
+    }).catch((err) => console.log(err));
+
+    setRenderCount(renderCount + 1);
+    navigate("/");
+  };
+
+  // Update post
   const updatePost = () => {
-    if (file === null && imgUrl === "") {
+    if (file === null && imgUrl == "") {
       alert("Please select an image");
       return;
     }
 
     setIsLoading(true);
 
-    const imgPath = postEdited?.imgPath;
-    const postRef = doc(db, "news", postID);
-
+    // if file exist replace old file with new file
     if (file !== null) {
       const imageRef = storageRef(storage, imgPath);
 
@@ -160,21 +179,7 @@ const CreatePost = ({ forEdit = false }: CreatePostProps) => {
         .then((snapshot) => {
           getDownloadURL(snapshot.ref)
             .then((url) => {
-              async () => {
-                await setDoc(postRef, {
-                  title,
-                  post,
-                  postCategory,
-                  imgUrl: url,
-                  imgPath,
-                  timestamp: serverTimestamp(),
-                  author: {
-                    id: auth.currentUser?.uid,
-                  },
-                }).catch((err) => console.log(err));
-                setRenderCount(renderCount + 1);
-                navigate("/");
-              };
+              updateCreatePost(url, imgPath);
             })
             .catch((error) => {
               console.log(error.message);
@@ -184,22 +189,10 @@ const CreatePost = ({ forEdit = false }: CreatePostProps) => {
           console.log(error.message);
         });
     } else {
-      async () => {
-        await setDoc(postRef, {
-          title,
-          post,
-          postCategory,
-          imgUrl,
-          imgPath,
-          timestamp: serverTimestamp(),
-          author: {
-            id: auth.currentUser?.uid,
-          },
-        }).catch((err) => console.log(err));
-        setRenderCount(renderCount + 1);
-        navigate("/");
-      };
+      updateCreatePost(imgUrl, imgPath);
     }
+
+    console.log("akhir");
   };
 
   return (

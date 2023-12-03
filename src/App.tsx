@@ -30,8 +30,9 @@ type GlobalContent = {
   setRenderCount: (renderCount: number) => void;
   news: any;
   navigate: NavigateFunction;
-  getPost: (
+  getSingleData: (
     setState: (data: DocumentData) => void,
+    docPath: "news" | "teacherData",
     postID: string
   ) => Promise<void>;
 };
@@ -45,7 +46,7 @@ const AppContext = createContext<GlobalContent>({
   setRenderCount: () => {},
   news: [],
   navigate: () => {},
-  getPost: async () => {},
+  getSingleData: async () => {},
 });
 
 export const useAppContext = () => useContext(AppContext);
@@ -83,12 +84,13 @@ function App() {
   // --------
 
   // get post from firestore based on postID set state according to setState
-  const getPost = async (
+  const getSingleData = async (
     setState: (data: DocumentData) => void,
+    docPath: "news" | "teacherData",
     postID: string
   ) => {
     setIsLoading(true);
-    const docRef = doc(db, "news", postID);
+    const docRef = doc(db, docPath, postID);
     const docSnap = await getDoc(docRef);
 
     if (docSnap.exists()) {
@@ -113,7 +115,7 @@ function App() {
           setRenderCount,
           news,
           navigate,
-          getPost,
+          getSingleData,
         }}
       >
         <Header />
@@ -128,6 +130,7 @@ function App() {
           <Route path="/create-post" element={<CreatePost />} />
           <Route path="/edit-post" element={<CreatePost forEdit={true} />} />
           <Route path="/add-teacher" element={<AddTeacher />} />
+          <Route path="/edit-teacher" element={<AddTeacher forEdit={true} />} />
         </Routes>
         <Footer />
       </AppContext.Provider>

@@ -11,21 +11,24 @@ function StaffTeachers() {
   const { renderCount, isLoading, setIsLoading } = useAppContext();
 
   const [teacherData, setTeacherData] = useState<any[]>([]);
-  // get news data from firestore
+  // get teacher data from firestore
   // --------
 
-  // database ref
-  const teacherDataCollectionRef = collection(db, "teacherData");
-
   // get the data
-  useEffect(() => {
-    const getTeacherData = async () => {
-      setIsLoading(true);
-      const data = await getDocs(teacherDataCollectionRef);
-      setTeacherData(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
-      setIsLoading(false);
-    };
+  const getTeacherData = async () => {
+    // database ref
+    const teacherDataCollectionRef = collection(db, "teacherData");
 
+    setIsLoading(true);
+
+    const data = await getDocs(teacherDataCollectionRef);
+
+    setTeacherData(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+
+    setIsLoading(false);
+  };
+
+  useEffect(() => {
     getTeacherData();
   }, [renderCount]);
   // --------
@@ -43,6 +46,8 @@ function StaffTeachers() {
               name={data.name}
               jabatan={data.position}
               imgURL={data.imgUrl}
+              imgPath={data.imgPath}
+              dataID={data.id}
             />
           ))}
         </SimpleGrid>
