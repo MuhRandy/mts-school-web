@@ -1,17 +1,17 @@
-import { Wrap, WrapItem } from "@chakra-ui/react";
-import ArticleCard from "./ArticleCard";
-import { useAppContext } from "../../App";
-import LoadingSection from "../LoadingSection";
+import { Wrap, WrapItem } from '@chakra-ui/react';
+import ArticleCard from './ArticleCard';
+import { useAppContext } from '../../App';
+import LoadingSection from '../LoadingSection';
 
 type PostsProps = {
   cardMaxW?: string | number;
   postsData: any;
 };
 
-const Posts = ({ cardMaxW = "sm", postsData }: PostsProps) => {
+const Posts = ({ cardMaxW = 'sm', postsData }: PostsProps) => {
   const { isLoading } = useAppContext();
   return (
-    <Wrap justify={"center"}>
+    <Wrap justify={'center'}>
       {!isLoading ? (
         postsData?.map((post: any) => (
           <WrapItem key={post.id}>
@@ -21,7 +21,7 @@ const Posts = ({ cardMaxW = "sm", postsData }: PostsProps) => {
               postText={post.post}
               postID={post.id}
               imgURL={post.imgUrl}
-              imgPath={post.imgPath}
+              timestamp={post.timestamp}
               postCategory={post.postCategory}
             />
           </WrapItem>
