@@ -49,7 +49,7 @@ function Navbar() {
     <>
       <nav
         className={cn(
-          "bg-[#99fc08] mx-5 rounded-md",
+          "bg-[#009f5b] mx-5 rounded-md",
           "sticky top-0 transition-all duration-300 z-10",
           ["min-[768px]:p-3"],
           {
@@ -62,7 +62,7 @@ function Navbar() {
             aria-label="Menu"
             icon={<HamburgerIcon color={"white"} fontSize={{ sm: "xl" }} />}
             onClick={onOpen}
-            bg={"#99fc08"}
+            bg={"#009f5b"}
           />
         </Hide>
         <Show above="md">

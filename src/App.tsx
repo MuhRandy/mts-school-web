@@ -36,6 +36,7 @@ type GlobalContent = {
     docPath: "news" | "teacherData",
     postID: string
   ) => Promise<void>;
+  toReadableDate: (dateData: any) => string;
 };
 
 const AppContext = createContext<GlobalContent>({
@@ -50,6 +51,9 @@ const AppContext = createContext<GlobalContent>({
   news: [],
   navigate: () => {},
   getSingleData: async () => {},
+  toReadableDate: () => {
+    return "";
+  },
 });
 
 export const useAppContext = () => useContext(AppContext);
@@ -75,14 +79,14 @@ function App() {
   const q = query(newsCollectionRef, orderBy("timestamp", "desc"));
 
   // get the data
-  useEffect(() => {
-    const getNews = async () => {
-      setIsLoading(true);
-      const data = await getDocs(q);
-      setNews(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
-      setIsLoading(false);
-    };
+  const getNews = async () => {
+    setIsLoading(true);
+    const data = await getDocs(q);
+    setNews(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+    setIsLoading(false);
+  };
 
+  useEffect(() => {
     getNews();
   }, [renderCount]);
   // --------
@@ -107,6 +111,29 @@ function App() {
     }
   };
 
+  // get post date from database and turn it to desired format
+  const toReadableDate = (dateData: any) => {
+    const date = dateData.toDate();
+    const days = ["Ming", "Sen", "Sel", "Rab", "Kam", "Jum", "Sab"];
+    const months = [
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "Mei",
+      "Jun",
+      "Jul",
+      "Ags",
+      "Sep",
+      "Okt",
+      "Nov",
+      "Des",
+    ];
+    const day = days[date?.getDay()];
+    const month = months[date?.getMonth()];
+    return `${day}, ${date?.getDate()} ${month} ${date?.getFullYear()}`;
+  };
+
   return (
     <ChakraProvider>
       <AppContext.Provider
@@ -122,6 +149,7 @@ function App() {
           news,
           navigate,
           getSingleData,
+          toReadableDate,
         }}
       >
         <Header />

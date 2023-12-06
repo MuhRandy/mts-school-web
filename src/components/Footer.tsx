@@ -9,15 +9,15 @@ import { IconPhone } from "@tabler/icons-react";
 function Footer() {
   return (
     // bg-neutral-100 text-neutral-600
-    <footer className="bg-lime-100 text-center text-lime-600 dark:bg-neutral-600 dark:text-neutral-200 lg:text-left mt-3">
+    <footer className="bg-[#64ffbc] text-center dark:bg-neutral-600 dark:text-neutral-200 lg:text-left mt-3">
       {/* border-neutral-200 */}
-      <div className="flex items-center justify-center border-b-2 border-lime-200 p-6 dark:border-neutral-500 lg:justify-between">
+      <div className="flex items-center justify-center border-b-2 border-[#009f5b] p-6 dark:border-neutral-500 lg:justify-between">
         <div className="mr-12 hidden lg:block">
           <span>Get connected with us on:</span>
         </div>
         {/* <!-- Social network icons container --> */}
         {/* className="text-neutral-600 dark:text-neutral-200" */}
-        <div className="flex justify-center gap-6 text-lime-600">
+        <div className="flex justify-center gap-6">
           <a href="#!">
             <IconBrandGmail className="h-5 w-5" />
           </a>
@@ -57,7 +57,7 @@ function Footer() {
           </div> */}
           {/* <!-- Useful links section --> */}
           {/* text-neutral-600 dark:text-neutral-200 */}
-          <div className="text-lime-600">
+          <div>
             <h6 className="mb-4 flex justify-center font-semibold uppercase md:justify-start">
               Useful links
             </h6>
@@ -94,7 +94,7 @@ function Footer() {
 
       {/* <!--Copyright section--> */}
       {/* bg-neutral-200 */}
-      <div className="bg-[#99fc08] text-white p-6 text-center dark:bg-neutral-700">
+      <div className="bg-[#009f5b] text-white p-6 text-center dark:bg-neutral-700">
         <span>© 2023 Copyright: </span>
         {/* text-neutral-600  */}
         <a
