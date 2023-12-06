@@ -2,14 +2,11 @@ import { IconBrandInstagram } from "@tabler/icons-react";
 import { IconBrandYoutube } from "@tabler/icons-react";
 import { IconBrandWhatsapp } from "@tabler/icons-react";
 import { IconBrandGmail } from "@tabler/icons-react";
-import { useAppContext } from "../App";
 import { IconHome } from "@tabler/icons-react";
 import { IconMail } from "@tabler/icons-react";
 import { IconPhone } from "@tabler/icons-react";
 
 function Footer() {
-  const { isAuth } = useAppContext();
-
   return (
     // bg-neutral-100 text-neutral-600
     <footer className="bg-lime-100 text-center text-lime-600 dark:bg-neutral-600 dark:text-neutral-200 lg:text-left mt-3">
@@ -73,11 +70,6 @@ function Footer() {
             <p className="mb-4">
               <a href="/news">Berita</a>
             </p>
-            {!isAuth && (
-              <p>
-                <a href="/login">Login</a>
-              </p>
-            )}
           </div>
           {/* <!-- Contact section --> */}
           <div>

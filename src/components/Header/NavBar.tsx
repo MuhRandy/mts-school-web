@@ -22,7 +22,7 @@ import { cn } from "../../utils/utils";
 function Navbar() {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  const { setIsAuth, isAuth } = useAppContext();
+  const { setIsAuth, isAuth, setWantToLogin } = useAppContext();
   const [isSticky, setIsSticky] = useState<boolean>(false);
 
   let navigate = useNavigate();
@@ -50,7 +50,7 @@ function Navbar() {
       <nav
         className={cn(
           "bg-[#99fc08] mx-5 rounded-md",
-          "sticky top-0 transition-all duration-300",
+          "sticky top-0 transition-all duration-300 z-10",
           ["min-[768px]:p-3"],
           {
             "fixed top-0 left-0 right-0 z-50 mx-0 rounded-none": isSticky,
@@ -83,6 +83,14 @@ function Navbar() {
             <li>
               <a href="/news">Berita</a>
             </li>
+            {!isAuth && (
+              <>
+                <li>|</li>
+                <li>
+                  <button onClick={() => setWantToLogin(true)}>Login</button>
+                </li>
+              </>
+            )}
             {isAuth && (
               <>
                 <li>|</li>
@@ -118,6 +126,18 @@ function Navbar() {
               <li>
                 <a href="/news">Berita</a>
               </li>
+              {!isAuth && (
+                <li>
+                  <button
+                    onClick={() => {
+                      onClose();
+                      setWantToLogin(true);
+                    }}
+                  >
+                    Login
+                  </button>
+                </li>
+              )}
               {isAuth && (
                 <>
                   <li>

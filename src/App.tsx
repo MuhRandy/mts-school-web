@@ -14,7 +14,6 @@ import { db } from "./utils/firebase";
 import Header from "./components/Header/Header";
 import Home from "./pages/Home";
 import Profil from "./pages/Profil";
-import Login from "./pages/Login";
 import CreatePost from "./pages/CreatePost";
 import Footer from "./components/Footer";
 import SinglePost from "./pages/SinglePost";
@@ -28,6 +27,8 @@ type GlobalContent = {
   setIsLoading: (isAuth: boolean) => void;
   renderCount: number;
   setRenderCount: (renderCount: number) => void;
+  wantToLogin: boolean;
+  setWantToLogin: (wantToLogin: boolean) => void;
   news: any;
   navigate: NavigateFunction;
   getSingleData: (
@@ -44,6 +45,8 @@ const AppContext = createContext<GlobalContent>({
   setIsLoading: () => {},
   renderCount: 0,
   setRenderCount: () => {},
+  wantToLogin: false,
+  setWantToLogin: () => {},
   news: [],
   navigate: () => {},
   getSingleData: async () => {},
@@ -58,6 +61,7 @@ function App() {
   );
   const [renderCount, setRenderCount] = useState<number>(0);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [wantToLogin, setWantToLogin] = useState(false);
 
   const navigate = useNavigate();
 
@@ -113,6 +117,8 @@ function App() {
           setIsLoading,
           renderCount,
           setRenderCount,
+          wantToLogin,
+          setWantToLogin,
           news,
           navigate,
           getSingleData,
@@ -126,7 +132,6 @@ function App() {
           <Route path="/news/berita-sekolah/detail" element={<SinglePost />} />
           <Route path="/news/informasi/detail" element={<SinglePost />} />
           <Route path="/news/pengumuman/detail" element={<SinglePost />} />
-          <Route path="/login" element={<Login />} />
           <Route path="/create-post" element={<CreatePost />} />
           <Route path="/edit-post" element={<CreatePost forEdit={true} />} />
           <Route path="/add-teacher" element={<AddTeacher />} />

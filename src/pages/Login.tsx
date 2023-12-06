@@ -1,16 +1,9 @@
 import { auth } from "../utils/firebase";
 import { signInWithEmailAndPassword } from "firebase/auth";
-import {
-  Button,
-  Center,
-  FormControl,
-  FormLabel,
-  HStack,
-  Input,
-  VStack,
-} from "@chakra-ui/react";
+import { Button, Input, VStack } from "@chakra-ui/react";
 import { useAppContext } from "../App";
 import { useEffect, useState } from "react";
+import clsx from "clsx";
 
 const Login = () => {
   const { isAuth, setIsAuth, navigate } = useAppContext();
@@ -39,34 +32,21 @@ const Login = () => {
   };
 
   return (
-    <Center className="min-h-screen">
-      <VStack gap={3}>
-        <FormControl>
-          <HStack>
-            <FormLabel whiteSpace={"nowrap"}>Email :</FormLabel>
-            <Input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-          </HStack>
-        </FormControl>
-        <FormControl>
-          <HStack>
-            <FormLabel whiteSpace={"nowrap"}>Password :</FormLabel>
-            <Input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-          </HStack>
-        </FormControl>
-        <Button onClick={signIn}>Login</Button>
-      </VStack>
-      {/* <Button onClick={signInWithGoogle} colorScheme="blackAlpha">
-        Login With Google
-      </Button> */}
-    </Center>
+    <VStack gap={3} color={"white"} p={5} className={clsx("bg-black/20")}>
+      <Input
+        type="email"
+        placeholder="Email..."
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+      />
+      <Input
+        type="password"
+        placeholder="Password"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+      />
+      <Button onClick={signIn}>Login</Button>
+    </VStack>
   );
 };
 
