@@ -27,7 +27,7 @@ function SinglePost() {
   const { state, globalStateAction } = useAppContext();
 
   const { isLoading, isAuth } = state;
-  const { changeIsLoading, incrementRenderCount } = globalStateAction;
+  const { changeIsLoading, incrementRenderCount, navigate } = globalStateAction;
 
   const { onOpen, isOpen, onClose } = useDisclosure();
 
@@ -124,7 +124,8 @@ function SinglePost() {
             postID,
             changeIsLoading,
             incrementRenderCount,
-            post?.imgPath
+            post?.imgPath,
+            navigate
           );
         }}
         onClose={onClose}

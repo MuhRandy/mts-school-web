@@ -1,24 +1,17 @@
 import { auth } from "../utils/firebase";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { Button, Input, VStack } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import clsx from "clsx";
 import { useAppContext } from "../utils/context";
 
 const Login = () => {
-  const { state, globalStateAction } = useAppContext();
+  const { globalStateAction } = useAppContext();
 
-  const { isAuth } = state;
-  const { navigate, changeIsAuth } = globalStateAction;
+  const { navigate, changeIsAuth, changeWantToLogin } = globalStateAction;
 
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
-
-  useEffect(() => {
-    if (isAuth) {
-      navigate("/");
-    }
-  }, []);
 
   const signIn = () => {
     signInWithEmailAndPassword(auth, email, password)
@@ -26,6 +19,7 @@ const Login = () => {
         const user = userCredential.user;
         localStorage.setItem("IS_AUTH", "true");
         changeIsAuth(true);
+        changeWantToLogin(false);
         navigate("/");
       })
       .catch((err) => {
