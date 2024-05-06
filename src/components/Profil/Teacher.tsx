@@ -13,11 +13,9 @@ import {
 } from "@chakra-ui/react";
 import { IconTrash } from "@tabler/icons-react";
 import { Link } from "react-router-dom";
-import { useAppContext } from "../../App";
-import { deleteObject, ref } from "firebase/storage";
-import { db, storage } from "../../utils/firebase";
-import { deleteDoc, doc } from "firebase/firestore";
 import ActionAlertDialog from "../ActionAlertDialog";
+import { useAppContext } from "../../utils/context";
+import { deleteTeacherData } from "../../utils/utils";
 
 type TeacherProps = {
   name: string;
@@ -29,25 +27,12 @@ type TeacherProps = {
 
 function Teacher({ name, imgURL, imgPath, jabatan, dataID }: TeacherProps) {
   // get state from App
-  const { isAuth, isLoading, renderCount, setIsLoading, setRenderCount } =
-    useAppContext();
+  const { state, globalStateAction } = useAppContext();
+
+  const { isAuth, isLoading } = state;
+  const { changeIsLoading, incrementRenderCount } = globalStateAction;
 
   const { onOpen, isOpen, onClose } = useDisclosure();
-
-  // delete doc or data on firebase database based on doc id
-  const deleteData = async (id: string) => {
-    setIsLoading(true);
-    const imgRef = ref(storage, imgPath);
-    const dataDoc = doc(db, "teacherData", id);
-
-    // delete image on storage
-    deleteObject(imgRef).catch((err) => console.log(err));
-
-    // delete post on firestore
-    await deleteDoc(dataDoc);
-    setRenderCount(renderCount + 1);
-    setIsLoading(false);
-  };
 
   return (
     <>
@@ -95,7 +80,14 @@ function Teacher({ name, imgURL, imgPath, jabatan, dataID }: TeacherProps) {
         bodyText="Apa Anda Yakin"
         buttonColor="red"
         confirmationText="Hapus"
-        onClickHandler={() => deleteData(dataID)}
+        onClickHandler={() =>
+          deleteTeacherData(
+            dataID,
+            changeIsLoading,
+            incrementRenderCount,
+            imgPath
+          )
+        }
       />
     </>
   );

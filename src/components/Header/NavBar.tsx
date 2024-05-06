@@ -12,17 +12,21 @@ import {
 } from "@chakra-ui/react";
 import { HamburgerIcon } from "@chakra-ui/icons";
 import { useNavigate } from "react-router-dom";
-import { useAppContext } from "../../App";
 import { signOut } from "firebase/auth";
 import { auth } from "../../utils/firebase";
 import { useEffect, useState } from "react";
 import clsx from "clsx";
 import { cn } from "../../utils/utils";
+import { useAppContext } from "../../utils/context";
 
 function Navbar() {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  const { setIsAuth, isAuth, setWantToLogin } = useAppContext();
+  const { state, globalStateAction } = useAppContext();
+
+  const { isAuth } = state;
+  const { changeIsAuth, changeWantToLogin } = globalStateAction;
+
   const [isSticky, setIsSticky] = useState<boolean>(false);
 
   let navigate = useNavigate();
@@ -30,7 +34,7 @@ function Navbar() {
   const signUserOut = () => {
     signOut(auth).then(() => {
       localStorage.clear();
-      setIsAuth(false);
+      changeIsAuth(false);
       navigate("/login");
     });
   };
@@ -87,7 +91,7 @@ function Navbar() {
               <>
                 <li>|</li>
                 <li>
-                  <button onClick={() => setWantToLogin(true)}>Login</button>
+                  <button onClick={() => changeWantToLogin(true)}>Login</button>
                 </li>
               </>
             )}
@@ -131,7 +135,7 @@ function Navbar() {
                   <button
                     onClick={() => {
                       onClose();
-                      setWantToLogin(true);
+                      changeWantToLogin(true);
                     }}
                   >
                     Login

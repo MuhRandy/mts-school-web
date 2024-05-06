@@ -1,13 +1,14 @@
 import { Grid, GridItem } from "@chakra-ui/react";
-import Main from "../components/Main";
 import Posts from "../components/News/Posts";
 import Content from "../components/Content";
 import { useEffect, useState } from "react";
-import { useAppContext } from "../App";
 import NewsAside from "../components/News/NewsAside";
+import { useAppContext } from "../utils/context";
 
 const News = () => {
-  const { news } = useAppContext();
+  const { state } = useAppContext();
+
+  const { news } = state;
 
   const [postCategoryFilter, setPostCategoryFilter] = useState<string>("");
   const [posts, setPosts] = useState(news);
@@ -33,9 +34,9 @@ const News = () => {
         p={3}
       >
         <GridItem colSpan={{ base: 1, md: 2 }}>
-          <Main>
+          <main>
             <Posts cardMaxW={"2xl"} postsData={posts} />
-          </Main>
+          </main>
         </GridItem>
         <GridItem>
           <NewsAside

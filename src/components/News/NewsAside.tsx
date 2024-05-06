@@ -1,9 +1,9 @@
 import { ListItem, UnorderedList } from "@chakra-ui/react";
 import clsx from "clsx";
-import { useAppContext } from "../../App";
 import Posts from "./Posts";
 import { useEffect, useState } from "react";
 import AsideContent from "./AsideContent";
+import { useAppContext } from "../../utils/context";
 
 type NewsAsideContentProps = {
   postCategoryFilter: string;
@@ -15,7 +15,8 @@ const NewsAside = ({
   setPostCategoryFilter,
 }: NewsAsideContentProps) => {
   // get state from App
-  const { news } = useAppContext();
+  const { state } = useAppContext();
+  const { news } = state;
 
   // filter to 3 newest news data if have more than 3
   const [newestPost, setNewestPost] = useState<any[] | null[]>(news);

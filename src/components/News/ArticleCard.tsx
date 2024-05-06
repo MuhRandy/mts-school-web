@@ -7,10 +7,10 @@ import {
   Divider,
   Heading,
   Stack,
-} from '@chakra-ui/react';
-import { ArrowForwardIcon } from '@chakra-ui/icons';
-import { Link } from 'react-router-dom';
-import { useAppContext } from '../../App';
+} from "@chakra-ui/react";
+import { ArrowForwardIcon } from "@chakra-ui/icons";
+import { Link } from "react-router-dom";
+import { toReadableDate } from "../../utils/utils";
 
 type ArticleProps = {
   title: string;
@@ -31,16 +31,14 @@ function ArticleCard({
   postCategory,
   cardMaxW,
 }: ArticleProps) {
-  // get state from App
-  const { toReadableDate } = useAppContext();
   return (
     <Card
       maxW={cardMaxW}
       mx={2}
-      size={'sm'}
-      border={'none'}
-      rounded={'none'}
-      position={'relative'}
+      size={"sm"}
+      border={"none"}
+      rounded={"none"}
+      position={"relative"}
     >
       <img
         src={imgURL}
@@ -48,30 +46,30 @@ function ArticleCard({
         className="w-full h-40 object-cover object-center"
       />
       <div className="bg-black/50 text-white backdrop-blur-md absolute top-0 right-0 px-1">
-        {postCategory === 'berita-sekolah' && 'Berita Sekolah'}
-        {postCategory === 'informasi' && 'Informasi'}
-        {postCategory === 'pengumuman' && 'Pengumuman'}
+        {postCategory === "berita-sekolah" && "Berita Sekolah"}
+        {postCategory === "informasi" && "Informasi"}
+        {postCategory === "pengumuman" && "Pengumuman"}
       </div>
-      <CardBody px={2} mt={'-20px'}>
+      <CardBody px={2} mt={"-20px"}>
         <Stack mt="6" spacing="3">
           <Heading size="md">{title}</Heading>
           <Box
-            display={'flex'}
-            justifyContent={'space-between'}
-            fontSize={'smaller'}
-            color={'slategray'}
+            display={"flex"}
+            justifyContent={"space-between"}
+            fontSize={"smaller"}
+            color={"slategray"}
           >
             <span>BY @ADMIN</span>
             <span className="uppercase">{toReadableDate(timestamp)}</span>
           </Box>
           <Box
-            fontSize={'small'}
+            fontSize={"small"}
             noOfLines={3}
             dangerouslySetInnerHTML={{ __html: postText }}
           />
         </Stack>
       </CardBody>
-      <Divider border={'1px solid #009f5b'} />
+      <Divider border={"1px solid #009f5b"} />
       <CardFooter px={2}>
         {/* navigate to /article and send article id on search text for later use */}
         <Link to={`/news/${postCategory}/detail?id=${postID}`}>
@@ -79,7 +77,7 @@ function ArticleCard({
             rightIcon={<ArrowForwardIcon />}
             colorScheme="teal"
             variant="outline"
-            size={'sm'}
+            size={"sm"}
           >
             Lanjut Baca...
           </Button>

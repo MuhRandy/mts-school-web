@@ -1,37 +1,22 @@
 import Content from "../Content";
 import { SimpleGrid } from "@chakra-ui/react";
 import Teacher from "./Teacher";
-import { collection, getDocs } from "firebase/firestore";
-import { db } from "../../utils/firebase";
 import { useEffect, useState } from "react";
-import { useAppContext } from "../../App";
 import LoadingSection from "../LoadingSection";
+import { useAppContext } from "../../utils/context";
+import { getTeacherData } from "../../utils/utils";
 
 function StaffTeachers() {
-  const { renderCount, isLoading, setIsLoading } = useAppContext();
+  const { state, globalStateAction } = useAppContext();
+  const { renderCount, isLoading } = state;
+  const { changeIsLoading } = globalStateAction;
 
   const [teacherData, setTeacherData] = useState<any[]>([]);
-  // get teacher data from firestore
-  // --------
-
-  // get the data
-  const getTeacherData = async () => {
-    // database ref
-    const teacherDataCollectionRef = collection(db, "teacherData");
-
-    setIsLoading(true);
-
-    const data = await getDocs(teacherDataCollectionRef);
-
-    setTeacherData(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
-
-    setIsLoading(false);
-  };
 
   useEffect(() => {
-    getTeacherData();
+    // get teacher data from firestore
+    getTeacherData(changeIsLoading, setTeacherData);
   }, [renderCount]);
-  // --------
   return (
     <Content title="Staff Guru">
       {!isLoading ? (

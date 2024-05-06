@@ -12,18 +12,9 @@ import {
   Stack,
   VStack,
 } from "@chakra-ui/react";
-import {
-  DocumentData,
-  addDoc,
-  collection,
-  doc,
-  serverTimestamp,
-  setDoc,
-} from "firebase/firestore";
-import { auth, db, storage } from "../utils/firebase";
-import { useAppContext } from "../App";
-import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
-import { v4 } from "uuid";
+import { DocumentData } from "firebase/firestore";
+import { useAppContext } from "../utils/context";
+import { getSingleData, updateTeacherData, uploadData } from "../utils/utils";
 
 type AddTeacherProps = {
   forEdit?: boolean;
@@ -31,15 +22,10 @@ type AddTeacherProps = {
 
 const AddTeacher = ({ forEdit = false }: AddTeacherProps) => {
   // get state from App
-  const {
-    renderCount,
-    isAuth,
-    isLoading,
-    setRenderCount,
-    navigate,
-    setIsLoading,
-    getSingleData,
-  } = useAppContext();
+  const { state, globalStateAction } = useAppContext();
+
+  const { isLoading, isAuth } = state;
+  const { changeIsLoading, incrementRenderCount, navigate } = globalStateAction;
 
   const [file, setFile] = useState<File | null>(null);
   const [name, setName] = useState<string>("");
@@ -52,50 +38,6 @@ const AddTeacher = ({ forEdit = false }: AddTeacherProps) => {
   const searchParams = new URLSearchParams(location.search);
   const dataID: string = searchParams.get("id")!;
 
-  // add doc on firebase database on teacher data collection then navigate to profil
-  const addTeacherData = async (imgUrl: string, imgPath: string) => {
-    const teacherDataCollectionRef = collection(db, "teacherData");
-    await addDoc(teacherDataCollectionRef, {
-      name,
-      position,
-      imgUrl,
-      imgPath,
-      timestamp: serverTimestamp(),
-      author: {
-        id: auth.currentUser?.uid,
-      },
-    }).catch((err) => console.log(err));
-    setRenderCount(renderCount + 1);
-    navigate("/profil");
-  };
-
-  // upload image in storage and then save downloadUrl to referred doc on firestore
-  const uploadData = () => {
-    if (file === null) {
-      alert("Please select an image");
-      return;
-    }
-
-    setIsLoading(true);
-
-    const imgPath = `teacher-data-image/${v4()}`;
-    const imageRef = ref(storage, imgPath);
-
-    uploadBytes(imageRef, file)
-      .then((snapshot) => {
-        getDownloadURL(snapshot.ref)
-          .then((url) => {
-            addTeacherData(url, imgPath);
-          })
-          .catch((error) => {
-            console.log(error.message);
-          });
-      })
-      .catch((error) => {
-        console.log(error.message);
-      });
-  };
-
   useEffect(() => {
     // avoid navigate here when user not login
     if (!isAuth) {
@@ -104,7 +46,7 @@ const AddTeacher = ({ forEdit = false }: AddTeacherProps) => {
 
     // check is it for Edit
     if (forEdit) {
-      getSingleData(setDataEdited, "teacherData", dataID);
+      getSingleData(setDataEdited, "teacherData", dataID, changeIsLoading);
     }
   }, []);
 
@@ -115,53 +57,29 @@ const AddTeacher = ({ forEdit = false }: AddTeacherProps) => {
     setImgPath(dataEdited?.imgPath);
   }, [dataEdited]);
 
-  // replace whatever change to the referred data id
-  const updateData = async (imgURL: string, imgPath: string) => {
-    const dataRef = doc(db, "teacherData", dataID);
-    await setDoc(dataRef, {
+  const updateTeacherDataHandler = () => {
+    updateTeacherData(
+      dataID,
       name,
       position,
-      imgUrl: imgURL,
+      imgUrl,
       imgPath,
-      timestamp: serverTimestamp(),
-      author: {
-        id: auth.currentUser?.uid,
-      },
-    }).catch((err) => console.log(err));
-
-    setRenderCount(renderCount + 1);
-    navigate("/profil");
+      file,
+      changeIsLoading,
+      incrementRenderCount,
+      navigate
+    );
   };
 
-  // Update data
-  const updateTeacherData = () => {
-    if (file === null && imgUrl == "") {
-      alert("Please select an image");
-      return;
-    }
-
-    setIsLoading(true);
-
-    // if file exist replace old file with new file
-    if (file !== null) {
-      const imageRef = ref(storage, imgPath);
-
-      uploadBytes(imageRef, file)
-        .then((snapshot) => {
-          getDownloadURL(snapshot.ref)
-            .then((url) => {
-              updateData(url, imgPath);
-            })
-            .catch((error) => {
-              console.log(error.message);
-            });
-        })
-        .catch((error) => {
-          console.log(error.message);
-        });
-    } else {
-      updateData(imgUrl, imgPath);
-    }
+  const uploadDataHandler = () => {
+    uploadData(
+      name,
+      position,
+      file,
+      changeIsLoading,
+      incrementRenderCount,
+      navigate
+    );
   };
 
   return (
@@ -206,7 +124,7 @@ const AddTeacher = ({ forEdit = false }: AddTeacherProps) => {
           <Button
             bgColor={"lime"}
             textColor={"white"}
-            onClick={forEdit ? updateTeacherData : uploadData}
+            onClick={forEdit ? updateTeacherDataHandler : uploadDataHandler}
             isLoading={isLoading}
           >
             {forEdit ? "Update Data" : "Tambah Data"}

@@ -1,10 +1,12 @@
 import depanMts from "../../assets/foto_depan_mts.jpg";
 import clsx from "clsx";
 import Login from "../../pages/Login";
-import { useAppContext } from "../../App";
+import { useAppContext } from "../../utils/context";
 
 const HeaderImage = () => {
-  const { wantToLogin } = useAppContext();
+  const { state } = useAppContext();
+
+  const { wantToLogin } = state;
 
   return (
     <div

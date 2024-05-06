@@ -2,7 +2,7 @@ import {
   IconCalendarStats,
   IconTrash,
   IconUserCircle,
-} from '@tabler/icons-react';
+} from "@tabler/icons-react";
 import {
   Box,
   Container,
@@ -12,29 +12,22 @@ import {
   IconButton,
   Tooltip,
   useDisclosure,
-} from '@chakra-ui/react';
-import { useAppContext } from '../App';
-import { DocumentData, deleteDoc, doc } from 'firebase/firestore';
-import { db, storage } from '../utils/firebase';
-import { useEffect, useState } from 'react';
-import LoadingSection from '../components/LoadingSection';
-import ActionAlertDialog from '../components/ActionAlertDialog';
-import { deleteObject, ref } from 'firebase/storage';
-import { EditIcon } from '@chakra-ui/icons';
-import { Link } from 'react-router-dom';
+} from "@chakra-ui/react";
+import { DocumentData } from "firebase/firestore";
+import { useEffect, useState } from "react";
+import LoadingSection from "../components/LoadingSection";
+import ActionAlertDialog from "../components/ActionAlertDialog";
+import { EditIcon } from "@chakra-ui/icons";
+import { Link } from "react-router-dom";
+import { useAppContext } from "../utils/context";
+import { deletePost, getSingleData, toReadableDate } from "../utils/utils";
 
 function SinglePost() {
   // get state from App
-  const {
-    isLoading,
-    isAuth,
-    renderCount,
-    navigate,
-    setIsLoading,
-    setRenderCount,
-    getSingleData,
-    toReadableDate,
-  } = useAppContext();
+  const { state, globalStateAction } = useAppContext();
+
+  const { isLoading, isAuth } = state;
+  const { changeIsLoading, incrementRenderCount } = globalStateAction;
 
   const { onOpen, isOpen, onClose } = useDisclosure();
 
@@ -42,33 +35,18 @@ function SinglePost() {
 
   // get post id from search params and store it at postID
   const searchParams = new URLSearchParams(location.search);
-  const postID: string = searchParams.get('id')!;
+  const postID: string = searchParams.get("id")!;
 
   useEffect(() => {
-    getSingleData(setPost, 'news', postID);
+    getSingleData(setPost, "news", postID, changeIsLoading);
   }, []);
 
-  // delete doc or article on firebase database based on doc id
-  const deletePost = async (id: string) => {
-    setIsLoading(true);
-    const imgRef = ref(storage, post?.imgPath);
-    const postDoc = doc(db, 'news', id);
-
-    // delete image on storage
-    deleteObject(imgRef).catch((err) => console.log(err));
-    // delete post on firestore
-    await deleteDoc(postDoc);
-    setRenderCount(renderCount + 1);
-    setIsLoading(false);
-    navigate('/');
-  };
-
   return (
-    <Container maxW={{ md: '70vw' }}>
+    <Container maxW={{ md: "70vw" }}>
       {!isLoading ? (
-        <Box p={2} position={'relative'}>
+        <Box p={2} position={"relative"}>
           {isAuth && (
-            <HStack position={'absolute'} right={0} top={0}>
+            <HStack position={"absolute"} right={0} top={0}>
               <Tooltip hasArrow label="Edit Berita">
                 <Link to={`/edit-post?id=${postID}`}>
                   <IconButton
@@ -95,16 +73,16 @@ function SinglePost() {
               className="w-full object-cover h-[400px]"
             />
           )}
-          <Heading fontSize={'4xl'} my={3} textAlign={'center'}>
+          <Heading fontSize={"4xl"} my={3} textAlign={"center"}>
             {post?.title}
           </Heading>
           {/* Author & Timestamp */}
           <Box
             py={5}
-            display={'flex'}
-            flexDirection={{ base: 'column', sm: 'row' }}
-            alignItems={'center'}
-            justifyContent={'space-between'}
+            display={"flex"}
+            flexDirection={{ base: "column", sm: "row" }}
+            alignItems={"center"}
+            justifyContent={"space-between"}
           >
             {/* Author */}
             <div className="flex gap-2 items-center">
@@ -122,7 +100,7 @@ function SinglePost() {
               </span>
             </div>
           </Box>
-          <Divider mb={7} border={'1px solid black'} />
+          <Divider mb={7} border={"1px solid black"} />
           <div
             dangerouslySetInnerHTML={{
               __html: post?.post!,
@@ -142,7 +120,12 @@ function SinglePost() {
         confirmationText="Hapus"
         buttonColor="red"
         onClickHandler={() => {
-          deletePost(postID);
+          deletePost(
+            postID,
+            changeIsLoading,
+            incrementRenderCount,
+            post?.imgPath
+          );
         }}
         onClose={onClose}
       />

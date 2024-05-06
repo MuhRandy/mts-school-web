@@ -12,13 +12,15 @@ import {
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.bubble.css";
 import "react-quill/dist/quill.snow.css";
-import { useCreatePostContext } from "../../pages/CreatePost";
 import DragNDrop from "./DragNDrop";
+import { useCreatePostContext } from "../../utils/context";
 
 const PostEditor = () => {
   // get state from CreatePost
-  const { title, post, setTitle, setPost, file, setFile, imgUrl } =
-    useCreatePostContext();
+  const { createPostState, createPostStateAction } = useCreatePostContext();
+
+  const { title, post, file, imgUrl } = createPostState;
+  const { changeTitle, changePost, changeFile } = createPostStateAction;
 
   // initialize module and format extension for quill editor
   const modules = {
@@ -114,13 +116,13 @@ const PostEditor = () => {
               <EditablePreview />
               <EditableInput
                 w={"auto"}
-                onChange={(e) => setTitle(e.target.value)}
+                onChange={(e) => changeTitle(e.target.value)}
               />
             </Editable>
             <ReactQuill
               theme="snow"
               value={post}
-              onChange={setPost}
+              onChange={changePost}
               modules={modules}
               formats={formats}
               placeholder="Post..."
@@ -130,7 +132,7 @@ const PostEditor = () => {
           {/* Editor Preview */}
           <Box minH={"100vh"} w={"50vw"}>
             {/* drag 'n drop */}
-            <DragNDrop file={file} setFile={setFile} imgUrl={imgUrl} />
+            <DragNDrop file={file} setFile={changeFile} imgUrl={imgUrl} />
             <Heading textAlign={"center"}>{title}</Heading>
             <Box
               dangerouslySetInnerHTML={{ __html: post }}
@@ -142,7 +144,7 @@ const PostEditor = () => {
       </Show>
       <Hide above="md">
         {/* drag 'N drop */}
-        <DragNDrop file={file} setFile={setFile} />
+        <DragNDrop file={file} setFile={changeFile} />
         <Editable
           defaultValue="Judul..."
           fontSize={"4xl"}
@@ -152,12 +154,12 @@ const PostEditor = () => {
           w={{ base: "auto", sm: "80vw" }}
         >
           <EditablePreview />
-          <EditableInput onChange={(e) => setTitle(e.target.value)} />
+          <EditableInput onChange={(e) => changeTitle(e.target.value)} />
         </Editable>
         <ReactQuill
           theme="bubble"
           value={post}
-          onChange={setPost}
+          onChange={changePost}
           modules={modules}
           formats={formats}
           placeholder="Post..."

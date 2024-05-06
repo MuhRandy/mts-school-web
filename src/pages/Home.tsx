@@ -1,16 +1,17 @@
-import { useAppContext } from "../App";
 import Content from "../components/Content";
-import Main from "../components/Main";
 import Posts from "../components/News/Posts";
+import { useAppContext } from "../utils/context";
 
 export default function Home() {
-  const { news } = useAppContext();
+  const { state } = useAppContext();
+
+  const { news } = state;
 
   return (
-    <Main>
+    <main>
       <Content title="Berita">
         <Posts postsData={news} />
       </Content>
-    </Main>
+    </main>
   );
 }
