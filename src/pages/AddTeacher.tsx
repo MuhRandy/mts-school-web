@@ -42,8 +42,6 @@ const AddTeacher = ({ forEdit = false }: AddTeacherProps) => {
     // avoid navigate here when user not login
     if (!isAuth) {
       navigate("/login");
-    } else {
-      navigate("/add-teacher");
     }
 
     // check is it for Edit

@@ -83,7 +83,7 @@ const CreatePost = ({ forEdit = false }: CreatePostProps) => {
   ) => {
     dispatch({
       ...initialDispatchValue,
-      type: "changed_file",
+      type: "changed_created_post",
       newTitle,
       newPost,
       newPostCategory,
@@ -128,6 +128,8 @@ const CreatePost = ({ forEdit = false }: CreatePostProps) => {
       postEdited?.imgUrl,
       postEdited?.imgPath
     );
+
+    console.log(postEdited);
   }, [postEdited]);
 
   const updatePostHandler = () => {
