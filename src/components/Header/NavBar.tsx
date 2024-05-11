@@ -35,7 +35,8 @@ function Navbar() {
     signOut(auth).then(() => {
       localStorage.clear();
       changeIsAuth(false);
-      navigate("/login");
+      navigate("/");
+      changeWantToLogin(true);
     });
   };
 

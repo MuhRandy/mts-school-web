@@ -25,7 +25,8 @@ const AddTeacher = ({ forEdit = false }: AddTeacherProps) => {
   const { state, globalStateAction } = useAppContext();
 
   const { isLoading, isAuth } = state;
-  const { changeIsLoading, incrementRenderCount, navigate } = globalStateAction;
+  const { changeIsLoading, changeWantToLogin, incrementRenderCount, navigate } =
+    globalStateAction;
 
   const [file, setFile] = useState<File | null>(null);
   const [name, setName] = useState<string>("");
@@ -41,7 +42,8 @@ const AddTeacher = ({ forEdit = false }: AddTeacherProps) => {
   useEffect(() => {
     // avoid navigate here when user not login
     if (!isAuth) {
-      navigate("/login");
+      navigate("/");
+      changeWantToLogin(true);
     }
 
     // check is it for Edit

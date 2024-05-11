@@ -23,7 +23,8 @@ const CreatePost = ({ forEdit = false }: CreatePostProps) => {
   const { state, globalStateAction } = useAppContext();
 
   const { isAuth, isLoading } = state;
-  const { changeIsLoading, incrementRenderCount, navigate } = globalStateAction;
+  const { changeIsLoading, changeWantToLogin, incrementRenderCount, navigate } =
+    globalStateAction;
 
   const [createPostState, dispatch] = useReducer(
     createPostReducer,
@@ -111,7 +112,8 @@ const CreatePost = ({ forEdit = false }: CreatePostProps) => {
   useEffect(() => {
     // avoid navigate here when user not login
     if (!isAuth) {
-      navigate("/login");
+      navigate("/");
+      changeWantToLogin(true);
     }
 
     // check is it for Edit
