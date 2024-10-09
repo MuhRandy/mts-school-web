@@ -4,7 +4,7 @@ import Teacher from "./Teacher";
 import { useEffect, useState } from "react";
 import LoadingSection from "../LoadingSection";
 import { useAppContext } from "../../utils/context";
-import { getTeacherData } from "../../utils/utils";
+import { getTeacherData } from "../../services/GetDataService";
 
 function StaffTeachers() {
   const { state, globalStateAction } = useAppContext();

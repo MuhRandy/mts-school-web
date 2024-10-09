@@ -10,9 +10,11 @@ import {
   useAppContext,
   createPostContext,
 } from "../utils/context";
-import { getSingleData, updatePost, uploadFile } from "../utils/utils";
 import { createPostReducer } from "../utils/reducer";
 import { CreatePostStateAction } from "../utils/type";
+import { getSingleData } from "../services/GetDataService";
+import { updatePost } from "../services/UpdateDataService";
+import { uploadFile } from "../services/UploadDataService";
 
 type CreatePostProps = {
   forEdit?: boolean;

@@ -12,7 +12,7 @@ import { AppContext, initialState } from "./utils/context";
 import { reducer } from "./utils/reducer";
 import { GlobalAction, GlobalStateAction, NewsType } from "./utils/type";
 import News from "./pages/News";
-import { getNews } from "./utils/utils";
+import { getNews } from "./services/GetDataService";
 
 function App() {
   const [state, dispatch] = useReducer(reducer, initialState);

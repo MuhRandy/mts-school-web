@@ -14,7 +14,9 @@ import {
 } from "@chakra-ui/react";
 import { DocumentData } from "firebase/firestore";
 import { useAppContext } from "../utils/context";
-import { getSingleData, updateTeacherData, uploadData } from "../utils/utils";
+import { getSingleData } from "../services/GetDataService";
+import { updateTeacherData } from "../services/UpdateDataService";
+import { uploadData } from "../services/UploadDataService";
 
 type AddTeacherProps = {
   forEdit?: boolean;

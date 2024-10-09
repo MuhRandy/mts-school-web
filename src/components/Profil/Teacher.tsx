@@ -15,7 +15,7 @@ import { IconTrash } from "@tabler/icons-react";
 import { Link } from "react-router-dom";
 import ActionAlertDialog from "../ActionAlertDialog";
 import { useAppContext } from "../../utils/context";
-import { deleteTeacherData } from "../../utils/utils";
+import { deleteTeacherData } from "../../services/DeleteDataService";
 
 type TeacherProps = {
   name: string;

@@ -20,7 +20,9 @@ import ActionAlertDialog from "../components/ActionAlertDialog";
 import { EditIcon } from "@chakra-ui/icons";
 import { Link } from "react-router-dom";
 import { useAppContext } from "../utils/context";
-import { deletePost, getSingleData, toReadableDate } from "../utils/utils";
+import { toReadableDate } from "../utils/utils";
+import { getSingleData } from "../services/GetDataService";
+import { deletePost } from "../services/DeleteDataService";
 
 function SinglePost() {
   // get state from App
