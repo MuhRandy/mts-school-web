@@ -3,12 +3,13 @@ import {
   ChangeIsLoading,
   CreatePostState,
   IncrementRenderCount,
-  PostType,
 } from "../utils/type";
 import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 import { auth, db, storage } from "../utils/firebase";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { v4 as uuidv4 } from "uuid";
+import TeacherData from "../models/TeacherData";
+import Post from "../models/Post";
 
 export const createPost = async (
   createPostState: Omit<CreatePostState, "file">,
@@ -17,60 +18,61 @@ export const createPost = async (
   incrementRenderCountHandler: IncrementRenderCount,
   navigateHandler: NavigateFunction
 ) => {
-  const postModel: PostType = {
-    ...createPostState,
-    imgUrl: imgURL,
-    imgPath: imgPath,
-    timestamp: serverTimestamp(),
-    author: {
-      id: auth.currentUser?.uid,
-    },
-  };
+  try {
+    const data = {
+      ...createPostState,
+      imgUrl: imgURL,
+      imgPath: imgPath,
+      timestamp: serverTimestamp(),
+      author: {
+        id: auth.currentUser?.uid,
+      },
+    };
 
-  const postCollectionRef = collection(db, "news");
-  await addDoc(postCollectionRef, postModel).catch((err) => console.log(err));
-  incrementRenderCountHandler();
-  navigateHandler("/");
+    const postCollectionRef = collection(db, "news");
+
+    await addDoc(postCollectionRef, Post(data));
+
+    incrementRenderCountHandler();
+    navigateHandler("/");
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 // upload image in storage and then save downloadUrl to referred doc on firestore
-export const uploadFile = (
+export const uploadFile = async (
   createPostState: CreatePostState,
   isLoadingHandler: ChangeIsLoading,
   incrementRenderCountHandler: IncrementRenderCount,
   navigateHandler: NavigateFunction
 ) => {
-  const { file } = createPostState;
+  try {
+    const { file } = createPostState;
 
-  if (file === null) {
-    alert("Please select an image");
-    return;
+    if (file === null) {
+      alert("Please select an image");
+      return;
+    }
+
+    isLoadingHandler(true);
+
+    const imgPath = `post-image/${uuidv4()}`;
+    const imageRef = ref(storage, imgPath);
+
+    const snapshot = await uploadBytes(imageRef, file);
+    const snapshotUrl = await getDownloadURL(snapshot.ref);
+
+    createPost(
+      createPostState,
+      snapshotUrl,
+      imgPath,
+      incrementRenderCountHandler,
+      navigateHandler
+    );
+  } catch (error) {
+    console.log(error);
   }
-
-  isLoadingHandler(true);
-
-  const imgPath = `post-image/${uuidv4()}`;
-  const imageRef = ref(storage, imgPath);
-
-  uploadBytes(imageRef, file)
-    .then((snapshot) => {
-      getDownloadURL(snapshot.ref)
-        .then((url) => {
-          createPost(
-            createPostState,
-            url,
-            imgPath,
-            incrementRenderCountHandler,
-            navigateHandler
-          );
-        })
-        .catch((error) => {
-          console.log(error.message);
-        });
-    })
-    .catch((error) => {
-      console.log(error.message);
-    });
 };
 
 export const addTeacherData = async (
@@ -81,22 +83,29 @@ export const addTeacherData = async (
   incrementRenderCountHandler: IncrementRenderCount,
   navigateHandler: NavigateFunction
 ) => {
-  const teacherDataCollectionRef = collection(db, "teacherData");
-  await addDoc(teacherDataCollectionRef, {
-    name,
-    position,
-    imgUrl,
-    imgPath,
-    timestamp: serverTimestamp(),
-    author: {
-      id: auth.currentUser?.uid,
-    },
-  }).catch((err) => console.log(err));
-  incrementRenderCountHandler();
-  navigateHandler("/profil");
+  try {
+    const teacherDataCollectionRef = collection(db, "teacherData");
+    const data = {
+      name,
+      position,
+      imgUrl,
+      imgPath,
+      timestamp: serverTimestamp(),
+      author: {
+        id: auth.currentUser?.uid,
+      },
+    };
+
+    await addDoc(teacherDataCollectionRef, TeacherData(data));
+
+    incrementRenderCountHandler();
+    navigateHandler("/profil");
+  } catch (error) {
+    console.log(error);
+  }
 };
 
-export const uploadData = (
+export const uploadData = async (
   name: string,
   position: string,
   file: File | null,
@@ -104,34 +113,29 @@ export const uploadData = (
   incrementRenderCountHandler: IncrementRenderCount,
   navigateHandler: NavigateFunction
 ) => {
-  if (file === null) {
-    alert("Please select an image");
-    return;
+  try {
+    if (file === null) {
+      alert("Please select an image");
+      return;
+    }
+
+    isLoadingHandler(true);
+
+    const imgPath = `teacher-data-image/${uuidv4()}`;
+    const imageRef = ref(storage, imgPath);
+
+    const snapshot = await uploadBytes(imageRef, file);
+    const snapshotUrl = await getDownloadURL(snapshot.ref);
+
+    addTeacherData(
+      name,
+      position,
+      snapshotUrl,
+      imgPath,
+      incrementRenderCountHandler,
+      navigateHandler
+    );
+  } catch (error) {
+    console.log(error);
   }
-
-  isLoadingHandler(true);
-
-  const imgPath = `teacher-data-image/${uuidv4()}`;
-  const imageRef = ref(storage, imgPath);
-
-  uploadBytes(imageRef, file)
-    .then((snapshot) => {
-      getDownloadURL(snapshot.ref)
-        .then((url) => {
-          addTeacherData(
-            name,
-            position,
-            url,
-            imgPath,
-            incrementRenderCountHandler,
-            navigateHandler
-          );
-        })
-        .catch((error) => {
-          console.log(error.message);
-        });
-    })
-    .catch((error) => {
-      console.log(error.message);
-    });
 };

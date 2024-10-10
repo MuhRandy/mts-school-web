@@ -11,17 +11,21 @@ import { ChangeIsLoading, ChangeNews, DataCollectionRef } from "../utils/type";
 import { db } from "../utils/firebase";
 import { Dispatch, SetStateAction } from "react";
 
-export const getNews = async (
+export const getNews = (
   isLoadingHandler: ChangeIsLoading,
   newsHandler: ChangeNews
 ) => {
-  const newsCollectionRef = collection(db, "news");
-  const queryByTimeStampDescend = query(
-    newsCollectionRef,
-    orderBy("timestamp", "desc")
-  );
+  try {
+    const newsCollectionRef = collection(db, "news");
+    const queryByTimeStampDescend = query(
+      newsCollectionRef,
+      orderBy("timestamp", "desc")
+    );
 
-  getData(queryByTimeStampDescend, isLoadingHandler, newsHandler);
+    getData(queryByTimeStampDescend, isLoadingHandler, newsHandler);
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 export const getSingleData = async (
@@ -30,26 +34,35 @@ export const getSingleData = async (
   postID: string,
   isLoadingHandler: ChangeIsLoading
 ) => {
-  isLoadingHandler(true);
-  const docRef = doc(db, docPath, postID);
-  const docSnap = await getDoc(docRef);
+  try {
+    isLoadingHandler(true);
 
-  if (docSnap.exists()) {
-    setState(docSnap.data());
-    isLoadingHandler(false);
-  } else {
-    alert("No such document!");
-    isLoadingHandler(false);
+    const docRef = doc(db, docPath, postID);
+    const docSnap = await getDoc(docRef);
+
+    if (docSnap.exists()) {
+      setState(docSnap.data());
+      isLoadingHandler(false);
+    } else {
+      alert("No such document!");
+      isLoadingHandler(false);
+    }
+  } catch (error) {
+    console.log(error);
   }
 };
 
-export const getTeacherData = async (
+export const getTeacherData = (
   isLoadingHandler: ChangeIsLoading,
   dataTeacherHandler: Dispatch<SetStateAction<any[]>>
 ) => {
-  const teacherDataCollectionRef = collection(db, "teacherData");
+  try {
+    const teacherDataCollectionRef = collection(db, "teacherData");
 
-  getData(teacherDataCollectionRef, isLoadingHandler, dataTeacherHandler);
+    getData(teacherDataCollectionRef, isLoadingHandler, dataTeacherHandler);
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 const getData = async (
@@ -57,12 +70,16 @@ const getData = async (
   isLoadingHandler: ChangeIsLoading,
   getDataHandler: any
 ) => {
-  isLoadingHandler(true);
+  try {
+    isLoadingHandler(true);
 
-  const docSnap = await getDocs(dataCollectionRef);
-  const data = docSnap.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
+    const docSnap = await getDocs(dataCollectionRef);
+    const data = docSnap.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
 
-  getDataHandler(data);
+    getDataHandler(data);
 
-  isLoadingHandler(false);
+    isLoadingHandler(false);
+  } catch (error) {
+    console.log(error);
+  }
 };

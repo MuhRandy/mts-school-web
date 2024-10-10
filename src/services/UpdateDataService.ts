@@ -7,6 +7,7 @@ import {
 import { doc, serverTimestamp, setDoc } from "firebase/firestore";
 import { auth, db, storage } from "../utils/firebase";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
+import Post from "../models/Post";
 
 export const updateCreatePost = async (
   postID: string,
@@ -16,76 +17,75 @@ export const updateCreatePost = async (
   imgURL: string,
   imgPath: string
 ) => {
-  const postCollectionRef = doc(db, "news", postID);
-  await setDoc(postCollectionRef, {
-    ...createPostState,
-    imgUrl: imgURL,
-    imgPath: imgPath,
-    timestamp: serverTimestamp(),
-    author: {
-      id: auth.currentUser?.uid,
-    },
-  }).catch((err) => console.log(err));
+  try {
+    const postCollectionRef = doc(db, "news", postID);
+    const data = {
+      ...createPostState,
+      imgUrl: imgURL,
+      imgPath: imgPath,
+      timestamp: serverTimestamp(),
+      author: {
+        id: auth.currentUser?.uid,
+      },
+    };
 
-  incrementRenderCountHandler();
-  navigateHandler("/");
+    await setDoc(postCollectionRef, Post(data));
+
+    incrementRenderCountHandler();
+    navigateHandler("/");
+  } catch (error) {
+    console.log(error);
+  }
 };
 
-export const updatePost = (
+export const updatePost = async (
   postID: string,
   createPostState: CreatePostState,
   isLoadingHandler: ChangeIsLoading,
   incrementRenderCountHandler: IncrementRenderCount,
   navigateHandler: NavigateFunction
 ) => {
-  const { file, imgUrl, imgPath } = createPostState;
+  try {
+    const { file, imgUrl, imgPath } = createPostState;
 
-  if (file === null && imgUrl == "") {
-    alert("Please select an image");
-    return;
+    if (file === null && imgUrl == "") {
+      alert("Please select an image");
+      return;
+    }
+
+    isLoadingHandler(true);
+
+    // if file exist replace old file with new file
+    if (file !== null) {
+      const imageRef = ref(storage, imgPath);
+
+      const snapshot = await uploadBytes(imageRef, file);
+      const snapshotUrl = await getDownloadURL(snapshot.ref);
+
+      updateCreatePost(
+        postID,
+        createPostState,
+        incrementRenderCountHandler,
+        navigateHandler,
+        snapshotUrl,
+        imgPath
+      );
+    } else {
+      updateCreatePost(
+        postID,
+        createPostState,
+        incrementRenderCountHandler,
+        navigateHandler,
+        imgUrl,
+        imgPath
+      );
+    }
+  } catch (error) {
+    console.log(error);
   }
-
-  isLoadingHandler(true);
-
-  // if file exist replace old file with new file
-  if (file !== null) {
-    const imageRef = ref(storage, imgPath);
-
-    uploadBytes(imageRef, file)
-      .then((snapshot) => {
-        getDownloadURL(snapshot.ref)
-          .then((url) => {
-            updateCreatePost(
-              postID,
-              createPostState,
-              incrementRenderCountHandler,
-              navigateHandler,
-              url,
-              imgPath
-            );
-          })
-          .catch((error) => {
-            console.log(error.message);
-          });
-      })
-      .catch((error) => {
-        console.log(error.message);
-      });
-  } else {
-    updateCreatePost(
-      postID,
-      createPostState,
-      incrementRenderCountHandler,
-      navigateHandler,
-      imgUrl,
-      imgPath
-    );
-  }
-
-  console.log("akhir");
 };
 
-export const updateTeacherData = (
+export const updateTeacherData = async (
   dataID: string,
   name: string,
   position: string,
@@ -96,48 +96,43 @@ export const updateTeacherData = (
   incrementRenderCountHandler: IncrementRenderCount,
   navigateHandler: NavigateFunction
 ) => {
-  if (file === null && imgUrl == "") {
-    alert("Please select an image");
-    return;
-  }
+  try {
+    if (file === null && imgUrl == "") {
+      alert("Please select an image");
+      return;
+    }
 
-  isLoadingHandler(true);
+    isLoadingHandler(true);
 
-  // if file exist replace old file with new file
-  if (file !== null) {
-    const imageRef = ref(storage, imgPath);
+    // if file exist replace old file with new file
+    if (file !== null) {
+      const imageRef = ref(storage, imgPath);
 
-    uploadBytes(imageRef, file)
-      .then((snapshot) => {
-        getDownloadURL(snapshot.ref)
-          .then((url) => {
-            updateData(
-              dataID,
-              name,
-              position,
-              url,
-              imgPath,
-              incrementRenderCountHandler,
-              navigateHandler
-            );
-          })
-          .catch((error) => {
-            console.log(error.message);
-          });
-      })
-      .catch((error) => {
-        console.log(error.message);
-      });
-  } else {
-    updateData(
-      dataID,
-      name,
-      position,
-      imgUrl,
-      imgPath,
-      incrementRenderCountHandler,
-      navigateHandler
-    );
+      const snapshot = await uploadBytes(imageRef, file);
+      const snapshotUrl = await getDownloadURL(snapshot.ref);
+
+      updateData(
+        dataID,
+        name,
+        position,
+        snapshotUrl,
+        imgPath,
+        incrementRenderCountHandler,
+        navigateHandler
+      );
+    } else {
+      updateData(
+        dataID,
+        name,
+        position,
+        imgUrl,
+        imgPath,
+        incrementRenderCountHandler,
+        navigateHandler
+      );
+    }
+  } catch (error) {
+    console.log(error);
   }
 };
 
@@ -150,18 +145,24 @@ const updateData = async (
   incrementRenderCountHandler: IncrementRenderCount,
   navigateHandler: NavigateFunction
 ) => {
-  const dataRef = doc(db, "teacherData", dataID);
-  await setDoc(dataRef, {
-    name,
-    position,
-    imgUrl: imgURL,
-    imgPath,
-    timestamp: serverTimestamp(),
-    author: {
-      id: auth.currentUser?.uid,
-    },
-  }).catch((err) => console.log(err));
+  try {
+    const dataRef = doc(db, "teacherData", dataID);
+    const data = {
+      name,
+      position,
+      imgUrl: imgURL,
+      imgPath,
+      timestamp: serverTimestamp(),
+      author: {
+        id: auth.currentUser?.uid,
+      },
+    };
 
-  incrementRenderCountHandler();
-  navigateHandler("/profil");
+    await setDoc(dataRef, data).catch((err) => console.log(err));
+
+    incrementRenderCountHandler();
+    navigateHandler("/profil");
+  } catch (error) {
+    console.log(error);
+  }
 };

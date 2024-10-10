@@ -15,15 +15,19 @@ export const deleteTeacherData = (
   incrementRenderCountHandler: IncrementRenderCount,
   imgPath: string
 ) => {
-  const imgRef = ref(storage, imgPath);
-  const teacherData = doc(db, "teacherData", id);
+  try {
+    const imgRef = ref(storage, imgPath);
+    const teacherData = doc(db, "teacherData", id);
 
-  deleteData(
-    isLoadingHandler,
-    incrementRenderCountHandler,
-    imgRef,
-    teacherData
-  );
+    deleteData(
+      isLoadingHandler,
+      incrementRenderCountHandler,
+      imgRef,
+      teacherData
+    );
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 export const deletePost = async (
@@ -33,11 +37,21 @@ export const deletePost = async (
   imgPath: string,
   navigateHandler: NavigateFunction
 ) => {
-  const imgRef = ref(storage, imgPath);
-  const postDoc = doc(db, "news", id);
+  try {
+    const imgRef = ref(storage, imgPath);
+    const postDoc = doc(db, "news", id);
 
-  deleteData(isLoadingHandler, incrementRenderCountHandler, imgRef, postDoc);
-  navigateHandler("/");
+    await deleteData(
+      isLoadingHandler,
+      incrementRenderCountHandler,
+      imgRef,
+      postDoc
+    );
+
+    navigateHandler("/");
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 const deleteData = async (
@@ -46,13 +60,18 @@ const deleteData = async (
   imgRef: StorageReference,
   dataDoc: DocumentReference<DocumentData, DocumentData>
 ) => {
-  isLoadingHandler(true);
+  try {
+    isLoadingHandler(true);
 
-  // delete image on storage
-  deleteObject(imgRef).catch((err) => console.log(err));
+    // delete image on storage
+    deleteObject(imgRef);
 
-  // delete post on firestore
-  await deleteDoc(dataDoc);
-  incrementRenderCountHandler();
-  isLoadingHandler(false);
+    // delete post on firestore
+    await deleteDoc(dataDoc);
+
+    incrementRenderCountHandler();
+    isLoadingHandler(false);
+  } catch (error) {
+    console.log(error);
+  }
 };
