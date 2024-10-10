@@ -132,8 +132,6 @@ const CreatePost = ({ forEdit = false }: CreatePostProps) => {
       postEdited?.imgUrl,
       postEdited?.imgPath
     );
-
-    console.log(postEdited);
   }, [postEdited]);
 
   const updatePostHandler = () => {

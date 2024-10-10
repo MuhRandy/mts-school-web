@@ -99,8 +99,6 @@ const PostEditor = () => {
     "size",
   ];
 
-  console.log(title);
-
   return (
     <>
       <Show above="md">
