@@ -17,15 +17,30 @@ import { auth } from "../../utils/firebase";
 import { useEffect, useState } from "react";
 import clsx from "clsx";
 import { cn } from "../../utils/utils";
-import { useAppContext } from "../../utils/context";
+import {
+  useAppStatusContext,
+  useAppStatusDispatchContext,
+} from "../../services/state/AppStatusContext";
 
 function Navbar() {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  const { state, globalStateAction } = useAppContext();
+  const { isAuth } = useAppStatusContext();
+  const dispatch = useAppStatusDispatchContext();
 
-  const { isAuth } = state;
-  const { changeIsAuth, changeWantToLogin } = globalStateAction;
+  function changeIsAuth(newIsAuth: boolean) {
+    dispatch({
+      type: "changed_is_auth",
+      isAuth: newIsAuth,
+    });
+  }
+
+  function changeWantToLogin(newWantToLogin: boolean) {
+    dispatch({
+      type: "changed_want_to_login",
+      wantToLogin: newWantToLogin,
+    });
+  }
 
   const [isSticky, setIsSticky] = useState<boolean>(false);
 

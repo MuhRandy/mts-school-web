@@ -13,22 +13,44 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import { DocumentData } from "firebase/firestore";
-import { useAppContext } from "../utils/context";
 import { getSingleData } from "../services/GetDataService";
 import { updateTeacherData } from "../services/UpdateDataService";
 import { uploadData } from "../services/UploadDataService";
+import {
+  useAppStatusContext,
+  useAppStatusDispatchContext,
+} from "../services/state/AppStatusContext";
+import { useNavigate } from "react-router-dom";
 
 type AddTeacherProps = {
   forEdit?: boolean;
 };
 
 const AddTeacher = ({ forEdit = false }: AddTeacherProps) => {
-  // get state from App
-  const { state, globalStateAction } = useAppContext();
+  const { isLoading, isAuth } = useAppStatusContext();
+  const dispatch = useAppStatusDispatchContext();
 
-  const { isLoading, isAuth } = state;
-  const { changeIsLoading, changeWantToLogin, incrementRenderCount, navigate } =
-    globalStateAction;
+  function changeIsLoading(newIsLoading: boolean) {
+    dispatch({
+      type: "changed_is_loading",
+      isLoading: newIsLoading,
+    });
+  }
+
+  function changeWantToLogin(newWantToLogin: boolean) {
+    dispatch({
+      type: "changed_want_to_login",
+      wantToLogin: newWantToLogin,
+    });
+  }
+
+  function incrementRenderCount() {
+    dispatch({
+      type: "incremented_render_count",
+    });
+  }
+
+  const navigate = useNavigate();
 
   const [file, setFile] = useState<File | null>(null);
   const [name, setName] = useState<string>("");
