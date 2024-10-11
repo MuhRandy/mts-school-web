@@ -21,13 +21,14 @@ import {
   useAppStatusDispatchContext,
 } from "../services/state/AppStatusContext";
 import { useNavigate } from "react-router-dom";
+import { isUserAdmin } from "../utils/utils";
 
 type AddTeacherProps = {
   forEdit?: boolean;
 };
 
 const AddTeacher = ({ forEdit = false }: AddTeacherProps) => {
-  const { isLoading, isAuth } = useAppStatusContext();
+  const { isLoading, isAuth, user } = useAppStatusContext();
   const dispatch = useAppStatusDispatchContext();
 
   function changeIsLoading(newIsLoading: boolean) {
@@ -65,7 +66,7 @@ const AddTeacher = ({ forEdit = false }: AddTeacherProps) => {
 
   useEffect(() => {
     // avoid navigate here when user not login
-    if (!isAuth) {
+    if (!isAuth || !isUserAdmin(user.email, user.uid)) {
       navigate("/");
       changeWantToLogin(true);
     }

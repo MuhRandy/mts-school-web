@@ -6,6 +6,10 @@ type AppStatus = {
   isLoading: boolean;
   renderCount: number;
   wantToLogin: boolean;
+  user: {
+    email: string | null;
+    uid: string | null;
+  };
 };
 
 type AppStatusAction =
@@ -22,12 +26,29 @@ type AppStatusAction =
       wantToLogin: boolean;
     }
   | {
+      type: "change_user";
+      user: {
+        email: string | null;
+        uid: string | null;
+      };
+    }
+  | {
       type: "incremented_render_count";
+    }
+  | {
+      type: "clear_user_data";
+    }
+  | {
+      type: "";
     }
   | Record<string, never>;
 
 const initialAppStatus: AppStatus = {
   isAuth: Boolean(localStorage.getItem("IS_AUTH")),
+  user: {
+    email: localStorage.getItem("USER_EMAIL"),
+    uid: localStorage.getItem("USER_UID"),
+  },
   isLoading: false,
   renderCount: 0,
   wantToLogin: false,
@@ -73,6 +94,12 @@ const appStatusReducer = (appStatus: AppStatus, action: AppStatusAction) => {
         isAuth: action.isAuth,
       };
 
+    case "change_user":
+      return {
+        ...appStatus,
+        user: action.user,
+      };
+
     case "changed_is_loading":
       return {
         ...appStatus,
@@ -85,7 +112,16 @@ const appStatusReducer = (appStatus: AppStatus, action: AppStatusAction) => {
         wantToLogin: action.wantToLogin,
       };
 
+    case "clear_user_data":
+      return {
+        ...appStatus,
+        user: {
+          email: null,
+          uid: null,
+        },
+      };
+
     default:
-      throw new Error(`No such action: ${action}`);
+      throw new Error(`No such action with type: ${action.type}`);
   }
 };

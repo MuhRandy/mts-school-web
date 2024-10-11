@@ -26,4 +26,11 @@ const toReadableDate = (dateData: any) => {
   return `${day}, ${date?.getDate()} ${month} ${date?.getFullYear()}`;
 };
 
+export function isUserAdmin(email: string | null, uid: string | null) {
+  return (
+    email === import.meta.env.VITE_ADMIN_EMAIL &&
+    uid === import.meta.env.VITE_ADMIN_UID
+  );
+}
+
 export { cn, toReadableDate };

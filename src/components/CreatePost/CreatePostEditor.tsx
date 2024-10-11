@@ -19,9 +19,10 @@ import { updatePost } from "../../services/UpdateDataService";
 import { uploadFile } from "../../services/UploadDataService";
 import LoadingSection from "../LoadingSection";
 import { CreatePostProps } from "../../pages/CreatePost";
+import { isUserAdmin } from "../../utils/utils";
 
 function CreatePostEditor({ forEdit }: CreatePostProps) {
-  const { isAuth, isLoading } = useAppStatusContext();
+  const { isAuth, isLoading, user } = useAppStatusContext();
   const appStatusDispatch = useAppStatusDispatchContext();
 
   function changeIsLoading(newIsLoading: boolean) {
@@ -66,7 +67,7 @@ function CreatePostEditor({ forEdit }: CreatePostProps) {
 
   useEffect(() => {
     // avoid navigate here when user not login
-    if (!isAuth) {
+    if (!isAuth || !isUserAdmin(user.email, user.uid)) {
       navigate("/");
       changeWantToLogin(true);
     }

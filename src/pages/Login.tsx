@@ -23,24 +23,45 @@ const Login = () => {
     });
   }
 
+  function changeUser(userData: { email: string | null; uid: string | null }) {
+    dispatch({
+      type: "change_user",
+      user: userData,
+    });
+  }
+
   const navigate = useNavigate();
 
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
 
-  const signIn = () => {
-    signInWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        const user = userCredential.user;
-        localStorage.setItem("IS_AUTH", "true");
-        changeIsAuth(true);
-        changeWantToLogin(false);
-        navigate("/");
-      })
-      .catch((err) => {
-        alert("Email atau Password yang Anda Masukkan Salah!");
-        console.log(err);
-      });
+  const signIn = async () => {
+    try {
+      const userCredential = await signInWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      const user = userCredential.user;
+      localStorage.setItem("IS_AUTH", "true");
+      localStorage.setItem("USER_UID", user.uid);
+
+      if (user.email) localStorage.setItem("USER_EMAIL", user.email);
+
+      const userData = {
+        email: user.email,
+        uid: user.uid,
+      };
+
+      changeUser(userData);
+
+      changeIsAuth(true);
+      changeWantToLogin(false);
+      navigate("/");
+    } catch (error) {
+      alert("Email atau Password yang Anda Masukkan Salah!");
+      console.log(error);
+    }
   };
 
   return (

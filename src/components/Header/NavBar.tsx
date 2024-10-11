@@ -16,7 +16,7 @@ import { signOut } from "firebase/auth";
 import { auth } from "../../utils/firebase";
 import { useEffect, useState } from "react";
 import clsx from "clsx";
-import { cn } from "../../utils/utils";
+import { cn, isUserAdmin } from "../../utils/utils";
 import {
   useAppStatusContext,
   useAppStatusDispatchContext,
@@ -25,7 +25,7 @@ import {
 function Navbar() {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  const { isAuth } = useAppStatusContext();
+  const { isAuth, user } = useAppStatusContext();
   const dispatch = useAppStatusDispatchContext();
 
   function changeIsAuth(newIsAuth: boolean) {
@@ -42,6 +42,12 @@ function Navbar() {
     });
   }
 
+  function clearUserData() {
+    dispatch({
+      type: "clear_user_data",
+    });
+  }
+
   const [isSticky, setIsSticky] = useState<boolean>(false);
 
   let navigate = useNavigate();
@@ -50,6 +56,7 @@ function Navbar() {
     signOut(auth).then(() => {
       localStorage.clear();
       changeIsAuth(false);
+      clearUserData();
       navigate("/");
       changeWantToLogin(true);
     });
@@ -103,7 +110,7 @@ function Navbar() {
             <li>
               <a href="/news">Berita</a>
             </li>
-            {!isAuth && (
+            {(!isAuth || !isUserAdmin(user.email, user.uid)) && (
               <>
                 <li>|</li>
                 <li>
@@ -111,7 +118,7 @@ function Navbar() {
                 </li>
               </>
             )}
-            {isAuth && (
+            {isAuth && isUserAdmin(user.email, user.uid) && (
               <>
                 <li>|</li>
                 <li>
@@ -146,7 +153,7 @@ function Navbar() {
               <li>
                 <a href="/news">Berita</a>
               </li>
-              {!isAuth && (
+              {(!isAuth || !isUserAdmin(user.email, user.uid)) && (
                 <li>
                   <button
                     onClick={() => {
@@ -158,7 +165,7 @@ function Navbar() {
                   </button>
                 </li>
               )}
-              {isAuth && (
+              {isAuth && isUserAdmin(user.email, user.uid) && (
                 <>
                   <li>
                     <a href="/create-post">Buat Berita</a>
