@@ -13,14 +13,35 @@ import ReactQuill from "react-quill";
 import "react-quill/dist/quill.bubble.css";
 import "react-quill/dist/quill.snow.css";
 import DragNDrop from "./DragNDrop";
-import { useCreatePostContext } from "../../utils/context";
+import {
+  usePostContext,
+  usePostDispatchContext,
+} from "../../services/state/PostContext";
 
 const PostEditor = () => {
-  // get state from CreatePost
-  const { createPostState, createPostStateAction } = useCreatePostContext();
+  const { title, post, file, imgUrl } = usePostContext();
+  const dispatch = usePostDispatchContext();
 
-  const { title, post, file, imgUrl } = createPostState;
-  const { changeTitle, changePost, changeFile } = createPostStateAction;
+  function changeTitle(newTitle: string) {
+    dispatch({
+      type: "changed_title",
+      postTitle: newTitle,
+    });
+  }
+
+  function changePost(newPostContent: string) {
+    dispatch({
+      type: "changed_content",
+      postContent: newPostContent,
+    });
+  }
+
+  function changeFile(newFile: File) {
+    dispatch({
+      type: "changed_file",
+      file: newFile,
+    });
+  }
 
   // initialize module and format extension for quill editor
   const modules = {
@@ -116,7 +137,9 @@ const PostEditor = () => {
               <EditablePreview />
               <EditableInput
                 w={"auto"}
-                onChange={(e) => changeTitle(e.target.value)}
+                onChange={(e) => {
+                  changeTitle(e.target.value);
+                }}
               />
             </Editable>
             <ReactQuill

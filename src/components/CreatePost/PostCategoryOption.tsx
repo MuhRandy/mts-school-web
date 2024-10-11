@@ -1,17 +1,23 @@
 import { Select } from "@chakra-ui/react";
-import { useCreatePostContext } from "../../utils/context";
+import {
+  usePostContext,
+  usePostDispatchContext,
+} from "../../services/state/PostContext";
 
 const PostCategoryOption = () => {
-  const { createPostState, createPostStateAction } = useCreatePostContext();
-
-  const { postCategory } = createPostState;
-  const { changePostCategory } = createPostStateAction;
+  const { postCategory } = usePostContext();
+  const dispatch = usePostDispatchContext();
 
   return (
     <Select
       placeholder="Pilih Kategori Berita"
       value={postCategory}
-      onChange={(e) => changePostCategory(e.target.value)}
+      onChange={(e) => {
+        dispatch({
+          type: "changed_category",
+          postCategory: e.target.value,
+        });
+      }}
       w={200}
       pl={5}
     >

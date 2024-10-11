@@ -1,5 +1,4 @@
 import { createContext, Dispatch, useContext, useReducer } from "react";
-import { initialState } from "../../utils/context";
 import { Children } from "../../utils/type";
 
 type AppStatus = {
@@ -27,7 +26,14 @@ type AppStatusAction =
     }
   | Record<string, never>;
 
-export const AppStatusContext = createContext<AppStatus>(initialState);
+const initialAppStatus: AppStatus = {
+  isAuth: Boolean(localStorage.getItem("IS_AUTH")),
+  isLoading: false,
+  renderCount: 0,
+  wantToLogin: false,
+};
+
+export const AppStatusContext = createContext<AppStatus>(initialAppStatus);
 export const AppStatusDispatchContext = createContext<
   Dispatch<AppStatusAction>
 >(() => {});
@@ -82,11 +88,4 @@ const appStatusReducer = (appStatus: AppStatus, action: AppStatusAction) => {
     default:
       throw new Error(`No such action: ${action}`);
   }
-};
-
-const initialAppStatus: AppStatus = {
-  isAuth: Boolean(localStorage.getItem("IS_AUTH")),
-  isLoading: false,
-  renderCount: 0,
-  wantToLogin: false,
 };

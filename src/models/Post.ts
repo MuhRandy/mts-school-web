@@ -1,6 +1,6 @@
 import { FieldValue } from "firebase/firestore";
 
-type PostData = {
+export type PostData = {
   title: string;
   post: string;
   postCategory: string;
