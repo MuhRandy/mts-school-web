@@ -3,12 +3,10 @@ import Posts from "../components/News/Posts";
 import Content from "../components/Content";
 import { useEffect, useState } from "react";
 import NewsAside from "../components/News/NewsAside";
-import { useAppContext } from "../utils/context";
+import { useNewsContext } from "../services/state/NewsContext";
 
 const News = () => {
-  const { state } = useAppContext();
-
-  const { news } = state;
+  const news = useNewsContext();
 
   const [postCategoryFilter, setPostCategoryFilter] = useState<string>("");
   const [posts, setPosts] = useState(news);

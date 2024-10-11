@@ -5,28 +5,47 @@ import PostEditor from "../components/CreatePost/PostEditor";
 import PostCategoryOption from "../components/CreatePost/PostCategoryOption";
 import ActionAlertDialog from "../components/ActionAlertDialog";
 import LoadingSection from "../components/LoadingSection";
-import {
-  initialCreatePostState,
-  useAppContext,
-  createPostContext,
-} from "../utils/context";
+import { initialCreatePostState, createPostContext } from "../utils/context";
 import { createPostReducer } from "../utils/reducer";
 import { CreatePostStateAction } from "../utils/type";
 import { getSingleData } from "../services/GetDataService";
 import { updatePost } from "../services/UpdateDataService";
 import { uploadFile } from "../services/UploadDataService";
+import {
+  useAppStatusContext,
+  useAppStatusDispatchContext,
+} from "../services/state/AppStatusContext";
+import { useNavigate } from "react-router-dom";
 
 type CreatePostProps = {
   forEdit?: boolean;
 };
 
 const CreatePost = ({ forEdit = false }: CreatePostProps) => {
-  // get state from App component
-  const { state, globalStateAction } = useAppContext();
+  const { isAuth, isLoading } = useAppStatusContext();
+  const appStatusDispatch = useAppStatusDispatchContext();
 
-  const { isAuth, isLoading } = state;
-  const { changeIsLoading, changeWantToLogin, incrementRenderCount, navigate } =
-    globalStateAction;
+  function changeIsLoading(newIsLoading: boolean) {
+    appStatusDispatch({
+      type: "changed_is_loading",
+      isLoading: newIsLoading,
+    });
+  }
+
+  function changeWantToLogin(newWantToLogin: boolean) {
+    appStatusDispatch({
+      type: "changed_want_to_login",
+      wantToLogin: newWantToLogin,
+    });
+  }
+
+  function incrementRenderCount() {
+    appStatusDispatch({
+      type: "incremented_render_count",
+    });
+  }
+
+  const navigate = useNavigate();
 
   const [createPostState, dispatch] = useReducer(
     createPostReducer,

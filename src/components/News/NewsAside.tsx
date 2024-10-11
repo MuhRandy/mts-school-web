@@ -3,7 +3,7 @@ import clsx from "clsx";
 import Posts from "./Posts";
 import { useEffect, useState } from "react";
 import AsideContent from "./AsideContent";
-import { useAppContext } from "../../utils/context";
+import { useNewsContext } from "../../services/state/NewsContext";
 
 type NewsAsideContentProps = {
   postCategoryFilter: string;
@@ -14,9 +14,7 @@ const NewsAside = ({
   postCategoryFilter,
   setPostCategoryFilter,
 }: NewsAsideContentProps) => {
-  // get state from App
-  const { state } = useAppContext();
-  const { news } = state;
+  const news = useNewsContext();
 
   // filter to 3 newest news data if have more than 3
   const [newestPost, setNewestPost] = useState<any[] | null[]>(news);

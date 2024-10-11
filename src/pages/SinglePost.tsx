@@ -18,18 +18,33 @@ import { useEffect, useState } from "react";
 import LoadingSection from "../components/LoadingSection";
 import ActionAlertDialog from "../components/ActionAlertDialog";
 import { EditIcon } from "@chakra-ui/icons";
-import { Link } from "react-router-dom";
-import { useAppContext } from "../utils/context";
+import { Link, useNavigate } from "react-router-dom";
 import { toReadableDate } from "../utils/utils";
 import { getSingleData } from "../services/GetDataService";
 import { deletePost } from "../services/DeleteDataService";
+import {
+  useAppStatusContext,
+  useAppStatusDispatchContext,
+} from "../services/state/AppStatusContext";
 
 function SinglePost() {
-  // get state from App
-  const { state, globalStateAction } = useAppContext();
+  const { isAuth, isLoading } = useAppStatusContext();
+  const dispatch = useAppStatusDispatchContext();
 
-  const { isLoading, isAuth } = state;
-  const { changeIsLoading, incrementRenderCount, navigate } = globalStateAction;
+  function changeIsLoading(newIsloading: boolean) {
+    dispatch({
+      type: "changed_is_loading",
+      isLoading: newIsloading,
+    });
+  }
+
+  function incrementRenderCount() {
+    dispatch({
+      type: "incremented_render_count",
+    });
+  }
+
+  const navigate = useNavigate();
 
   const { onOpen, isOpen, onClose } = useDisclosure();
 

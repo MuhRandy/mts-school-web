@@ -3,12 +3,27 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 import { Button, Center, Input, VStack } from "@chakra-ui/react";
 import { useState } from "react";
 import clsx from "clsx";
-import { useAppContext } from "../utils/context";
+import { useAppStatusDispatchContext } from "../services/state/AppStatusContext";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
-  const { globalStateAction } = useAppContext();
+  const dispatch = useAppStatusDispatchContext();
 
-  const { navigate, changeIsAuth, changeWantToLogin } = globalStateAction;
+  function changeIsAuth(newIsAuth: boolean) {
+    dispatch({
+      type: "changed_is_auth",
+      isAuth: newIsAuth,
+    });
+  }
+
+  function changeWantToLogin(newWantToLogin: boolean) {
+    dispatch({
+      type: "changed_want_to_login",
+      wantToLogin: newWantToLogin,
+    });
+  }
+
+  const navigate = useNavigate();
 
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");

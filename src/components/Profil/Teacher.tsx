@@ -14,8 +14,11 @@ import {
 import { IconTrash } from "@tabler/icons-react";
 import { Link } from "react-router-dom";
 import ActionAlertDialog from "../ActionAlertDialog";
-import { useAppContext } from "../../utils/context";
 import { deleteTeacherData } from "../../services/DeleteDataService";
+import {
+  useAppStatusContext,
+  useAppStatusDispatchContext,
+} from "../../services/state/AppStatusContext";
 
 type TeacherProps = {
   name: string;
@@ -26,11 +29,21 @@ type TeacherProps = {
 };
 
 function Teacher({ name, imgURL, imgPath, jabatan, dataID }: TeacherProps) {
-  // get state from App
-  const { state, globalStateAction } = useAppContext();
+  const { isAuth, isLoading } = useAppStatusContext();
+  const dispatch = useAppStatusDispatchContext();
 
-  const { isAuth, isLoading } = state;
-  const { changeIsLoading, incrementRenderCount } = globalStateAction;
+  function changeIsLoading(newIsLoading: boolean) {
+    dispatch({
+      type: "changed_is_loading",
+      isLoading: newIsLoading,
+    });
+  }
+
+  function incrementRenderCount() {
+    dispatch({
+      type: "incremented_render_count",
+    });
+  }
 
   const { onOpen, isOpen, onClose } = useDisclosure();
 

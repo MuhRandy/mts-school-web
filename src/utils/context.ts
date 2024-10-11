@@ -38,7 +38,7 @@ const createPostContext = createContext<CreatePostContext>({
 const useCreatePostContext = () => useContext(createPostContext);
 
 export {
-  AppContext,
+  // AppContext,
   useAppContext,
   initialState,
   initialCreatePostState,

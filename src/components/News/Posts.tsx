@@ -1,7 +1,7 @@
 import { Wrap, WrapItem } from "@chakra-ui/react";
 import ArticleCard from "./ArticleCard";
 import LoadingSection from "../LoadingSection";
-import { useAppContext } from "../../utils/context";
+import { useAppStatusContext } from "../../services/state/AppStatusContext";
 
 type PostsProps = {
   cardMaxW?: string | number;
@@ -9,8 +9,7 @@ type PostsProps = {
 };
 
 const Posts = ({ cardMaxW = "sm", postsData }: PostsProps) => {
-  const { state } = useAppContext();
-  const { isLoading } = state;
+  const { isLoading } = useAppStatusContext();
 
   return (
     <Wrap justify={"center"}>

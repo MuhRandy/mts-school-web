@@ -1,11 +1,9 @@
 import Content from "../components/Content";
 import Posts from "../components/News/Posts";
-import { useAppContext } from "../utils/context";
+import { useNewsContext } from "../services/state/NewsContext";
 
 export default function Home() {
-  const { state } = useAppContext();
-
-  const { news } = state;
+  const news = useNewsContext();
 
   return (
     <main>

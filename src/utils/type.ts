@@ -4,6 +4,7 @@ import {
   FieldValue,
   Query,
 } from "firebase/firestore";
+import { ReactNode } from "react";
 import { NavigateFunction } from "react-router-dom";
 
 type ActionType =
@@ -112,6 +113,8 @@ type CreatePostContext = {
   createPostState: CreatePostState;
   createPostStateAction: CreatePostStateAction;
 };
+
+export type Children = { children: ReactNode };
 
 export type {
   GlobalContext,

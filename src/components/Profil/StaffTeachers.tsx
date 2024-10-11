@@ -3,18 +3,26 @@ import { SimpleGrid } from "@chakra-ui/react";
 import Teacher from "./Teacher";
 import { useEffect, useState } from "react";
 import LoadingSection from "../LoadingSection";
-import { useAppContext } from "../../utils/context";
 import { getTeacherData } from "../../services/GetDataService";
+import {
+  useAppStatusContext,
+  useAppStatusDispatchContext,
+} from "../../services/state/AppStatusContext";
 
 function StaffTeachers() {
-  const { state, globalStateAction } = useAppContext();
-  const { renderCount, isLoading } = state;
-  const { changeIsLoading } = globalStateAction;
+  const { renderCount, isLoading } = useAppStatusContext();
+  const dispatch = useAppStatusDispatchContext();
+
+  function changeIsLoading(newIsLoading: boolean) {
+    dispatch({
+      type: "changed_is_loading",
+      isLoading: newIsLoading,
+    });
+  }
 
   const [teacherData, setTeacherData] = useState<any[]>([]);
 
   useEffect(() => {
-    // get teacher data from firestore
     getTeacherData(changeIsLoading, setTeacherData);
   }, [renderCount]);
   return (
